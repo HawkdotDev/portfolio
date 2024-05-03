@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: DomaineDispCond;
   line-height: 1.5;
   font-weight: 400;
 
@@ -17,8 +17,15 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-::-webkit-scrollbar{
+::-webkit-scrollbar {
   display: none;
+}
+
+@font-face {
+  font-family: "DomaineDispCond";
+  src: local("DomaineDispCond"),
+    url("./assets/fonts/DomaineDispCondMedium.ttf") format("truetype");
+  font-weight: bold;
 }
 
 @media (prefers-color-scheme: light) {
