@@ -34,7 +34,6 @@ function App() {
       { scale: 0.05, rotate: 0 },
       { scale: 1, rotate: 720, duration: 2, ease: "easein" }
     ).to(navRef.current, {
-      
       scale: 1,
       duration: 0.1,
     });
