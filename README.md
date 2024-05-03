@@ -10,6 +10,5 @@ The current portfolio design is inspired by [Miranda](https://github.com/saartha
 - Gsap
 - Locomotive
 - Elysia
-
-Currently, uses:
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
+- also uses:
+    - [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) which uses [Babel](https://babeljs.io/) for Fast Refresh
