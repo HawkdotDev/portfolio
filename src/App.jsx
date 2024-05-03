@@ -6,9 +6,7 @@ import { useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 
-
 function App() {
-
   const mainRef = useRef();
   const navRef = useRef();
   const [IsLight, setIsLight] = useState(true);
@@ -24,6 +22,8 @@ function App() {
   const bgColor = IsLight ? lightBG : darkBG;
   const textColor = IsLight ? lightText : darkText;
   const owl = IsLight ? owlB : owlW;
+
+  const emailLink = "https://www.google.com";
 
   const tl = gsap.timeline();
 
@@ -77,15 +77,15 @@ function App() {
         <div className="flex">
           <div
             style={{
-              borderColor: textColor ? textColor : "#0000FF",
+              borderColor: textColor,
             }}
             className="w-[20%] bg-transparent relative border-r border-y"
           >
-            <h1 className="sticky top-0 h-screen p-2">laura</h1>
+            <h1 className="sticky top-0 h-screen p-2">lendi stories</h1>
           </div>
           <div
             style={{
-              borderColor: textColor ? textColor : "#0000FF",
+              borderColor: textColor,
             }}
             className="w-[80%] bg-transparent border-t"
           >
@@ -104,7 +104,7 @@ function App() {
             </div>
             <div
               style={{
-                borderColor: textColor ? textColor : "#0000FF",
+                borderColor: textColor,
               }}
               className="w-full h-screen bg-transparent p-3 border-b"
             >
@@ -116,29 +116,43 @@ function App() {
           <h1>
             Lets create something together{" "}
             <span style={{ backgroundColor: textColor, color: bgColor }}>
-              <a href="mailto:https://www.w3schools.com">EMAIL ME</a>
+              <a href={emailLink} target="_blank">
+                MAIL ME
+              </a>
             </span>
           </h1>
           <h1>
             Lets create something together{" "}
             <span style={{ backgroundColor: textColor, color: bgColor }}>
-              <a href="https://www.w3schools.com">EMAIL ME</a>
+              <a href={emailLink} target="_blank">
+                MAIL ME
+              </a>
             </span>
           </h1>
           <h1>
             Lets create something together{" "}
             <span style={{ backgroundColor: textColor, color: bgColor }}>
-              <a href="https://www.w3schools.com">EMAIL ME</a>
+              <a href={emailLink} target="_blank">
+                MAIL ME
+              </a>
             </span>
           </h1>
         </div>
-        <div className="w-screen flex justify-center p-2">
+        <div
+          style={{
+            borderColor: textColor,
+          }}
+          className="w-screen flex justify-center p-2 border"
+        >
           Made with ❤️ by
           <a
             href="https://github.com/HawkdotDev"
             target="_blank"
-            style={{ backgroundColor: textColor, color: bgColor }}
-            className="ml-[6px] px-[5px] text-[#c4bcb2] bg-slate-700"
+            style={{
+              backgroundColor: textColor,
+              color: bgColor,
+            }}
+            className="ml-[6px] px-[5px]"
           >
             HawkdotDev
           </a>
