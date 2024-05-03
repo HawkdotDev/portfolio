@@ -1,7 +1,7 @@
 # Portfolio
 This repo is for maintaining my personal portfolio.
 
-The current portfolio design is inspired by [Miranda](_blank) theme by [Sarthak Sharma](https://github.com/HawkdotDev) but remade almost entirely using React.
+The current portfolio design is inspired by [Miranda](https://github.com/saarthack/Miranda) theme by [Sarthak Sharma](https://github.com/saarthack) but remade from the ground up almost entirely using React.
 
 ## Technologies used
 - React
