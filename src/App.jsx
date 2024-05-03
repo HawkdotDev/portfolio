@@ -11,6 +11,7 @@ import gsap from "gsap";
 
 function App() {
   const mainRef = useRef();
+  const navRef = useRef();
   const [IsLight, setIsLight] = useState(true);
 
   // light theme
@@ -18,19 +19,25 @@ function App() {
   const lightText = "#4e4e4e";
 
   // dark theme
-  const darkBG = "#4e4e4e";
+  const darkBG = "#333333";
   const darkText = "#c4bcb2";
 
   const bgColor = IsLight ? lightBG : darkBG;
   const textColor = IsLight ? lightText : darkText;
   const owl = IsLight ? owlB : owlW;
 
+  const tl = gsap.timeline();
+
   useGSAP(() => {
-    gsap.fromTo(
+    tl.fromTo(
       mainRef.current,
-      { scale: 0.1, rotate: 0 },
+      { scale: 0.05, rotate: 0 },
       { scale: 1, rotate: 720, duration: 2, ease: "easein" }
-    );
+    ).to(navRef.current, {
+      
+      scale: 1,
+      duration: 0.1,
+    });
   });
 
   return (
@@ -43,7 +50,7 @@ function App() {
         }}
         className="w-screen text-lg"
       >
-        <nav className="w-screen relative flex px-3">
+        <nav ref={navRef} className="w-screen relative flex px-3">
           <img src={owl} alt="logo" className="w-[30px] mx-2" />
           <div className="w-full bg-transparent p-2 flex justify-center text-3xl">
             The Daily Prophet
