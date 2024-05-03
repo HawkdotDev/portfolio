@@ -29,14 +29,6 @@ function App() {
   const tl = gsap.timeline();
 
   useGSAP(() => {
-    // tl.fromTo(
-    //   mainRef.current,
-    //   { scale: 0.05, rotate: 0 },
-    //   { scale: 1, rotate: 720, duration: 2, ease: "easein" }
-    // ).to(navRef.current, {
-    //   scale: 1,
-    //   duration: 0.1,
-    // });
     tl.to(mainRef.current, {
       y: "100vh",
       scale: 0.5,
@@ -102,7 +94,7 @@ function App() {
             <div className="w-full">
               <h1
                 style={{ backgroundColor: textColor, color: bgColor }}
-                className="flex justify-center items-center text-5xl"
+                className="flex justify-center items-center text-6xl"
               >
                 DWAIPAYAN DUTTA
               </h1>
@@ -122,6 +114,22 @@ function App() {
             </div>
           </div>
         </div>
+        {/* <div className="flex overflow-y-hidden p-[30px] whitespace-nowrap">
+          <h1 className=" inline-block mx-2 animate-move font-thin text-[80px]">
+            Lets create something together <span className="font-thin">EMAIL ME</span>
+          </h1>
+          <h1 className=" inline-block mx-2 animate-move font-thin text-[80px]">
+            Lets create something together <span className="font-thin">EMAIL ME</span>
+          </h1>
+          <h1 className=" inline-block mx-2 animate-move font-thin text-[80px]">
+            Lets create something together <span className="font-thin">EMAIL ME</span>
+          </h1>
+        </div> */}
+        <div id="scroller">
+            <h1>Lets create something together <span style={{ backgroundColor: textColor, color: bgColor }}>EMAIL ME</span></h1>
+            <h1>Lets create something together <span style={{ backgroundColor: textColor, color: bgColor }}>EMAIL ME</span></h1>
+            <h1>Lets create something together <span style={{ backgroundColor: textColor, color: bgColor }}>EMAIL ME</span></h1>
+         </div>
         <div className="w-screen flex justify-center p-2">
           Made with ❤️ by
           <a
