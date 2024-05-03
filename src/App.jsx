@@ -29,14 +29,30 @@ function App() {
   const tl = gsap.timeline();
 
   useGSAP(() => {
-    tl.fromTo(
-      mainRef.current,
-      { scale: 0.05, rotate: 0 },
-      { scale: 1, rotate: 720, duration: 2, ease: "easein" }
-    ).to(navRef.current, {
-      scale: 1,
+    // tl.fromTo(
+    //   mainRef.current,
+    //   { scale: 0.05, rotate: 0 },
+    //   { scale: 1, rotate: 720, duration: 2, ease: "easein" }
+    // ).to(navRef.current, {
+    //   scale: 1,
+    //   duration: 0.1,
+    // });
+    tl.to(mainRef.current, {
+      y: "100vh",
+      scale: 0.5,
       duration: 0.1,
-    });
+      delay: 0.1,
+    })
+      .to(mainRef.current, {
+        y: "40vh",
+        duration: 1,
+      })
+      .to(mainRef.current, {
+        y: 0,
+        duration: 1,
+        scale: 1,
+        rotate: 360,
+      });
   });
 
   return (
@@ -68,14 +84,6 @@ function App() {
             />
           </button>
         </nav>
-        <div className="w-screen">
-          <h1
-            style={{ backgroundColor: textColor, color: bgColor }}
-            className="flex justify-center items-center text-6xl"
-          >
-            DWAIPAYAN DUTTA
-          </h1>
-        </div>
         <div className="flex">
           <div
             style={{
@@ -91,6 +99,14 @@ function App() {
             }}
             className="w-[80%] bg-transparent border-t"
           >
+            <div className="w-full">
+              <h1
+                style={{ backgroundColor: textColor, color: bgColor }}
+                className="flex justify-center items-center text-5xl"
+              >
+                DWAIPAYAN DUTTA
+              </h1>
+            </div>
             <div className="w-full h-screen bg-transparent p-3">lendi</div>
             <div className="w-full h-screen bg-transparent p-3">lendi 2</div>
             <div className="w-full h-screen bg-transparent p-3">
