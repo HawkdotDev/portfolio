@@ -6,7 +6,9 @@ import { useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 
+
 function App() {
+
   const mainRef = useRef();
   const navRef = useRef();
   const [IsLight, setIsLight] = useState(true);
