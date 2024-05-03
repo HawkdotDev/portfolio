@@ -2,11 +2,15 @@ import owlB from "./assets/icons/owl-b.svg";
 import owlW from "./assets/icons/owl-w.svg";
 import moon from "./assets/icons/moon.svg";
 import sun from "./assets/icons/sun.svg";
-import { useState } from "react";
+import { useRef, useState } from "react";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
 
+// bg-[#c4bcb2] text-slate-700
 // hover:bg-[#4e4e4e] hover:text-slate-300
 
 function App() {
+  const mainRef = useRef();
   const [IsLight, setIsLight] = useState(true);
 
   // light theme
@@ -20,11 +24,19 @@ function App() {
   const bgColor = IsLight ? lightBG : darkBG;
   const textColor = IsLight ? lightText : darkText;
   const owl = IsLight ? owlB : owlW;
-  
-  // bg-[#c4bcb2] text-slate-700
+
+  useGSAP(() => {
+    gsap.fromTo(
+      mainRef.current,
+      { scale: 0.1, rotate: 0 },
+      { scale: 1, rotate: 720, duration: 2, ease: "easein" }
+    );
+  });
+
   return (
     <>
       <main
+        ref={mainRef}
         style={{
           backgroundColor: bgColor,
           color: textColor,
