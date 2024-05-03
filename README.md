@@ -1,5 +1,5 @@
 # Portfolio
-This repo is for maintaining my personal portfolio.
+This repo is for maintaining my portfolio.
 
 The current portfolio design is inspired by [Miranda](https://github.com/saarthack/Miranda) theme by [Sarthak Sharma](https://github.com/saarthack) but remade from the ground up almost entirely using React.
 
