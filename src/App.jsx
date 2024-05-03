@@ -52,7 +52,7 @@ function App() {
         <nav ref={navRef} className="w-screen relative flex px-3">
           <img src={owl} alt="logo" className="w-[30px] mx-2" />
           <div className="w-full bg-transparent p-2 flex justify-center text-3xl">
-            The Daily Prophet
+            The Daily Oracle
           </div>
           <button
             className="w-[35px] h-[35px] m-2 px-[1px] rounded-lg"
@@ -68,6 +68,14 @@ function App() {
             />
           </button>
         </nav>
+        <div className="w-screen">
+          <h1
+            style={{ backgroundColor: textColor, color: bgColor }}
+            className="flex justify-center items-center text-6xl"
+          >
+            DWAIPAYAN DUTTA
+          </h1>
+        </div>
         <div className="flex">
           <div
             style={{
