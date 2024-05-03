@@ -44,9 +44,7 @@
   padding-top: 18px;
   padding-bottom: 6px;
   background-color: transparent;
-  /* border-top: 1px solid #555; */
   white-space: nowrap;
-  /* overflow-y: hidden; */
   overflow-x: auto;
 
 }
@@ -70,8 +68,6 @@
 }
 #scroller h1 span{
   font-family: domain;
-  /* color: #C4BCB2;
-  background-color: #222; */
   padding: 0 5px;
   font-weight: 100;
 }

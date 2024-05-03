@@ -6,9 +6,6 @@ import { useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 
-// bg-[#c4bcb2] text-slate-700
-// hover:bg-[#4e4e4e] hover:text-slate-300
-
 function App() {
   const mainRef = useRef();
   const navRef = useRef();
@@ -114,22 +111,26 @@ function App() {
             </div>
           </div>
         </div>
-        {/* <div className="flex overflow-y-hidden p-[30px] whitespace-nowrap">
-          <h1 className=" inline-block mx-2 animate-move font-thin text-[80px]">
-            Lets create something together <span className="font-thin">EMAIL ME</span>
-          </h1>
-          <h1 className=" inline-block mx-2 animate-move font-thin text-[80px]">
-            Lets create something together <span className="font-thin">EMAIL ME</span>
-          </h1>
-          <h1 className=" inline-block mx-2 animate-move font-thin text-[80px]">
-            Lets create something together <span className="font-thin">EMAIL ME</span>
-          </h1>
-        </div> */}
         <div id="scroller">
-            <h1>Lets create something together <span style={{ backgroundColor: textColor, color: bgColor }}>EMAIL ME</span></h1>
-            <h1>Lets create something together <span style={{ backgroundColor: textColor, color: bgColor }}>EMAIL ME</span></h1>
-            <h1>Lets create something together <span style={{ backgroundColor: textColor, color: bgColor }}>EMAIL ME</span></h1>
-         </div>
+          <h1>
+            Lets create something together{" "}
+            <span style={{ backgroundColor: textColor, color: bgColor }}>
+              EMAIL ME
+            </span>
+          </h1>
+          <h1>
+            Lets create something together{" "}
+            <span style={{ backgroundColor: textColor, color: bgColor }}>
+              EMAIL ME
+            </span>
+          </h1>
+          <h1>
+            Lets create something together{" "}
+            <span style={{ backgroundColor: textColor, color: bgColor }}>
+              EMAIL ME
+            </span>
+          </h1>
+        </div>
         <div className="w-screen flex justify-center p-2">
           Made with ❤️ by
           <a
