@@ -9,15 +9,18 @@ import { useState } from "react";
 function App() {
   const [IsLight, setIsLight] = useState(true);
 
+  // light theme
   const lightBG = "#c4bcb2";
-  const darkBG = "#4e4e4e";
   const lightText = "#4e4e4e";
+
+  // dark theme
+  const darkBG = "#4e4e4e";
   const darkText = "#c4bcb2";
 
   const bgColor = IsLight ? lightBG : darkBG;
   const textColor = IsLight ? lightText : darkText;
-
   const owl = IsLight ? owlB : owlW;
+  
   // bg-[#c4bcb2] text-slate-700
   return (
     <>
