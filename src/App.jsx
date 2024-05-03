@@ -33,14 +33,13 @@ function App() {
       delay: 0.1,
     })
       .to(mainRef.current, {
-        y: "40vh",
+        y: "-70vh",
         duration: 1,
       })
       .to(mainRef.current, {
         y: 0,
         duration: 1,
         scale: 1,
-        rotate: 360,
       });
   });
 
@@ -115,19 +114,19 @@ function App() {
           <h1>
             Lets create something together{" "}
             <span style={{ backgroundColor: textColor, color: bgColor }}>
-              EMAIL ME
+              <a href="mailto:https://www.w3schools.com">EMAIL ME</a>
             </span>
           </h1>
           <h1>
             Lets create something together{" "}
             <span style={{ backgroundColor: textColor, color: bgColor }}>
-              EMAIL ME
+              <a href="https://www.w3schools.com">EMAIL ME</a>
             </span>
           </h1>
           <h1>
             Lets create something together{" "}
             <span style={{ backgroundColor: textColor, color: bgColor }}>
-              EMAIL ME
+              <a href="https://www.w3schools.com">EMAIL ME</a>
             </span>
           </h1>
         </div>
