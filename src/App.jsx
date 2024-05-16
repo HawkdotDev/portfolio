@@ -5,6 +5,7 @@ import sun from "./assets/icons/sun.svg";
 import { useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
+import ThemeButton from "./components/ThemeButton";
 
 function App() {
   const mainRef = useRef();
@@ -21,9 +22,12 @@ function App() {
 
   const bgColor = IsLight ? lightBG : darkBG;
   const textColor = IsLight ? lightText : darkText;
+  // eslint-disable-next-line no-unused-vars
   const owl = IsLight ? owlB : owlW;
 
   const emailLink = "https://www.google.com";
+  const paperName = "Dwaipayan Dutta";
+  const year = 2024;
 
   const tl = gsap.timeline();
 
@@ -55,24 +59,20 @@ function App() {
         }}
         className="w-screen text-lg"
       >
-        <nav ref={navRef} className="w-screen relative flex px-3">
-          <img src={owl} alt="logo" className="w-[30px] mx-2" />
-          <div className="w-full bg-transparent p-2 flex justify-center text-3xl">
-            The Daily Oracle
+        <nav
+          ref={navRef}
+          className="w-screen relative flex px-3 justify-between"
+        >
+          {/* <img src={owl} alt="logo" className="w-[30px] mx-2" /> */}
+          <div className="w-full bg-transparent p-2 flex text-4xl">
+            {paperName}
           </div>
-          <button
-            className="w-[35px] h-[35px] m-2 px-[1px] rounded-lg"
-            onClick={() => {
-              setIsLight(!IsLight);
-              IsLight ? console.log("moon") : console.log("sun");
-            }}
-          >
-            <img
-              src={IsLight ? moon : sun}
-              alt="logo"
-              className="w-full h-full rounded-full"
-            />
-          </button>
+          <ThemeButton
+            IsLight={IsLight}
+            setIsLight={setIsLight}
+            moonIcon={moon}
+            sunIcon={sun}
+          />
         </nav>
         <div className="flex">
           <div
@@ -81,6 +81,12 @@ function App() {
             }}
             className="w-[20%] bg-transparent relative border-r border-y"
           >
+            <h1
+              style={{ backgroundColor: textColor, color: bgColor }}
+              className="flex justify-center items-center text-4xl py-1 px-2"
+            >
+              Most Creative Developer of {year} ?
+            </h1>
             <h1 className="sticky top-0 h-screen p-2">lendi stories</h1>
           </div>
           <div
@@ -91,10 +97,10 @@ function App() {
           >
             <div className="w-full">
               <h1
-                style={{ backgroundColor: textColor, color: bgColor }}
-                className="flex justify-center items-center text-6xl"
+                // style={{ backgroundColor: textColor, color: bgColor }}
+                className="text-xl py-2"
               >
-                DWAIPAYAN DUTTA
+                About Dwaipayan
               </h1>
             </div>
             <div className="w-full h-screen bg-transparent p-3">lendi</div>
