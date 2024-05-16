@@ -7,6 +7,7 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import ThemeButton from "./components/ThemeButton";
 import Scroller from "./components/Scroller";
+import Footer from "./components/Footer";
 
 function App() {
   const mainRef = useRef();
@@ -120,25 +121,7 @@ function App() {
           </div>
         </div>
         <Scroller bgColor={bgColor} textColor={textColor} emailLink={emailLink} />
-        <div
-          style={{
-            borderColor: textColor,
-          }}
-          className="w-screen flex justify-center p-2 border-t"
-        >
-          Made with ❤️ by
-          <a
-            href="https://github.com/HawkdotDev"
-            target="_blank"
-            style={{
-              backgroundColor: textColor,
-              color: bgColor,
-            }}
-            className="ml-[6px] px-[5px]"
-          >
-            HawkdotDev
-          </a>
-        </div>
+        <Footer bgColor={bgColor} textColor={textColor} />
       </main>
     </>
   );
