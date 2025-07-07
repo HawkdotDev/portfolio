@@ -26,7 +26,7 @@ function App() {
       />
 
       {/* Other components would be placed here */}
-      <div className="h-[50vh] w-screen bg-black"></div>
+      <div className="h-screen w-screen bg-black"></div>
       <Footer />
     </div>
   );

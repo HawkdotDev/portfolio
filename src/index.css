@@ -1,4 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Fugaz+One&display=swap');
 @import "tailwindcss";
+/* @import "tailwindcss/typography"; */
+
+.fugaz-one {
+  font-family: "Fugaz One", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
 
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
@@ -23,15 +31,16 @@ body {
 }
 
 @keyframes colorWave {
-  0%, 100% {
-    color: #e0e0e0; /* gray-500 */
+  0%,
+  100% {
+    color: #ffffff; /* gray-500 */
   }
-  80% {
-    color: #727272; /* blue-500 or your chosen wave color */
+  20% {
+    color: #505050; /* blue-500 or your chosen wave color */
   }
 }
 
 .wave-letter {
   display: inline-block;
-  animation: colorWave 2.5s infinite;
+  animation: colorWave 4.5s infinite;
 }

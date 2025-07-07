@@ -9,28 +9,28 @@ const Hero = () => {
       image: "/api/placeholder/200/150",
       title: "Brand Identity Design",
       category: "Branding",
-      bgGradient: "from-purple-600 via-pink-500 to-red-400"
+      bgGradient: "from-purple-600 via-pink-500 to-red-400",
     },
     {
       id: "02",
       image: "/api/placeholder/200/150",
       title: "Product Photography",
       category: "Photography",
-      bgGradient: "from-blue-600 via-cyan-500 to-teal-400"
+      bgGradient: "from-blue-600 via-cyan-500 to-teal-400",
     },
     {
       id: "03",
       image: "/api/placeholder/200/150",
       title: "Digital Art Portrait",
       category: "Digital Art",
-      bgGradient: "from-green-600 via-emerald-500 to-lime-400"
+      bgGradient: "from-green-600 via-emerald-500 to-lime-400",
     },
     {
       id: "04",
       image: "/api/placeholder/200/150",
       title: "Editorial Design",
       category: "Print Design",
-      bgGradient: "from-red-400 to-orange-400"
+      bgGradient: "from-red-400 to-orange-400",
     },
   ];
 
@@ -38,8 +38,8 @@ const Hero = () => {
     // Brand Identity Landing Page
     {
       content: (
-        <div className="absolute inset-0 bg-gradient-to-br from-purple-600 via-pink-500 to-red-400 flex items-center justify-center">
-          <div className="text-center text-white max-w-4xl px-8">
+        <div className="absolute inset-0 bg-gradient-to-br from-purple-500 to-red-400 flex items-center justify-center opacity-80">
+          {/* <div className="text-center text-white max-w-4xl px-8">
             <div className="mb-8">
               <div className="w-16 h-16 mx-auto mb-4 bg-white/20 rounded-full flex items-center justify-center">
                 <div className="w-8 h-8 bg-white rounded-sm"></div>
@@ -61,15 +61,20 @@ const Hero = () => {
                 <p className="text-sm opacity-80">Cohesive systems across all touchpoints</p>
               </div>
             </div>
-          </div>
+          </div> */}
+          <img
+            src="https://i.pinimg.com/1200x/e5/d7/ff/e5d7ff58b1161a050f406249d5b1fad8.jpg"
+            alt="image"
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+          />
         </div>
-      )
+      ),
     },
     // Photography Landing Page
     {
       content: (
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-600 via-cyan-500 to-teal-400 flex items-center justify-center">
-          <div className="text-center text-white max-w-5xl px-8">
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-500 to-teal-400 flex items-center justify-center opacity-80">
+          {/* <div className="text-center text-white max-w-5xl px-8">
             <div className="mb-8">
               <div className="w-20 h-20 mx-auto mb-6 bg-white/20 rounded-full flex items-center justify-center">
                 <div className="w-10 h-8 bg-white/80 rounded-sm relative">
@@ -85,15 +90,20 @@ const Hero = () => {
               <div className="w-32 h-40 bg-white/10 rounded-lg backdrop-blur-sm"></div>
               <div className="w-32 h-40 bg-white/15 rounded-lg backdrop-blur-sm mt-8"></div>
             </div>
-          </div>
+          </div> */}
+          <img
+            src="https://i.pinimg.com/1200x/0d/15/eb/0d15ebece691ca06a43463b4626e2f2c.jpg"
+            alt="image"
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+          />
         </div>
-      )
+      ),
     },
     // Digital Art Landing Page
     {
       content: (
-        <div className="absolute inset-0 bg-gradient-to-br from-green-600 via-emerald-500 to-lime-400 flex items-center justify-center">
-          <div className="text-center text-white max-w-4xl px-8">
+        <div className="absolute inset-0 bg-gradient-to-br from-emerald-500 to-lime-400 flex items-center justify-center opacity-80">
+          {/* <div className="text-center text-white max-w-4xl px-8">
             <div className="mb-8">
               <div className="w-24 h-24 mx-auto mb-6 bg-white/20 rounded-2xl flex items-center justify-center">
                 <div className="grid grid-cols-2 gap-1">
@@ -115,15 +125,20 @@ const Hero = () => {
                 <div className="absolute inset-2 bg-gradient-to-tl from-white/20 to-transparent rounded-lg"></div>
               </div>
             </div>
-          </div>
+          </div> */}
+          <img
+            src="https://i.pinimg.com/1200x/e5/e9/26/e5e9265d77d948624ad357ea8d9d2f94.jpg"
+            alt="image"
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+          />
         </div>
-      )
+      ),
     },
     // Editorial Design Landing Page
     {
       content: (
-        <div className="absolute inset-0 bg-gradient-to-br from-red-400 to-orange-400 flex items-center justify-center">
-          <div className="text-center text-white max-w-4xl px-8">
+        <div className="absolute inset-0 bg-gradient-to-br from-red-400 to-orange-400 flex items-center justify-center opacity-80">
+          {/* <div className="text-center text-white max-w-4xl px-8">
             <div className="mb-8">
               <div className="w-16 h-20 mx-auto mb-6 bg-white/20 rounded-sm flex flex-col items-center justify-center">
                 <div className="w-10 h-1 bg-white mb-1"></div>
@@ -152,10 +167,15 @@ const Hero = () => {
                 </div>
               </div>
             </div>
-          </div>
+          </div> */}
+          <img
+            src="https://i.pinimg.com/1200x/69/61/76/696176e85452d3d216f95fe8d912b01d.jpg"
+            alt="image"
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+          />
         </div>
-      )
-    }
+      ),
+    },
   ];
 
   return (
@@ -164,20 +184,23 @@ const Hero = () => {
       {landingPages.map((page, index) => (
         <div
           key={`landing-${index}`}
-          className={`absolute inset-0 transition-all duration-700 ease-out ${
+          className={`absolute inset-0 transition-all duration-700 ease-out z-48 ${
             hoveredCard === index
-              ? 'translate-x-0 opacity-100'
-              : 'translate-x-full opacity-0'
+              ? "translate-x-0 opacity-100"
+              : "translate-x-full opacity-0"
           }`}
           style={{
             zIndex: hoveredCard === index ? 2 : 1,
-            visibility: hoveredCard !== null && hoveredCard !== index ? 'hidden' : 'visible'
+            visibility:
+              hoveredCard !== null && hoveredCard !== index
+                ? "hidden"
+                : "visible",
           }}
         >
           {page.content}
         </div>
       ))}
-      
+
       <main className="w-full h-full flex flex-col justify-end px-4 sm:px-6 lg:px-8 py-10 relative z-10">
         <div className="mx-2">
           <div className="flex flex-col lg:flex-row lg:justify-between items-end gap-6 lg:gap-8">
@@ -222,7 +245,7 @@ const Hero = () => {
                       <div className="bg-gray-200 overflow-hidden mx-1 sm:mx-2 mb-1 sm:mb-2 aspect-[4/3] relative">
                         <img
                           src={item.image}
-                          alt={item.title}
+                          alt="image"
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                         />
                       </div>
@@ -230,7 +253,7 @@ const Hero = () => {
                       {/* Text */}
                       <div className="px-1 sm:px-2 pb-1 sm:pb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                         <h3 className="text-[10px] sm:text-xs font-medium text-gray-200 leading-tight">
-                          {item.title}
+                          "image"
                         </h3>
                         <p className="text-[10px] sm:text-xs text-gray-300 mt-1">
                           {item.category}
