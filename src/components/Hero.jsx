@@ -230,7 +230,7 @@ const Hero = () => {
                   {portfolioItems.map((item, index) => (
                     <div
                       key={item.id}
-                      className="group cursor-pointer flex flex-col hover:shadow-lg hover:shadow-zinc-500 transition-all duration-300 overflow-hidden border border-gray-700 flex-1 basis-0 backdrop-blur-sm"
+                      className="group cursor-pointer flex flex-col bg-white/60 hover:shadow-lg hover:shadow-zinc-500 transition-all duration-300 overflow-hidden border border-gray-700 flex-1 basis-0 backdrop-blur-sm"
                       onMouseEnter={() => setHoveredCard(index)}
                       onMouseLeave={() => setHoveredCard(null)}
                     >

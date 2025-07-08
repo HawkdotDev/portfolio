@@ -282,7 +282,7 @@ const Navbar = () => {
         >
           <button 
             ref={hamburgerButtonRef}
-            className="hover:text-black z-[100] text-white p-1 hover:bg-white/90 rounded-full transition-colors relative"
+            className="z-[100] text-white p-1 rounded-full transition-colors relative"
             onMouseEnter={handleHoverIn}
             onMouseLeave={handleHoverOut}
           >
