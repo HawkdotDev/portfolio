@@ -56,7 +56,7 @@ const Navbar = () => {
       const navbarHeight = isMobile ? (isSmallMobile ? 52 : 56) : 64;
 
       const startX = width / 2;
-      const startY = height * 0.4;
+      const startY = height * 0.45;
 
       const endX = width / 2;
       const endY = navbarHeight / 2 + (isMobile ? 8 : 8.5);
@@ -364,28 +364,28 @@ const Navbar = () => {
             className="text-gray-400 px-4 rounded-md bg-blend-exclusion py-1.5 text-sm font-medium bg-[#333333] hover:text-blue-300 transition-colors hover:translate-x-1 duration-200 border-black border-[0.5px]"
             onClick={toggleMobileMenu}
           >
-            01 - About
+            01 - ABOUT
           </a>
           <a
             href="#work"
             className="text-gray-400 px-4 rounded-md bg-blend-exclusion py-1.5 text-sm font-medium bg-[#333333] hover:text-blue-300 transition-colors hover:translate-x-1 duration-200 border-black border-[0.5px]"
             onClick={toggleMobileMenu}
           >
-            02 - Work
+            02 - WORK
           </a>
           <a
             href="#blog"
             className="text-gray-400 px-4 rounded-md bg-blend-exclusion py-1.5 text-sm font-medium bg-[#333333] hover:text-blue-300 transition-colors hover:translate-x-1 duration-200 border-black border-[0.5px]"
             onClick={toggleMobileMenu}
           >
-            03 - Blog
+            03 - BLOG
           </a>
           <a
             href="#contact"
             className="text-gray-400 px-4 rounded-md bg-blend-exclusion py-1.5 text-sm font-medium bg-[#333333] hover:text-blue-300 transition-colors hover:translate-x-1 duration-200 border-black border-[0.5px]"
             onClick={toggleMobileMenu}
           >
-            04 - Contact
+            04 - CONTACT
           </a>
         </div>
       </div>

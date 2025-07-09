@@ -1,6 +1,10 @@
 @import url("https://fonts.googleapis.com/css2?family=Fugaz+One&display=swap");
 @import "tailwindcss";
 
+@theme {
+  --breakpoint-xs: 30rem;
+}
+
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;

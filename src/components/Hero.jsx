@@ -1,216 +1,40 @@
-import { useState, useRef, useLayoutEffect } from "react";
-import {
-  motion,
-  useScroll,
-  useSpring,
-  useTransform,
-  useMotionValue,
-  useVelocity,
-  useAnimationFrame,
-} from "framer-motion";
+import { useState } from "react";
 import HeroMarquee from "./HeroMarquee";
-
-
-// ScrollMarquee utility hooks
-function useElementWidth(ref) {
-  const [width, setWidth] = useState(0);
-  useLayoutEffect(() => {
-    function updateWidth() {
-      if (ref.current) {
-        setWidth(ref.current.offsetWidth);
-      }
-    }
-    updateWidth();
-    window.addEventListener("resize", updateWidth);
-    return () => window.removeEventListener("resize", updateWidth);
-  }, [ref]);
-  return width;
-}
-
-function useScreenWidth() {
-  const [width, setWidth] = useState(0);
-  useLayoutEffect(() => {
-    function updateWidth() {
-      setWidth(window.innerWidth);
-    }
-    updateWidth();
-    window.addEventListener("resize", updateWidth);
-    return () => window.removeEventListener("resize", updateWidth);
-  }, []);
-  return width;
-}
-
-// ScrollMarquee Component
-const ScrollMarquee = ({
-  numRows = 1,
-  rowTexts = [[]],
-  speedMultiplier = 1,
-  scrollContainerRef,
-  className = "",
-  damping = 50,
-  stiffness = 400,
-  numCopies = 6,
-  velocityMapping = { input: [0, 1000], output: [0, 5] },
-  parallaxClassName,
-  scrollerClassName,
-  parallaxStyle,
-  scrollerStyle,
-}) => {
-  const screenWidth = useScreenWidth();
-  
-  const calculateBaseVelocity = (screenWidth) => {
-    if (screenWidth < 640) return 50;
-    if (screenWidth < 1024) return 100;
-    if (screenWidth < 1440) return 150;
-    return 200;
-  };
-
-  const baseVelocity = calculateBaseVelocity(screenWidth) * speedMultiplier;
-
-  function VelocityText({
-    children,
-    baseVelocity: propBaseVelocity = baseVelocity,
-    scrollContainerRef,
-    className = "",
-    damping,
-    stiffness,
-    numCopies,
-    velocityMapping,
-    parallaxClassName,
-    scrollerClassName,
-    parallaxStyle,
-    scrollerStyle,
-  }) {
-    const baseX = useMotionValue(0);
-    const scrollOptions = scrollContainerRef
-      ? { container: scrollContainerRef }
-      : {};
-    const { scrollY } = useScroll(scrollOptions);
-    const scrollMarquee = useVelocity(scrollY);
-    const smoothVelocity = useSpring(scrollMarquee, {
-      damping: damping ?? 50,
-      stiffness: stiffness ?? 400,
-    });
-    const velocityFactor = useTransform(
-      smoothVelocity,
-      velocityMapping?.input || [0, 1000],
-      velocityMapping?.output || [0, 5],
-      { clamp: false }
-    );
-    const copyRef = useRef(null);
-    const copyWidth = useElementWidth(copyRef);
-
-    function wrap(min, max, v) {
-      const range = max - min;
-      const mod = (((v - min) % range) + range) % range;
-      return mod + min;
-    }
-
-    const x = useTransform(baseX, (v) => {
-      if (copyWidth === 0) return "0px";
-      return `${wrap(-copyWidth, 0, v)}px`;
-    });
-
-    const directionFactor = useRef(1);
-    useAnimationFrame((t, delta) => {
-      let moveBy = directionFactor.current * propBaseVelocity * (delta / 1000);
-      if (velocityFactor.get() < 0) {
-        directionFactor.current = -1;
-      } else if (velocityFactor.get() > 0) {
-        directionFactor.current = 1;
-      }
-      moveBy += directionFactor.current * moveBy * velocityFactor.get();
-      baseX.set(baseX.get() + moveBy);
-    });
-
-    const spans = [];
-    for (let i = 0; i < (numCopies ?? 1); i++) {
-      spans.push(
-        <span
-          className={`flex-shrink-0 ${className}`}
-          key={i}
-          ref={i === 0 ? copyRef : null}
-        >
-          {children}
-        </span>
-      );
-    }
-
-    return (
-      <div
-        className={`${parallaxClassName} relative overflow-hidden`}
-        style={parallaxStyle}
-      >
-        <motion.div
-          className={`${scrollerClassName} flex whitespace-nowrap items-center h-full`}
-          style={{ x, ...scrollerStyle }}
-        >
-          {spans}
-        </motion.div>
-      </div>
-    );
-  }
-
-  const generateRows = () => {
-    const rows = [];
-    for (let i = 0; i < numRows; i++) {
-      const textsForRow = rowTexts[i] || rowTexts[0] || [];
-      const rowContent = textsForRow.join(" ");
-      const velocity = i % 2 !== 0 ? -baseVelocity : baseVelocity;
-      
-      rows.push(
-        <VelocityText
-          key={i}
-          className={className}
-          baseVelocity={velocity}
-          scrollContainerRef={scrollContainerRef}
-          damping={damping}
-          stiffness={stiffness}
-          numCopies={numCopies}
-          velocityMapping={velocityMapping}
-          parallaxClassName={parallaxClassName}
-          scrollerClassName={scrollerClassName}
-          parallaxStyle={parallaxStyle}
-          scrollerStyle={scrollerStyle}
-        >
-          {rowContent}&nbsp;
-        </VelocityText>
-      );
-    }
-    return rows;
-  };
-
-  return <section className="h-full">{generateRows()}</section>;
-};
 
 const Hero = () => {
   const [hoveredCard, setHoveredCard] = useState(null);
 
+  console.log(window.innerWidth, window.innerHeight);
+
   const portfolioItems = [
     {
       id: "01",
-      image: "https://i.pinimg.com/1200x/e5/d7/ff/e5d7ff58b1161a050f406249d5b1fad8.jpg",
+      image:
+        "https://i.pinimg.com/1200x/e5/d7/ff/e5d7ff58b1161a050f406249d5b1fad8.jpg",
       title: "Brand Identity Design",
       category: "Branding",
       bgGradient: "from-purple-600 via-pink-500 to-red-400",
     },
     {
       id: "02",
-      image: "https://i.pinimg.com/1200x/0d/15/eb/0d15ebece691ca06a43463b4626e2f2c.jpg",
+      image:
+        "https://i.pinimg.com/1200x/0d/15/eb/0d15ebece691ca06a43463b4626e2f2c.jpg",
       title: "Product Photography",
       category: "Photography",
       bgGradient: "from-blue-600 via-cyan-500 to-teal-400",
     },
     {
       id: "03",
-      image: "https://i.pinimg.com/1200x/e5/e9/26/e5e9265d77d948624ad357ea8d9d2f94.jpg",
+      image:
+        "https://i.pinimg.com/1200x/e5/e9/26/e5e9265d77d948624ad357ea8d9d2f94.jpg",
       title: "Digital Art Portrait",
       category: "Digital Art",
       bgGradient: "from-green-600 via-emerald-500 to-lime-400",
     },
     {
       id: "04",
-      image: "https://i.pinimg.com/1200x/69/61/76/696176e85452d3d216f95fe8d912b01d.jpg",
+      image:
+        "https://i.pinimg.com/1200x/69/61/76/696176e85452d3d216f95fe8d912b01d.jpg",
       title: "Editorial Design",
       category: "Print Design",
       bgGradient: "from-red-400 to-orange-400",
@@ -369,10 +193,10 @@ const Hero = () => {
           key={`landing-${index}`}
           className={`absolute inset-0 transition-all duration-700 ease-out z-48 
             ${
-            hoveredCard === index
-              ? "translate-x-0 opacity-100"
-              : "translate-x-full opacity-0"
-          }
+              hoveredCard === index
+                ? "translate-x-0 opacity-100"
+                : "translate-x-full opacity-0"
+            }
           `}
           style={{
             zIndex: hoveredCard === index ? 2 : 1,
@@ -386,30 +210,25 @@ const Hero = () => {
         </div>
       ))}
 
-      <main className="w-full h-full flex flex-col justify-between py-10 relative">
+      <main className="w-full h-full flex flex-col justify-between relative">
         {/* Marquee */}
-        <div className="px-6 sm:px-8 lg:px-10 mt-7 h-[25%]">
-          {/* <ScrollMarquee
-            numRows={1}
-            rowTexts={[["CREATIVE", "DESIGN", "STUDIO", "PORTFOLIO", "BRANDING", "VISUAL", "IDENTITY"]]}
-            speedMultiplier={1.2}
-            numCopies={8}
-            className="text-white/10 text-8xl sm:text-9xl lg:text-[12rem] xl:text-[15rem] font-black tracking-tighter"
-            parallaxClassName="h-full"
-            scrollerClassName="h-full"
-            parallaxStyle={{ height: "100%" }}
-            scrollerStyle={{ height: "100%" }}
-          /> */}
+        <div className="px-6 sm:px-8 lg:px-10 mt-[52px] h-[25%]">
           <HeroMarquee />
         </div>
-        <div className="px-6 sm:px-8 lg:px-10 z-10">
-          <div className="flex flex-col lg:flex-row lg:justify-between items-end gap-6 lg:gap-8">
+        {/* Container */}
+        <div className="Container px-6 sm:px-8 lg:px-10 z-10 h-[40%] flex flex-col justify-start">
+          {/* <div className="h-[15%] bg-black">
+
+          </div> */}
+          {/* Main Hero Section */}
+          <div className="flex flex-col lg:flex-row lg:justify-between items-end gap-6 lg:gap-8 py-5 h-[85%]">
             {/* Hero Text Section */}
             <section className="flex-1 lg:max-w-md xl:max-w-lg flex flex-col justify-center select-auto cursor-default">
-              <h1 className="text-lg sm:text-xl lg:text-2xl xl:text-3xl leading-tight mb-4 lg:mb-6 text-white">
+              <h1 className="xs:text-xl md:text-3xl leading-tight mb-4 lg:mb-6 text-[#555555] mix-blend-difference font-medium">
                 I craft solutions that align with your brand and engage your
                 audience with meaningful and memorable experiences.
               </h1>
+
               <p className="color-wave text-gray-300 text-xs sm:text-sm uppercase tracking-tight flex gap-[0.15em]">
                 {[..."[  SCROLL\u202FTO\u202FEXPLORE  ]"].map((char, i) => (
                   <span
@@ -424,25 +243,25 @@ const Hero = () => {
             </section>
 
             {/* Portfolio Flex Section */}
-            <section className="flex-1 lg:max-w-2xl">
-              <div className="w-full">
-                <div className="flex justify-between gap-2 sm:gap-3 lg:gap-4">
+            <section className="flex-1 max-w-[500px] h-full z-999">
+              <div className="h-full">
+                <div className="flex justify-between gap-2 sm:gap-3 lg:gap-4 h-full">
                   {portfolioItems.map((item, index) => (
                     <div
                       key={item.id}
-                      className="group cursor-pointer flex flex-col bg-white/60 hover:shadow-lg hover:shadow-zinc-500 transition-all duration-300 overflow-hidden border border-gray-700 flex-1 basis-0 backdrop-blur-sm"
+                      className="group cursor-pointer flex flex-col bg-[#454545]/40 hover:shadow-lg hover:shadow-zinc-500 transition-all duration-300 overflow-hidden border border-gray-500/40 flex-1 basis-0 backdrop-blur-sm"
                       onMouseEnter={() => setHoveredCard(index)}
                       onMouseLeave={() => setHoveredCard(null)}
                     >
                       {/* ID Number */}
                       <div className="text-right p-1 sm:p-2 pb-1">
-                        <span className="text-[10px] sm:text-xs text-gray-700">
+                        <span className="text-[10px] sm:text-xs text-gray-500">
                           [ {item.id} ]
                         </span>
                       </div>
 
                       {/* Image */}
-                      <div className="bg-gray-200 overflow-hidden mx-1 sm:mx-2 mb-1 sm:mb-2 aspect-[4/3] relative">
+                      <div className="bg-gray-200 overflow-hidden mx-1 sm:mx-2 mb-1 sm:mb-2 relative h-[80%]">
                         <img
                           src={item.image}
                           alt="image"
@@ -466,6 +285,7 @@ const Hero = () => {
             </section>
           </div>
         </div>
+        
       </main>
     </div>
   );

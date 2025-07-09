@@ -61,7 +61,7 @@ const calculateFontSize = (height, screenWidth) => {
   const multiplier = screenWidth < 640 ? 1.2 : 
                     screenWidth < 1024 ? 1.3 : 1.4;
   
-  return `${height * multiplier - 12}px`;
+  return `${height * multiplier - 15}px`;
 };
 
 const calculateBaseVelocity = (screenWidth) => {
@@ -145,7 +145,7 @@ const VelocityText = ({
           <span
             key={i}
             ref={i === 0 ? copyRef : null}
-            className={`flex-shrink-0 ${className}`}
+            className={`flex-shrink-0 ${className} mr-5`}
             style={spanStyle}
           >
             {children}
