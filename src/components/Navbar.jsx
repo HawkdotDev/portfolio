@@ -11,14 +11,14 @@ const Navbar = () => {
   const hamburgerRef = useRef(null);
   const contactRef = useRef(null);
   const mobileMenuRef = useRef(null);
-  
+
   // Individual line refs for hamburger animation
   const topLineRef = useRef(null);
   const middleLineRef = useRef(null);
   const bottomLineRef = useRef(null);
   const hamburgerButtonRef = useRef(null);
 
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(true);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const navbarContainer = navbarContainerRef.current;
@@ -51,19 +51,9 @@ const Navbar = () => {
 
       // Logo Sizing with better mobile scaling
       const startSize = Math.min(width * 0.08, height * 0.25, 80);
-      const endSize = isMobile
-        ? isSmallMobile
-          ? 16
-          : 18
-        : isTablet
-        ? 19
-        : 20;
+      const endSize = isMobile ? (isSmallMobile ? 16 : 18) : isTablet ? 19 : 20;
 
-      const navbarHeight = isMobile
-        ? isSmallMobile
-          ? 52
-          : 56
-        : 64;
+      const navbarHeight = isMobile ? (isSmallMobile ? 52 : 56) : 64;
 
       const startX = width / 2;
       const startY = height * 0.4;
@@ -191,68 +181,84 @@ const Navbar = () => {
     };
   }, []);
 
-  useEffect(() => {
-  if (isMobileMenuOpen) {
-    animateToX();
-  } else {
-    animateToHamburger();
-  }
-}, []);
+  // useEffect(() => {
+  //   if (isMobileMenuOpen) {
+  //     animateToX();
+  //   } else {
+  //     animateToHamburger();
+  //   }
+  // }, []);
 
   // Hamburger animation functions
   const animateToX = () => {
     const tl = gsap.timeline();
-    
+
     tl.to(topLineRef.current, {
       rotation: 45,
       transformOrigin: "center",
       y: 6,
       duration: 0.3,
-      ease: "power2.out"
+      ease: "power2.out",
     })
-    .to(middleLineRef.current, {
-      opacity: 0,
-      scaleX: 0,
-      duration: 0.2,
-      ease: "power2.out"
-    }, 0)
-    .to(bottomLineRef.current, {
-      rotation: -45,
-      transformOrigin: "center",
-      y: -6,
-      duration: 0.3,
-      ease: "power2.out"
-    }, 0);
+      .to(
+        middleLineRef.current,
+        {
+          opacity: 0,
+          scaleX: 0,
+          duration: 0.2,
+          ease: "power2.out",
+        },
+        0
+      )
+      .to(
+        bottomLineRef.current,
+        {
+          rotation: -45,
+          transformOrigin: "center",
+          y: -6,
+          duration: 0.3,
+          ease: "power2.out",
+        },
+        0
+      );
   };
 
   const animateToHamburger = () => {
     const tl = gsap.timeline();
-    
+
     tl.to(topLineRef.current, {
       rotation: 0,
       y: 0,
       duration: 0.3,
-      ease: "power2.out"
+      ease: "power2.out",
     })
-    .to(bottomLineRef.current, {
-      rotation: 0,
-      y: 0,
-      duration: 0.3,
-      ease: "power2.out"
-    }, 0)
-    .to(middleLineRef.current, {
-      opacity: 1,
-      scaleX: 1,
-      duration: 0.2,
-      ease: "power2.out"
-    }, 0.1);
+      .to(
+        bottomLineRef.current,
+        {
+          rotation: 0,
+          y: 0,
+          duration: 0.3,
+          ease: "power2.out",
+        },
+        0
+      )
+      .to(
+        middleLineRef.current,
+        {
+          opacity: 1,
+          scaleX: 1,
+          duration: 0.2,
+          ease: "power2.out",
+        },
+        0.1
+      );
   };
 
   const handleHoverIn = () => {
     gsap.to(hamburgerButtonRef.current, {
       scale: 1.1,
       duration: 0.2,
-      ease: "power2.out"
+      ease: "power2.out",
     });
   };
 
@@ -260,13 +266,13 @@ const Navbar = () => {
     gsap.to(hamburgerButtonRef.current, {
       scale: 1,
       duration: 0.2,
-      ease: "power2.out"
+      ease: "power2.out",
     });
   };
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
-    
+
     if (!isMobileMenuOpen) {
       animateToX();
     } else {
@@ -288,7 +294,7 @@ const Navbar = () => {
           className="flex items-center flex-shrink-0 z-[100]"
           onClick={toggleMobileMenu}
         >
-          <button 
+          <button
             ref={hamburgerButtonRef}
             className="z-[100] text-white p-1 rounded-full transition-colors relative"
             onMouseEnter={handleHoverIn}
@@ -330,7 +336,10 @@ const Navbar = () => {
         <div className="flex justify-center flex-1 min-w-0" />
 
         {/* Contact Link */}
-        <div ref={contactRef} className="flex items-center flex-shrink-0 z-[100]">
+        <div
+          ref={contactRef}
+          className="flex items-center flex-shrink-0 z-[100]"
+        >
           <a
             href="#contact"
             className="text-white font-medium teblack sm:text-base transition-colors hover:text-blue-300 px-1"
@@ -352,28 +361,28 @@ const Navbar = () => {
         <div className="flex flex-col pt-4 space-y-4 sm:space-y-6">
           <a
             href="#about"
-            className="text-gray-400 px-5 rounded-md bg-blend-exclusion py-1.5 text-sm font-medium bg-[#333333] hover:text-blue-300 transition-colors hover:translate-x-1 duration-200 border-black border-[0.5px]"
+            className="text-gray-400 px-4 rounded-md bg-blend-exclusion py-1.5 text-sm font-medium bg-[#333333] hover:text-blue-300 transition-colors hover:translate-x-1 duration-200 border-black border-[0.5px]"
             onClick={toggleMobileMenu}
           >
             01 - About
           </a>
           <a
             href="#work"
-            className="text-gray-400 px-5 rounded-md bg-blend-exclusion py-1.5 text-sm font-medium bg-[#333333] hover:text-blue-300 transition-colors hover:translate-x-1 duration-200 border-black border-[0.5px]"
+            className="text-gray-400 px-4 rounded-md bg-blend-exclusion py-1.5 text-sm font-medium bg-[#333333] hover:text-blue-300 transition-colors hover:translate-x-1 duration-200 border-black border-[0.5px]"
             onClick={toggleMobileMenu}
           >
             02 - Work
           </a>
           <a
             href="#blog"
-            className="text-gray-400 px-5 rounded-md bg-blend-exclusion py-1.5 text-sm font-medium bg-[#333333] hover:text-blue-300 transition-colors hover:translate-x-1 duration-200 border-black border-[0.5px]"
+            className="text-gray-400 px-4 rounded-md bg-blend-exclusion py-1.5 text-sm font-medium bg-[#333333] hover:text-blue-300 transition-colors hover:translate-x-1 duration-200 border-black border-[0.5px]"
             onClick={toggleMobileMenu}
           >
             03 - Blog
           </a>
           <a
             href="#contact"
-            className="text-gray-400 px-5 rounded-md bg-blend-exclusion py-1.5 text-sm font-medium bg-[#333333] hover:text-blue-300 transition-colors hover:translate-x-1 duration-200 border-black border-[0.5px]"
+            className="text-gray-400 px-4 rounded-md bg-blend-exclusion py-1.5 text-sm font-medium bg-[#333333] hover:text-blue-300 transition-colors hover:translate-x-1 duration-200 border-black border-[0.5px]"
             onClick={toggleMobileMenu}
           >
             04 - Contact
@@ -391,7 +400,7 @@ const Navbar = () => {
       {/* Logo */}
       <div
         ref={logoRef}
-        className="fixed text-white text-center fugaz-one z-50 font-bold color-wave transition-colors hover:text-blue-200 select-none tracking-tighter cursor-pointer"
+        className="fixed text-white text-center z-50 font-bold color-wave transition-colors hover:text-blue-200 select-none tracking-tighter cursor-pointer"
         onClick={() => (window.location.href = "#home")}
       >
         {[..."DWAIPAYAN\u202FDUTTA"].map((char, i) => (
@@ -401,7 +410,7 @@ const Navbar = () => {
             className="wave-letter"
           >
             {char}
-          </span> 
+          </span>
         ))}
       </div>
     </>
