@@ -1,4 +1,187 @@
-import { useState } from "react";
+import { useState, useRef, useLayoutEffect } from "react";
+import {
+  motion,
+  useScroll,
+  useSpring,
+  useTransform,
+  useMotionValue,
+  useVelocity,
+  useAnimationFrame,
+} from "framer-motion";
+import HeroMarquee from "./HeroMarquee";
+
+
+// ScrollMarquee utility hooks
+function useElementWidth(ref) {
+  const [width, setWidth] = useState(0);
+  useLayoutEffect(() => {
+    function updateWidth() {
+      if (ref.current) {
+        setWidth(ref.current.offsetWidth);
+      }
+    }
+    updateWidth();
+    window.addEventListener("resize", updateWidth);
+    return () => window.removeEventListener("resize", updateWidth);
+  }, [ref]);
+  return width;
+}
+
+function useScreenWidth() {
+  const [width, setWidth] = useState(0);
+  useLayoutEffect(() => {
+    function updateWidth() {
+      setWidth(window.innerWidth);
+    }
+    updateWidth();
+    window.addEventListener("resize", updateWidth);
+    return () => window.removeEventListener("resize", updateWidth);
+  }, []);
+  return width;
+}
+
+// ScrollMarquee Component
+const ScrollMarquee = ({
+  numRows = 1,
+  rowTexts = [[]],
+  speedMultiplier = 1,
+  scrollContainerRef,
+  className = "",
+  damping = 50,
+  stiffness = 400,
+  numCopies = 6,
+  velocityMapping = { input: [0, 1000], output: [0, 5] },
+  parallaxClassName,
+  scrollerClassName,
+  parallaxStyle,
+  scrollerStyle,
+}) => {
+  const screenWidth = useScreenWidth();
+  
+  const calculateBaseVelocity = (screenWidth) => {
+    if (screenWidth < 640) return 50;
+    if (screenWidth < 1024) return 100;
+    if (screenWidth < 1440) return 150;
+    return 200;
+  };
+
+  const baseVelocity = calculateBaseVelocity(screenWidth) * speedMultiplier;
+
+  function VelocityText({
+    children,
+    baseVelocity: propBaseVelocity = baseVelocity,
+    scrollContainerRef,
+    className = "",
+    damping,
+    stiffness,
+    numCopies,
+    velocityMapping,
+    parallaxClassName,
+    scrollerClassName,
+    parallaxStyle,
+    scrollerStyle,
+  }) {
+    const baseX = useMotionValue(0);
+    const scrollOptions = scrollContainerRef
+      ? { container: scrollContainerRef }
+      : {};
+    const { scrollY } = useScroll(scrollOptions);
+    const scrollMarquee = useVelocity(scrollY);
+    const smoothVelocity = useSpring(scrollMarquee, {
+      damping: damping ?? 50,
+      stiffness: stiffness ?? 400,
+    });
+    const velocityFactor = useTransform(
+      smoothVelocity,
+      velocityMapping?.input || [0, 1000],
+      velocityMapping?.output || [0, 5],
+      { clamp: false }
+    );
+    const copyRef = useRef(null);
+    const copyWidth = useElementWidth(copyRef);
+
+    function wrap(min, max, v) {
+      const range = max - min;
+      const mod = (((v - min) % range) + range) % range;
+      return mod + min;
+    }
+
+    const x = useTransform(baseX, (v) => {
+      if (copyWidth === 0) return "0px";
+      return `${wrap(-copyWidth, 0, v)}px`;
+    });
+
+    const directionFactor = useRef(1);
+    useAnimationFrame((t, delta) => {
+      let moveBy = directionFactor.current * propBaseVelocity * (delta / 1000);
+      if (velocityFactor.get() < 0) {
+        directionFactor.current = -1;
+      } else if (velocityFactor.get() > 0) {
+        directionFactor.current = 1;
+      }
+      moveBy += directionFactor.current * moveBy * velocityFactor.get();
+      baseX.set(baseX.get() + moveBy);
+    });
+
+    const spans = [];
+    for (let i = 0; i < (numCopies ?? 1); i++) {
+      spans.push(
+        <span
+          className={`flex-shrink-0 ${className}`}
+          key={i}
+          ref={i === 0 ? copyRef : null}
+        >
+          {children}
+        </span>
+      );
+    }
+
+    return (
+      <div
+        className={`${parallaxClassName} relative overflow-hidden`}
+        style={parallaxStyle}
+      >
+        <motion.div
+          className={`${scrollerClassName} flex whitespace-nowrap items-center h-full`}
+          style={{ x, ...scrollerStyle }}
+        >
+          {spans}
+        </motion.div>
+      </div>
+    );
+  }
+
+  const generateRows = () => {
+    const rows = [];
+    for (let i = 0; i < numRows; i++) {
+      const textsForRow = rowTexts[i] || rowTexts[0] || [];
+      const rowContent = textsForRow.join(" ");
+      const velocity = i % 2 !== 0 ? -baseVelocity : baseVelocity;
+      
+      rows.push(
+        <VelocityText
+          key={i}
+          className={className}
+          baseVelocity={velocity}
+          scrollContainerRef={scrollContainerRef}
+          damping={damping}
+          stiffness={stiffness}
+          numCopies={numCopies}
+          velocityMapping={velocityMapping}
+          parallaxClassName={parallaxClassName}
+          scrollerClassName={scrollerClassName}
+          parallaxStyle={parallaxStyle}
+          scrollerStyle={scrollerStyle}
+        >
+          {rowContent}&nbsp;
+        </VelocityText>
+      );
+    }
+    return rows;
+  };
+
+  return <section className="h-full">{generateRows()}</section>;
+};
 
 const Hero = () => {
   const [hoveredCard, setHoveredCard] = useState(null);
@@ -6,28 +189,28 @@ const Hero = () => {
   const portfolioItems = [
     {
       id: "01",
-      image: "/api/placeholder/200/150",
+      image: "https://i.pinimg.com/1200x/e5/d7/ff/e5d7ff58b1161a050f406249d5b1fad8.jpg",
       title: "Brand Identity Design",
       category: "Branding",
       bgGradient: "from-purple-600 via-pink-500 to-red-400",
     },
     {
       id: "02",
-      image: "/api/placeholder/200/150",
+      image: "https://i.pinimg.com/1200x/0d/15/eb/0d15ebece691ca06a43463b4626e2f2c.jpg",
       title: "Product Photography",
       category: "Photography",
       bgGradient: "from-blue-600 via-cyan-500 to-teal-400",
     },
     {
       id: "03",
-      image: "/api/placeholder/200/150",
+      image: "https://i.pinimg.com/1200x/e5/e9/26/e5e9265d77d948624ad357ea8d9d2f94.jpg",
       title: "Digital Art Portrait",
       category: "Digital Art",
       bgGradient: "from-green-600 via-emerald-500 to-lime-400",
     },
     {
       id: "04",
-      image: "/api/placeholder/200/150",
+      image: "https://i.pinimg.com/1200x/69/61/76/696176e85452d3d216f95fe8d912b01d.jpg",
       title: "Editorial Design",
       category: "Print Design",
       bgGradient: "from-red-400 to-orange-400",
@@ -38,7 +221,7 @@ const Hero = () => {
     // Brand Identity Landing Page
     {
       content: (
-        <div className="absolute inset-0 bg-gradient-to-br from-purple-500 to-red-400 flex items-center justify-center opacity-80">
+        <div className="absolute inset-0 bg-gradient-to-br from-purple-500 to-red-400 flex items-center justify-center">
           {/* <div className="text-center text-white max-w-4xl px-8">
             <div className="mb-8">
               <div className="w-16 h-16 mx-auto mb-4 bg-white/20 rounded-full flex items-center justify-center">
@@ -50,15 +233,15 @@ const Hero = () => {
             <div className="grid grid-cols-3 gap-8 mt-12">
               <div className="bg-white/10 p-6 rounded-lg backdrop-blur-sm">
                 <h3 className="font-semibold mb-2">Logo Design</h3>
-                <p className="text-sm opacity-80">Distinctive marks that define your brand</p>
+                <p className="text-sm">Distinctive marks that define your brand</p>
               </div>
               <div className="bg-white/10 p-6 rounded-lg backdrop-blur-sm">
                 <h3 className="font-semibold mb-2">Brand Strategy</h3>
-                <p className="text-sm opacity-80">Strategic positioning for market impact</p>
+                <p className="text-sm">Strategic positioning for market impact</p>
               </div>
               <div className="bg-white/10 p-6 rounded-lg backdrop-blur-sm">
                 <h3 className="font-semibold mb-2">Visual Identity</h3>
-                <p className="text-sm opacity-80">Cohesive systems across all touchpoints</p>
+                <p className="text-sm">Cohesive systems across all touchpoints</p>
               </div>
             </div>
           </div> */}
@@ -73,7 +256,7 @@ const Hero = () => {
     // Photography Landing Page
     {
       content: (
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-500 to-teal-400 flex items-center justify-center opacity-80">
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-500 to-teal-400 flex items-center justify-center">
           {/* <div className="text-center text-white max-w-5xl px-8">
             <div className="mb-8">
               <div className="w-20 h-20 mx-auto mb-6 bg-white/20 rounded-full flex items-center justify-center">
@@ -102,7 +285,7 @@ const Hero = () => {
     // Digital Art Landing Page
     {
       content: (
-        <div className="absolute inset-0 bg-gradient-to-br from-emerald-500 to-lime-400 flex items-center justify-center opacity-80">
+        <div className="absolute inset-0 bg-gradient-to-br from-emerald-500 to-lime-400 flex items-center justify-center">
           {/* <div className="text-center text-white max-w-4xl px-8">
             <div className="mb-8">
               <div className="w-24 h-24 mx-auto mb-6 bg-white/20 rounded-2xl flex items-center justify-center">
@@ -137,7 +320,7 @@ const Hero = () => {
     // Editorial Design Landing Page
     {
       content: (
-        <div className="absolute inset-0 bg-gradient-to-br from-red-400 to-orange-400 flex items-center justify-center opacity-80">
+        <div className="absolute inset-0 bg-gradient-to-br from-red-400 to-orange-400 flex items-center justify-center">
           {/* <div className="text-center text-white max-w-4xl px-8">
             <div className="mb-8">
               <div className="w-16 h-20 mx-auto mb-6 bg-white/20 rounded-sm flex flex-col items-center justify-center">
@@ -184,11 +367,13 @@ const Hero = () => {
       {landingPages.map((page, index) => (
         <div
           key={`landing-${index}`}
-          className={`absolute inset-0 transition-all duration-700 ease-out z-48 ${
+          className={`absolute inset-0 transition-all duration-700 ease-out z-48 
+            ${
             hoveredCard === index
               ? "translate-x-0 opacity-100"
               : "translate-x-full opacity-0"
-          }`}
+          }
+          `}
           style={{
             zIndex: hoveredCard === index ? 2 : 1,
             visibility:
@@ -201,8 +386,23 @@ const Hero = () => {
         </div>
       ))}
 
-      <main className="w-full h-full flex flex-col justify-end px-4 sm:px-6 lg:px-8 py-10 relative z-10">
-        <div className="mx-2">
+      <main className="w-full h-full flex flex-col justify-between py-10 relative">
+        {/* Marquee */}
+        <div className="px-6 sm:px-8 lg:px-10 mt-7 h-[25%]">
+          {/* <ScrollMarquee
+            numRows={1}
+            rowTexts={[["CREATIVE", "DESIGN", "STUDIO", "PORTFOLIO", "BRANDING", "VISUAL", "IDENTITY"]]}
+            speedMultiplier={1.2}
+            numCopies={8}
+            className="text-white/10 text-8xl sm:text-9xl lg:text-[12rem] xl:text-[15rem] font-black tracking-tighter"
+            parallaxClassName="h-full"
+            scrollerClassName="h-full"
+            parallaxStyle={{ height: "100%" }}
+            scrollerStyle={{ height: "100%" }}
+          /> */}
+          <HeroMarquee />
+        </div>
+        <div className="px-6 sm:px-8 lg:px-10 z-10">
           <div className="flex flex-col lg:flex-row lg:justify-between items-end gap-6 lg:gap-8">
             {/* Hero Text Section */}
             <section className="flex-1 lg:max-w-md xl:max-w-lg flex flex-col justify-center select-auto cursor-default">
@@ -236,7 +436,7 @@ const Hero = () => {
                     >
                       {/* ID Number */}
                       <div className="text-right p-1 sm:p-2 pb-1">
-                        <span className="text-[10px] sm:text-xs text-gray-400">
+                        <span className="text-[10px] sm:text-xs text-gray-700">
                           [ {item.id} ]
                         </span>
                       </div>
@@ -252,10 +452,10 @@ const Hero = () => {
 
                       {/* Text */}
                       <div className="px-1 sm:px-2 pb-1 sm:pb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <h3 className="text-[10px] sm:text-xs font-medium text-gray-200 leading-tight">
+                        <h3 className="text-[10px] sm:text-xs font-medium text-gray-500 leading-tight">
                           "image"
                         </h3>
-                        <p className="text-[10px] sm:text-xs text-gray-300 mt-1">
+                        <p className="text-[10px] sm:text-xs text-gray-400 mt-1">
                           {item.category}
                         </p>
                       </div>

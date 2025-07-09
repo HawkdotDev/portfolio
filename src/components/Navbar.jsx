@@ -18,7 +18,7 @@ const Navbar = () => {
   const bottomLineRef = useRef(null);
   const hamburgerButtonRef = useRef(null);
 
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(true);
 
   useEffect(() => {
     const navbarContainer = navbarContainerRef.current;
@@ -191,6 +191,14 @@ const Navbar = () => {
     };
   }, []);
 
+  useEffect(() => {
+  if (isMobileMenuOpen) {
+    animateToX();
+  } else {
+    animateToHamburger();
+  }
+}, []);
+
   // Hamburger animation functions
   const animateToX = () => {
     const tl = gsap.timeline();
@@ -335,7 +343,7 @@ const Navbar = () => {
       {/* Floating Left Menu */}
       <div
         ref={mobileMenuRef}
-        className={`fixed left-4 top-20 z-[90] transition-all duration-300 ease-out pl-6 ${
+        className={`fixed left-4 top-[60px] z-[90] transition-all duration-300 ease-out pl-6 ${
           isMobileMenuOpen
             ? "opacity-100 translate-x-0 pointer-events-auto"
             : "opacity-0 -translate-x-4 pointer-events-none"
@@ -344,28 +352,28 @@ const Navbar = () => {
         <div className="flex flex-col pt-4 space-y-4 sm:space-y-6">
           <a
             href="#about"
-            className="text-black px-5 rounded-md bg-blend-exclusion py-1.5 text-sm font-medium bg-white hover:text-blue-300 transition-colors hover:translate-x-1 duration-200"
+            className="text-gray-400 px-5 rounded-md bg-blend-exclusion py-1.5 text-sm font-medium bg-[#333333] hover:text-blue-300 transition-colors hover:translate-x-1 duration-200 border-black border-[0.5px]"
             onClick={toggleMobileMenu}
           >
             01 - About
           </a>
           <a
             href="#work"
-            className="text-black px-5 rounded-md bg-blend-exclusion py-1.5 text-sm font-medium bg-white hover:text-blue-300 transition-colors hover:translate-x-1 duration-200"
+            className="text-gray-400 px-5 rounded-md bg-blend-exclusion py-1.5 text-sm font-medium bg-[#333333] hover:text-blue-300 transition-colors hover:translate-x-1 duration-200 border-black border-[0.5px]"
             onClick={toggleMobileMenu}
           >
             02 - Work
           </a>
           <a
             href="#blog"
-            className="text-black px-5 rounded-md bg-blend-exclusion py-1.5 text-sm font-medium bg-white hover:text-blue-300 transition-colors hover:translate-x-1 duration-200"
+            className="text-gray-400 px-5 rounded-md bg-blend-exclusion py-1.5 text-sm font-medium bg-[#333333] hover:text-blue-300 transition-colors hover:translate-x-1 duration-200 border-black border-[0.5px]"
             onClick={toggleMobileMenu}
           >
             03 - Blog
           </a>
           <a
             href="#contact"
-            className="text-black px-5 rounded-md bg-blend-exclusion py-1.5 text-sm font-medium bg-white hover:text-blue-300 transition-colors hover:translate-x-1 duration-200"
+            className="text-gray-400 px-5 rounded-md bg-blend-exclusion py-1.5 text-sm font-medium bg-[#333333] hover:text-blue-300 transition-colors hover:translate-x-1 duration-200 border-black border-[0.5px]"
             onClick={toggleMobileMenu}
           >
             04 - Contact
@@ -393,7 +401,7 @@ const Navbar = () => {
             className="wave-letter"
           >
             {char}
-          </span>
+          </span> 
         ))}
       </div>
     </>
