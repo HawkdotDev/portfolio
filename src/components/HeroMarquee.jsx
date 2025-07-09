@@ -158,7 +158,7 @@ const VelocityText = ({
 
 const HeroMarquee = ({ 
   texts = ["CREATIVE", "DESIGN", "STUDIO", "PORTFOLIO", "BRANDING", "VISUAL", "IDENTITY"],
-  speedMultiplier = 1.2,
+  speedMultiplier = 0.4,
   numCopies = 8,
   scrollContainerRef,
   className = "",

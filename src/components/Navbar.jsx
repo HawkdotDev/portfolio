@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import DropdownButton from "./DropDownButton";
+import RollingNavbar from "./RollingNavbar";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -56,7 +58,7 @@ const Navbar = () => {
       const navbarHeight = isMobile ? (isSmallMobile ? 52 : 56) : 64;
 
       const startX = width / 2;
-      const startY = height * 0.45;
+      const startY = height * 0.445;
 
       const endX = width / 2;
       const endY = navbarHeight / 2 + (isMobile ? 8 : 8.5);
@@ -335,18 +337,34 @@ const Navbar = () => {
         {/* Logo Middle (Invisible Spacer) */}
         <div className="flex justify-center flex-1 min-w-0" />
 
-        {/* Contact Link */}
-        <div
+        {/* Theme icon */}
+        {/* <div
           ref={contactRef}
           className="flex items-center flex-shrink-0 z-[100]"
         >
           <a
             href="#contact"
-            className="text-white font-medium teblack sm:text-base transition-colors hover:text-blue-300 px-1"
+            className="rounded-full font-medium teblack sm:text-base transition-colors hover:text-blue-300"
           >
-            CONTACT
+            <svg
+              class="w-8 h-8 text-white"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm9.408-5.5a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2h-.01ZM10 10a1 1 0 1 0 0 2h1v3h-1a1 1 0 1 0 0 2h4a1 1 0 1 0 0-2h-1v-4a1 1 0 0 0-1-1h-2Z"
+                clip-rule="evenodd"
+              />
+            </svg>
           </a>
-        </div>
+        </div> */}
+        <DropdownButton />
+        {/* <RollingNavbar /> */}
       </div>
 
       {/* Floating Left Menu */}
