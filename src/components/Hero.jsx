@@ -212,7 +212,7 @@ const Hero = () => {
 
       <main className="w-full h-full flex flex-col justify-between relative">
         {/* Marquee */}
-        <div className="px-6 sm:px-8 lg:px-10 mt-[52px] h-[25%]">
+        <div className="px-6 sm:px-8 lg:px-10 mt-[60px] h-[25%]">
           <HeroMarquee />
         </div>
         {/* Container */}
