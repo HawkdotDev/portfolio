@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import DropdownButton from "./DropDownButton";
-import RollingNavbar from "./RollingNavbar";
 
 gsap.registerPlugin(ScrollTrigger);
 

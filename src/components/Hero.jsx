@@ -4,8 +4,6 @@ import HeroMarquee from "./HeroMarquee";
 const Hero = () => {
   const [hoveredCard, setHoveredCard] = useState(null);
 
-  console.log(window.innerWidth, window.innerHeight);
-
   const portfolioItems = [
     {
       id: "01",
@@ -224,7 +222,7 @@ const Hero = () => {
           <div className="flex flex-col lg:flex-row lg:justify-between items-end gap-6 lg:gap-8 py-5 h-[85%]">
             {/* Hero Text Section */}
             <section className="flex-1 lg:max-w-md xl:max-w-lg flex flex-col justify-center select-auto cursor-default">
-              <h1 className="xs:text-xl md:text-3xl leading-tight mb-4 lg:mb-6 text-[#555555] mix-blend-difference font-medium">
+              <h1 className="xs:text-xl md:text-3xl leading-tight mb-4 lg:mb-6 font-medium hero-text">
                 I craft solutions that align with your brand and engage your
                 audience with meaningful and memorable experiences.
               </h1>
@@ -285,7 +283,6 @@ const Hero = () => {
             </section>
           </div>
         </div>
-        
       </main>
     </div>
   );

@@ -131,7 +131,6 @@ const DropdownButton = () => {
         className={`
           group relative overflow-hidden
           w-7 h-7 rounded-full
-          bg-gradient-to-br from-blue-500 to-purple-600
           shadow-lg mt-1.5
           transition-all duration-300 ease-out
           transform hover:scale-105 active:scale-95
@@ -176,10 +175,9 @@ const DropdownButton = () => {
                 flex items-center justify-center
                 w-9 h-9 rounded-full
                 text-gray-700 hover:text-white
-                bg-white/95 backdrop-blur-xl
+                bg-white/95 backdrop-blur-xl hover:bg-gray-700
                 shadow-lg hover:shadow-xl
                 transition-all duration-200
-                hover:bg-gradient-to-br hover:from-blue-500 hover:to-purple-600
                 hover:scale-110
                 active:scale-95
                 border border-white/20
