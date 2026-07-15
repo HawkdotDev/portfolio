@@ -434,7 +434,7 @@ const Navbar = () => {
       >
         {/* Brand Name on the Left */}
         <div
-          className="text-neutral-800 font-anton uppercase tracking-normal select-none cursor-pointer text-sm sm:text-base md:text-lg transition-opacity hover:opacity-75 z-[100]"
+          className="text-neutral-800 font-anton uppercase tracking-normal select-none cursor-pointer text-sm sm:text-base md:text-lg transition-opacity hover:opacity-75 z-100"
           onClick={() => (window.location.href = "#home")}
         >
           Dwaipayan Dutta<span className="text-red-600">.</span>
@@ -450,7 +450,7 @@ const Navbar = () => {
             {/* Toggle Arrow Button (Outside) */}
             <button
               onClick={() => setIsThemeMenuOpen(!isThemeMenuOpen)}
-              className="w-6 h-6 sm:w-7 sm:h-7 flex items-center justify-center rounded-full hover:bg-neutral-800/10 transition-colors cursor-pointer text-neutral-800/70 z-[100] focus-visible:ring-2 focus-visible:ring-neutral-800 focus:outline-none"
+              className="w-6 h-6 sm:w-7 sm:h-7 flex items-center justify-center rounded-full hover:bg-neutral-800/10 transition-colors cursor-pointer text-neutral-800/70 z-100 focus-visible:ring-2 focus-visible:ring-neutral-800 focus:outline-none"
               title={isThemeMenuOpen ? "Collapse Themes" : "Expand Themes"}
               aria-label="Toggle theme selector"
               aria-expanded={isThemeMenuOpen}
@@ -522,7 +522,7 @@ const Navbar = () => {
           {/* Dark Mode Toggle Button */}
           <button
             onClick={toggleDarkMode}
-            className="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center rounded-full hover:bg-neutral-800/10 transition-all duration-300 active:scale-95 cursor-pointer text-neutral-800/70 focus-visible:ring-2 focus-visible:ring-neutral-800 focus:outline-none z-[100] relative"
+            className="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center rounded-full hover:bg-neutral-800/10 transition-all duration-300 active:scale-95 cursor-pointer text-neutral-800/70 focus-visible:ring-2 focus-visible:ring-neutral-800 focus:outline-none z-100 relative"
             title={isDarkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
             aria-label={isDarkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
           >
