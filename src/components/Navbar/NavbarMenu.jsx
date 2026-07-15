@@ -1,7 +1,7 @@
 import { forwardRef, useEffect } from "react";
 import { FaTwitter, FaInstagram, FaGithub, FaLinkedin } from "react-icons/fa";
 
-const NavbarMenu = forwardRef(({ isOpen, onClose }, ref) => {
+const NavbarMenu = forwardRef(({ isOpen }, ref) => {
   const links = [
     { label: "HOME", href: "#home" },
     { label: "ABOUT", href: "#about" },
@@ -49,13 +49,13 @@ const NavbarMenu = forwardRef(({ isOpen, onClose }, ref) => {
     >
       {/* Top section: Copy of ME Red Square and Image */}
       <div className="mt-10 mb-6 flex justify-center">
-        <div className="w-full aspect-square bg-red-600 border-2 border-black relative rounded-sm shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] overflow-visible flex-shrink-0">
+        <div className="w-full aspect-square bg-red-600 border-2 border-black relative rounded-sm shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] overflow-visible shrink-0">
           <img
             src="/avatar.png"
             alt="My Avatar"
             className="absolute -top-8 left-0 w-full h-[calc(100%+32px)] object-cover filter grayscale contrast-125 brightness-110 pointer-events-none z-0"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent z-10 pointer-events-none" />
+          <div className="absolute inset-0 bg-linear-to-t from-black/50 via-transparent to-transparent z-10 pointer-events-none" />
           <h2 className="absolute bottom-2.5 left-2.5 text-white text-5xl font-anton tracking-tighter select-none font-black scale-y-125 z-20 leading-none">
             ME
           </h2>

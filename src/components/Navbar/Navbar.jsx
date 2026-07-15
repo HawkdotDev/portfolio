@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, Fragment, useMemo, useCallback } from "react";
+import { useEffect, useRef, useState, Fragment, useCallback } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import NavbarHamburger from "./NavbarHamburger";
@@ -486,11 +486,11 @@ const Navbar = () => {
                       key={theme.id}
                       onClick={() => selectTheme(theme)}
                       aria-label={`Switch to ${theme.name} theme`}
-                      className={`rounded-full border overflow-hidden relative flex items-center justify-center transition-all duration-300 hover:scale-115 cursor-pointer flex-shrink-0 focus-visible:ring-2 focus-visible:ring-neutral-800 focus:outline-none ${
+                      className={`rounded-full border overflow-hidden relative flex items-center justify-center transition-all duration-300 hover:scale-115 cursor-pointer shrink-0 focus-visible:ring-2 focus-visible:ring-neutral-800 focus:outline-none ${
                         isActive 
                           ? "border-neutral-800 scale-105 shadow-sm border-[1.8px]" 
                           : isVisible
-                            ? "border-neutral-800 border-[1px]"
+                            ? "border-neutral-800 border"
                             : "border-transparent border-0"
                       }`}
                       style={{ 
@@ -528,7 +528,7 @@ const Navbar = () => {
           >
             <svg
               className={`w-3.5 h-3.5 sm:w-4 sm:h-4 transition-transform duration-500 ease-out select-none ${
-                isDarkMode ? "rotate-[40deg] text-neutral-800/80" : "rotate-0 text-neutral-800/70"
+                isDarkMode ? "rotate-40 text-neutral-800/80" : "rotate-0 text-neutral-800/70"
               }`}
               viewBox="0 0 24 24"
               fill="none"

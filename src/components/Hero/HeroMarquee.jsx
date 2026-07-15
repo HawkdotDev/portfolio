@@ -1,4 +1,4 @@
-import { useState, useRef, useLayoutEffect } from "react";
+import { useRef } from "react";
 import {
   motion,
   useScroll,
@@ -103,7 +103,7 @@ const VelocityText = ({
           <span
             key={i}
             ref={i === 0 ? copyRef : null}
-            className={`flex-shrink-0 ${className} mr-5`}
+            className={`shrink-0 ${className} mr-5`}
             style={spanStyle}
           >
             {children}

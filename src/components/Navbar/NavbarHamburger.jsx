@@ -4,7 +4,7 @@ const NavbarHamburger = React.forwardRef(({ onClick, onMouseEnter, onMouseLeave,
   return (
     <div
       ref={ref}
-      className="flex items-center flex-shrink-0 z-100"
+      className="flex items-center shrink-0 z-100"
       onClick={onClick}
     >
       <button
