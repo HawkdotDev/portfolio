@@ -1,0 +1,183 @@
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@400;500;700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --breakpoint-xs: 30rem;
+  --font-anton: "Anton", sans-serif;
+  --font-playfair: "Playfair Display", serif;
+  --font-grotesk: "Space Grotesk", sans-serif;
+  --color-red-600: var(--color-accent-brand);
+  --color-red-400: var(--color-accent-loader);
+  --color-red-300: var(--color-accent-video-bg);
+  --color-canvas: var(--color-canvas);
+  --color-neutral-800: var(--color-text-main);
+  --color-black: var(--color-border-main);
+}
+
+:root {
+  --nav-menu-width: 240px;
+  --color-canvas: #f5deb2;
+  --color-accent-brand: #ff365e;
+  --color-accent-loader: #ff6b8b;
+  --color-accent-video-bg: #ffb3c1;
+  --color-text-main: #141414;
+  --color-border-main: #000000;
+
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: var(--color-text-main);
+  background-color: var(--color-canvas);
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom Scrollbar Styles (Zine Aesthetic) */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-canvas);
+  border-left: 2px solid var(--color-border-main);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-border-main);
+  border: 2px solid var(--color-canvas);
+  border-radius: 0px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-accent-brand);
+}
+
+/* Firefox scrollbar compatibility */
+html {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border-main) var(--color-canvas);
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+/* Push-drawer layout: page content shifts left when nav menu opens */
+.App {
+  transition: margin-right 0.45s cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+body.nav-menu-open .App {
+  margin-right: var(--nav-menu-width);
+}
+
+/* Navbar push-drawer: shift center and clamp width (!important overrides GSAP inline styles) */
+.navbar-main {
+  transition: left 0.45s cubic-bezier(0.77, 0, 0.175, 1), max-width 0.45s cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+body.nav-menu-open .navbar-main {
+  left: calc(50% - var(--nav-menu-width) / 2) !important;
+  max-width: calc(100% - var(--nav-menu-width)) !important;
+}
+
+@keyframes colorWave {
+  0%,
+  100% {
+    color: #ffffff;
+  }
+  20% {
+    color: #3c3c3c;
+  }
+}
+
+.wave-letter {
+  display: inline-block;
+  animation: colorWave 3s infinite;
+}
+
+.hero-text {
+  color: #959595 !important;
+  mix-blend-mode: difference !important;
+  text-shadow: 0 0 16px rgba(0,0,0,0.5) !important;
+  pointer-events: none !important;
+}
+
+@keyframes floatY {
+  0%, 100% {
+    transform: translateY(-10px);
+  }
+  50% {
+    transform: translateY(10px);
+  }
+}
+
+.animate-float-y {
+  animation: floatY 6s ease-in-out infinite;
+}
+
+.bg-canvas {
+  background-color: var(--color-canvas);
+  background-image: 
+    radial-gradient(var(--dot-color, rgba(0,0,0,0.03)) 1px, transparent 0),
+    radial-gradient(var(--dot-color, rgba(0,0,0,0.03)) 1px, transparent 0);
+  background-size: 12px 12px;
+  background-position: 0 0, 6px 6px;
+  position: relative;
+  isolation: isolate;
+}
+
+.bg-canvas::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: 
+    linear-gradient(var(--texture-color, rgba(255, 255, 255, 0.15)) 50%, transparent 50%),
+    linear-gradient(90deg, var(--texture-color, rgba(255, 255, 255, 0.15)) 50%, transparent 50%);
+  background-size: 4px 4px;
+  opacity: 0.8;
+}
+
+.bg-canvas .wave-letter {
+  animation: colorWaveCanvas 3s infinite;
+}
+
+@keyframes colorWaveCanvas {
+  0%,
+  100% {
+    color: #111111;
+  }
+  20% {
+    color: #dc2626;
+  }
+}
+
+.bg-black-textured {
+  background-color: #111111;
+  background-image: repeating-linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 0.006) 0px,
+    rgba(255, 255, 255, 0.006) 1px,
+    transparent 1px,
+    transparent 4px
+  );
+}
+
+.theme-pill-container {
+  --btn-size: 14px;
+  --btn-margin: 2px;
+}
+@media (min-width: 640px) {
+  .theme-pill-container {
+    --btn-size: 18px;
+    --btn-margin: 3px;
+  }
+}

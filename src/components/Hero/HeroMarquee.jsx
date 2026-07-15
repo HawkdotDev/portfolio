@@ -7,52 +7,10 @@ import {
   useMotionValue,
   useVelocity,
   useAnimationFrame,
-} from "framer-motion";
-
-// utility hooks
-const useElementWidth = (ref) => {
-  const [width, setWidth] = useState(0);
-  useLayoutEffect(() => {
-    if (!ref.current) return;
-    
-    const updateWidth = () => setWidth(ref.current.offsetWidth);
-    const observer = new ResizeObserver(updateWidth);
-    observer.observe(ref.current);
-    updateWidth();
-    
-    return () => observer.disconnect();
-  }, [ref]);
-  return width;
-};
-
-const useScreenWidth = () => {
-  const [width, setWidth] = useState(() => 
-    typeof window !== 'undefined' ? window.innerWidth : 0
-  );
-  
-  useLayoutEffect(() => {
-    const updateWidth = () => setWidth(window.innerWidth);
-    window.addEventListener("resize", updateWidth);
-    return () => window.removeEventListener("resize", updateWidth);
-  }, []);
-  
-  return width;
-};
-
-const useContainerHeight = (ref) => {
-  const [height, setHeight] = useState(0);
-  useLayoutEffect(() => {
-    if (!ref.current) return;
-    
-    const updateHeight = () => setHeight(ref.current.offsetHeight);
-    const observer = new ResizeObserver(updateHeight);
-    observer.observe(ref.current);
-    updateHeight();
-    
-    return () => observer.disconnect();
-  }, [ref]);
-  return height;
-};
+} from "motion/react";
+import { useElementWidth } from "../../hooks/useElementWidth";
+import { useScreenWidth } from "../../hooks/useScreenWidth";
+import { useContainerHeight } from "../../hooks/useContainerHeight";
 
 // font size calculation
 const calculateFontSize = (height, screenWidth) => {
@@ -164,7 +122,8 @@ const HeroMarquee = ({
   className = "",
   damping = 50,
   stiffness = 400,
-  velocityMapping = { input: [0, 1000], output: [0, 5] }
+  velocityMapping = { input: [0, 1000], output: [0, 5] },
+  marqueeTextClassName = "text-white/10"
 }) => {
   const containerRef = useRef(null);
   const screenWidth = useScreenWidth();
@@ -182,7 +141,7 @@ const HeroMarquee = ({
       <VelocityText
         baseVelocity={baseVelocity}
         scrollContainerRef={scrollContainerRef}
-        className="text-white/10"
+        className={marqueeTextClassName}
         damping={damping}
         stiffness={stiffness}
         numCopies={numCopies}

@@ -1,4 +1,4 @@
-import { useRef, useLayoutEffect, useState } from "react";
+import { useRef } from "react";
 import {
   motion,
   useScroll,
@@ -8,34 +8,8 @@ import {
   useVelocity,
   useAnimationFrame,
 } from "motion/react";
-
-function useElementWidth(ref) {
-  const [width, setWidth] = useState(0);
-  useLayoutEffect(() => {
-    function updateWidth() {
-      if (ref.current) {
-        setWidth(ref.current.offsetWidth);
-      }
-    }
-    updateWidth();
-    window.addEventListener("resize", updateWidth);
-    return () => window.removeEventListener("resize", updateWidth);
-  }, [ref]);
-  return width;
-}
-
-function useScreenWidth() {
-  const [width, setWidth] = useState(0);
-  useLayoutEffect(() => {
-    function updateWidth() {
-      setWidth(window.innerWidth);
-    }
-    updateWidth();
-    window.addEventListener("resize", updateWidth);
-    return () => window.removeEventListener("resize", updateWidth);
-  }, []);
-  return width;
-}
+import { useElementWidth } from "../hooks/useElementWidth";
+import { useScreenWidth } from "../hooks/useScreenWidth";
 
 export const ScrollMarquee = ({
   numRows = 1,

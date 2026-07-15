@@ -1,0 +1,43 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/Navbar/Navbar.jsx';
+import Hero from '../components/Hero/Hero.jsx';
+import ScrollMarquee from '../components/ScrollMarquee.jsx';
+import MeSection from '../components/MeSection.jsx';
+import Footer from '../components/Footer.jsx';
+import '../styles/global.css';
+---
+
+<Layout title="Dwaipayan Dutta | Software Engineer & Creative Developer">
+  <div class="App">
+    <Navbar client:load />
+
+    {/* Hero section */}
+    <div class="min-h-screen w-full relative">
+      <Hero client:load />
+    </div>
+
+    {/* Dedicated ME Section */}
+    <MeSection client:load />
+
+    {/* Scroll Marquee section */}
+    <div class="py-16 md:py-32 w-full bg-black overflow-hidden">
+      <ScrollMarquee
+        client:load
+        numRows={2}
+        rowTexts={[
+          ["Design", "Code", "Storytelling", "Dwaipayan Dutta"],
+          ["React", "GSAP", "Tailwind", "Framer Motion"],
+        ]}
+        speedMultiplier={0.25}
+      />
+    </div>
+
+    <Footer client:load />
+  </div>
+</Layout>
+
+<script>
+  import LocomotiveScroll from 'locomotive-scroll';
+  const locomotiveScroll = new LocomotiveScroll();
+</script>

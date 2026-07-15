@@ -1,0 +1,125 @@
+---
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  url?: string;
+}
+
+const {
+  title = "Dwaipayan Dutta | Software Engineer & Creative Developer",
+  description = "Software engineer specializing in high-performance web applications, robust logic, and cutting-edge digital experiences.",
+  image = "/icons8.png", // OG Image default
+  url = "https://hawkdot.dev" // Default canonical URL
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="/icons8.png" />
+    
+    <!-- Primary Meta Tags -->
+    <title>{title}</title>
+    <meta name="title" content={title} />
+    <meta name="description" content={description} />
+    <meta name="author" content="Dwaipayan Dutta" />
+    <link rel="canonical" href={url} />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={url} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={image} />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content={url} />
+    <meta property="twitter:title" content={title} />
+    <meta property="twitter:description" content={description} />
+    <meta property="twitter:image" content={image} />
+
+    <!-- Structured Data (JSON-LD Schema) for SEO -->
+    <script type="application/ld+json" is:inline>
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Dwaipayan Dutta",
+        "jobTitle": "Software Engineer",
+        "url": "https://hawkdot.dev",
+        "sameAs": [
+          "https://github.com/hawkdot",
+          "https://linkedin.com/in/dwaipayan-dutta"
+        ],
+        "description": "Software engineer specializing in high-performance web applications, robust logic, and cutting-edge digital experiences."
+      }
+    </script>
+
+    <!-- FOUC Prevention: Load saved theme parameters instantly before painting layout -->
+    <script is:inline>
+      (function () {
+        const savedTheme = localStorage.getItem("selected-portfolio-theme");
+        const isDark = localStorage.getItem("portfolio-dark-mode") === "true";
+        
+        const THEMES = {
+          "wheat-rose": {
+            canvas: "#f5deb2", brand: "#ff365e", loader: "#ff6b8b", videoBg: "#ffb3c1", text: "#141414", border: "#000000", blend: "multiply",
+            dark: { canvas: "#1c0d12", brand: "#ff365e", loader: "#ff6b8b", videoBg: "#30121d", text: "#fecdd3", border: "#5c1d31", blend: "screen" }
+          },
+          "sage-red": {
+            canvas: "#7ea366", brand: "#dc2626", loader: "#f87171", videoBg: "#fca5a5", text: "#141414", border: "#000000", blend: "multiply",
+            dark: { canvas: "#0f1a14", brand: "#ff4d4d", loader: "#ff8080", videoBg: "#1b2e23", text: "#d1e7dd", border: "#2a4836", blend: "screen" }
+          },
+          "matcha": {
+            canvas: "#faf6ee", brand: "#7da852", loader: "#93c468", videoBg: "#e8f2df", text: "#141414", border: "#000000", blend: "multiply",
+            dark: { canvas: "#0a0d08", brand: "#7da852", loader: "#9ad46a", videoBg: "#182412", text: "#dcedc8", border: "#334d20", blend: "screen" }
+          },
+          "Bold Red": {
+            canvas: "#7da852", brand: "#d90429", loader: "#ef233c", videoBg: "#b9d79b", text: "#141414", border: "#000000", blend: "multiply",
+            dark: { canvas: "#0f0f10", brand: "#ff3b30", loader: "#ff7d75", videoBg: "#1e1e21", text: "#f4f4f5", border: "#3f3f46", blend: "screen" }
+          },
+          "kraft-orange": {
+            canvas: "#e6d5bc", brand: "#d95d16", loader: "#f28546", videoBg: "#f7cbb2", text: "#241812", border: "#1c120c", blend: "multiply",
+            dark: { canvas: "#1a120b", brand: "#f97316", loader: "#fb923c", videoBg: "#2d1e12", text: "#ffedd5", border: "#543b23", blend: "screen" }
+          },
+          "mono-chrome": {
+            canvas: "#e5e7eb", brand: "#111827", loader: "#4b5563", videoBg: "#9ca3af", text: "#1f2937", border: "#111827", blend: "multiply",
+            dark: { canvas: "#111111", brand: "#ffffff", loader: "#a3a3a3", videoBg: "#262626", text: "#e5e5e5", border: "#404040", blend: "screen" }
+          }
+        };
+
+        const theme = THEMES[savedTheme] || THEMES["wheat-rose"];
+        const root = document.documentElement;
+        
+        if (isDark && theme.dark) {
+          const d = theme.dark;
+          root.style.setProperty("--color-canvas", d.canvas);
+          root.style.setProperty("--color-accent-brand", d.brand);
+          root.style.setProperty("--color-accent-loader", d.loader);
+          root.style.setProperty("--color-accent-video-bg", d.videoBg);
+          root.style.setProperty("--color-text-main", d.text);
+          root.style.setProperty("--color-border-main", d.border);
+          root.style.setProperty("--image-blend-mode", d.blend || "screen");
+          root.style.setProperty("--dot-color", "rgba(255, 255, 255, 0.03)");
+          root.style.setProperty("--texture-color", "rgba(0, 0, 0, 0.25)");
+        } else {
+          root.style.setProperty("--color-canvas", theme.canvas);
+          root.style.setProperty("--color-accent-brand", theme.brand);
+          root.style.setProperty("--color-accent-loader", theme.loader);
+          root.style.setProperty("--color-accent-video-bg", theme.videoBg);
+          root.style.setProperty("--color-text-main", theme.text);
+          root.style.setProperty("--color-border-main", theme.border);
+          root.style.setProperty("--image-blend-mode", theme.blend || "multiply");
+          root.style.setProperty("--dot-color", "rgba(0, 0, 0, 0.03)");
+          root.style.setProperty("--texture-color", "rgba(255, 255, 255, 0.15)");
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>
