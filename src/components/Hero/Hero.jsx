@@ -64,7 +64,7 @@ const Hero = () => {
         }
       `}</style>
       {/* Top Banner: Reusing the existing HeroMarquee but with red text styling */}
-      <div className="w-full h-[15vh] overflow-hidden flex items-center justify-center flex-shrink-0">
+      <div className="w-full h-[15vh] overflow-hidden flex items-center justify-center shrink-0">
         <HeroMarquee 
           texts={["DEVELOPER", "ENGINEER", "CREATIVE", "SYSTEMS", "COMPILER", "ARCHITECTURE", "FULLSTACK"]}
           marqueeTextClassName="text-red-600/90 font-black tracking-tighter"
@@ -99,7 +99,7 @@ const Hero = () => {
         <div className="lg:col-span-2 flex flex-col gap-6 lg:gap-4 lg:h-full lg:min-h-0 overflow-visible lg:overflow-hidden">
           
           {/* Row 1: Exactly 3 panels (Flex-fills remaining height) */}
-          <div className="w-full h-[120px] sm:h-[150px] lg:flex-1 lg:min-h-0 p-0 overflow-hidden flex-shrink-0 lg:flex-shrink">
+          <div className="w-full h-[120px] sm:h-[150px] lg:flex-1 lg:min-h-0 p-0 overflow-hidden shrink-0 lg:shrink">
             {/* 3 Comic Panels side-by-side display cards */}
             <div className="grid grid-cols-3 gap-3 w-full h-full">
               {/* Panel 1 */}
@@ -169,9 +169,9 @@ const Hero = () => {
           </div>
 
           {/* Grouped Block: Row 2 and Quote to remove the space between them */}
-          <div className="flex flex-col gap-2 lg:gap-1.5 flex-shrink-0">
+          <div className="flex flex-col gap-2 lg:gap-1.5 shrink-0">
             {/* Row 2: Concept description block without black background/texture */}
-            <div className="flex flex-col gap-1.5 flex-shrink-0 h-auto lg:min-h-[94px] justify-center">
+            <div className="flex flex-col gap-1.5 shrink-0 h-auto lg:min-h-[94px] justify-center">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={activeIndex}
@@ -194,7 +194,7 @@ const Hero = () => {
             </div>
 
             {/* Serif Tagline Quote - styled with black texture, border, and white text */}
-            <div className="w-full bg-black-textured text-white p-2 border-2 border-black flex-shrink-0 min-h-[46px] flex items-center">
+            <div className="w-full bg-black-textured text-white p-2 border-2 border-black shrink-0 min-h-[46px] flex items-center">
               <AnimatePresence mode="wait">
                 <motion.p 
                   key={activeIndex}
