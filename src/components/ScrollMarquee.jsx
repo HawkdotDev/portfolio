@@ -115,7 +115,7 @@ export const ScrollMarquee = ({
         style={parallaxStyle}
       >
         <motion.div
-          className={`${scrollerClassName} flex whitespace-nowrap py-2 text-center font-grotesk text-4xl font-bold tracking-[-0.02em] drop-shadow md:text-[5rem] md:leading-20`}
+          className={`${scrollerClassName || 'py-2 font-grotesk text-4xl font-bold tracking-[-0.02em] drop-shadow md:text-[5rem] md:leading-20'} flex whitespace-nowrap text-center`}
           style={{ x, ...scrollerStyle }}
         >
           {spans}
