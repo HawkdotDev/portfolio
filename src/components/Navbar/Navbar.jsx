@@ -16,6 +16,7 @@ const applyThemeColors = (theme, isDark) => {
     root.style.setProperty("--color-accent-loader", d.loader);
     root.style.setProperty("--color-accent-video-bg", d.videoBg);
     root.style.setProperty("--color-accent-glow", d.glow || d.brand);
+    root.style.setProperty("--glow-shadow", `0 0 20px 2px ${d.glow || d.brand}`);
     root.style.setProperty("--color-text-main", d.text);
     root.style.setProperty("--color-border-main", d.border);
     root.style.setProperty("--image-blend-mode", d.blend || "screen");
@@ -27,6 +28,7 @@ const applyThemeColors = (theme, isDark) => {
     root.style.setProperty("--color-accent-loader", theme.loader);
     root.style.setProperty("--color-accent-video-bg", theme.videoBg);
     root.style.setProperty("--color-accent-glow", theme.glow || theme.brand);
+    root.style.setProperty("--glow-shadow", "6px 6px 0px 0px rgba(0, 0, 0, 1)");
     root.style.setProperty("--color-text-main", theme.text);
     root.style.setProperty("--color-border-main", theme.border);
     root.style.setProperty("--image-blend-mode", theme.blend || "multiply");
