@@ -1,22 +1,22 @@
 // src/data/themesData.js
 export const THEMES = [
   {
-    id: "wheat-rose",
-    name: "Wheat & Rose",
-    canvas: "#f5deb2",
-    brand: "#ff365e",
-    loader: "#ff6b8b",
-    videoBg: "#ffb3c1",
+    id: "cherry-blossom",
+    name: "Cherry Blossom",
+    canvas: "#fff2f5",
+    brand: "#ff5c8a",
+    loader: "#ff8da1",
+    videoBg: "#ffd3de",
     text: "#141414",
     border: "#000000",
     blend: "multiply",
     dark: {
-      canvas: "#1c0d12",
-      brand: "#ff365e",
-      loader: "#ff6b8b",
-      videoBg: "#30121d",
+      canvas: "#2d0b13",
+      brand: "#ff5c8a",
+      loader: "#ff8da1",
+      videoBg: "#4a1220",
       text: "#fecdd3",
-      border: "#5c1d31",
+      border: "#6b172a",
       blend: "screen"
     }
   },
