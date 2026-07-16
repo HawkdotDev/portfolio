@@ -16,7 +16,7 @@ const applyThemeColors = (theme, isDark) => {
     root.style.setProperty("--color-accent-loader", d.loader);
     root.style.setProperty("--color-accent-video-bg", d.videoBg);
     root.style.setProperty("--color-accent-glow", d.glow || d.brand);
-    root.style.setProperty("--glow-shadow", `0 0 20px 2px ${d.glow || d.brand}`);
+    root.style.setProperty("--glow-shadow", `6px 6px 16px 0px ${d.glow || d.brand}`);
     root.style.setProperty("--color-text-main", d.text);
     root.style.setProperty("--color-border-main", d.border);
     root.style.setProperty("--image-blend-mode", d.blend || "screen");
