@@ -70,7 +70,7 @@ const THEMES = [
   {
     id: "Bold Red",
     name: "Bold Red",
-    canvas: "#fff5f5",
+    canvas: "#faf9f6",
     brand: "#d90429",
     loader: "#ef233c",
     videoBg: "#ffccd5",
