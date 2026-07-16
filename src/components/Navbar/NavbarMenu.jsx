@@ -49,7 +49,7 @@ const NavbarMenu = forwardRef(({ isOpen }, ref) => {
     >
       {/* Top section: Copy of ME Red Square and Image */}
       <div className="mt-10 mb-6 flex justify-center">
-        <div className="w-full aspect-square bg-red-600 border-2 border-black relative rounded-sm shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] glow overflow-visible shrink-0">
+        <div className="w-full aspect-square bg-red-600 border-2 border-black relative rounded-sm glow overflow-visible shrink-0">
           <img
             src="/avatar.png"
             alt="My Avatar"

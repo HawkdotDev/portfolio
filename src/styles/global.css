@@ -190,10 +190,11 @@ body.nav-menu-open .navbar-main {
   }
 }
 
-/* Ambient glow matching theme accent color in dark mode, normal block shadow in light mode */
+/* .glow: solid block shadow in light mode, ambient neon glow in dark mode */
 .glow {
+  box-shadow: 6px 6px 0px 0px rgba(0, 0, 0, 1);
   transition: box-shadow 0.4s ease;
 }
 .dark .glow {
-  box-shadow: 0 0 20px 2px var(--color-accent-glow) !important;
+  box-shadow: 0 0 20px 2px var(--color-accent-glow);
 }
