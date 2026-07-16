@@ -12,6 +12,7 @@
   --color-canvas: var(--color-canvas);
   --color-neutral-800: var(--color-text-main);
   --color-black: var(--color-border-main);
+  --color-glow-light: var(--color-accent-glow);
 }
 
 :root {
@@ -20,6 +21,7 @@
   --color-accent-brand: #ff365e;
   --color-accent-loader: #ff6b8b;
   --color-accent-video-bg: #ffb3c1;
+  --color-accent-glow: #ffb3c1;
   --color-text-main: #141414;
   --color-border-main: #000000;
 
@@ -186,4 +188,12 @@ body.nav-menu-open .navbar-main {
     --btn-size: 18px;
     --btn-margin: 3px;
   }
+}
+
+/* Ambient glow representing night lights in dark mode */
+.night-lights {
+  transition: box-shadow 0.4s ease;
+}
+.dark .night-lights {
+  box-shadow: 0 0 20px 2px var(--color-accent-glow) !important;
 }

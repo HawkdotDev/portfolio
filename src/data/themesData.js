@@ -3,21 +3,23 @@ export const THEMES = [
   {
     id: "cherry-blossom",
     name: "Cherry Blossom",
-    canvas: "#fff2f5",
+    canvas: "#F6E2BB",
     brand: "#ff5c8a",
     loader: "#ff8da1",
     videoBg: "#ffd3de",
     text: "#141414",
     border: "#000000",
     blend: "multiply",
+    glow: "#ffb3c1",
     dark: {
-      canvas: "#2d0b13",
+      canvas: "#0b1321",
       brand: "#ff5c8a",
       loader: "#ff8da1",
       videoBg: "#4a1220",
-      text: "#fecdd3",
-      border: "#6b172a",
-      blend: "screen"
+      text: "#EBEBEB",
+      border: "#fcbf17",
+      blend: "screen",
+      glow: "#ff5c8a"
     }
   },
   {
@@ -30,6 +32,7 @@ export const THEMES = [
     text: "#141414",
     border: "#000000",
     blend: "multiply",
+    glow: "#f87171",
     dark: {
       canvas: "#0f1a14",
       brand: "#ff4d4d",
@@ -37,7 +40,8 @@ export const THEMES = [
       videoBg: "#1b2e23",
       text: "#d1e7dd",
       border: "#2a4836",
-      blend: "screen"
+      blend: "screen",
+      glow: "#ff4d4d"
     }
   },
   {
@@ -50,6 +54,7 @@ export const THEMES = [
     text: "#141414",
     border: "#000000",
     blend: "multiply",
+    glow: "#93c468",
     dark: {
       canvas: "#0a0d08",
       brand: "#7da852",
@@ -57,7 +62,8 @@ export const THEMES = [
       videoBg: "#182412",
       text: "#dcedc8",
       border: "#334d20",
-      blend: "screen"
+      blend: "screen",
+      glow: "#7da852"
     }
   },
   {
@@ -70,6 +76,7 @@ export const THEMES = [
     text: "#141414",
     border: "#000000",
     blend: "multiply",
+    glow: "#ef233c",
     dark: {
       canvas: "#0f0f10",
       brand: "#ff3b30",
@@ -77,7 +84,8 @@ export const THEMES = [
       videoBg: "#1e1e21",
       text: "#f4f4f5",
       border: "#3f3f46",
-      blend: "screen"
+      blend: "screen",
+      glow: "#ff3b30"
     }
   },
   {
@@ -90,6 +98,7 @@ export const THEMES = [
     text: "#241812",
     border: "#1c120c",
     blend: "multiply",
+    glow: "#f28546",
     dark: {
       canvas: "#1a120b",
       brand: "#f97316",
@@ -97,7 +106,8 @@ export const THEMES = [
       videoBg: "#2d1e12",
       text: "#ffedd5",
       border: "#543b23",
-      blend: "screen"
+      blend: "screen",
+      glow: "#f97316"
     }
   },
   {
@@ -110,6 +120,7 @@ export const THEMES = [
     text: "#1f2937",
     border: "#111827",
     blend: "multiply",
+    glow: "#9ca3af",
     dark: {
       canvas: "#111111",
       brand: "#ffffff",
@@ -117,7 +128,8 @@ export const THEMES = [
       videoBg: "#262626",
       text: "#e5e5e5",
       border: "#404040",
-      blend: "screen"
+      blend: "screen",
+      glow: "#ffffff"
     }
   }
 ];

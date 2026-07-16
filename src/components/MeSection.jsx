@@ -14,7 +14,7 @@ const MeSection = () => {
       <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-8 items-stretch relative z-10">
         {/* Left Side: Dynamic Avatar Card (Col span 4) */}
         <div className="md:col-span-4 flex justify-center md:justify-start">
-          <div className="w-[240px] xs:w-[280px] md:w-full aspect-4/5 bg-red-600 border-2 border-black relative rounded-sm shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] overflow-visible shrink-0">
+          <div className="w-[240px] xs:w-[280px] md:w-full aspect-4/5 bg-red-600 border-2 border-black relative rounded-sm shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] night-lights overflow-visible shrink-0">
             <img
               src="/avatar.png"
               alt="My Avatar"
