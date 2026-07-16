@@ -185,7 +185,7 @@ const Hero = () => {
                     {HERO_DATA[activeIndex].heading}
                   </h4>
                   <div className="font-grotesk text-[10px] md:text-xs tracking-wider leading-relaxed text-black">
-                    <div className="uppercase text-neutral-800 w-full text-justify line-clamp-4">
+                    <div className="uppercase text-neutral-800 w-full text-justify">
                       {HERO_DATA[activeIndex].description}
                     </div>
                   </div>
