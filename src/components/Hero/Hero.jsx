@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import HeroMarquee from "./HeroMarquee";
-
+import { ScrollMarquee } from "../ScrollMarquee";
 // Stable black-and-white sketch URLs from the original portfolio configuration
 const MAIN_SKETCH_URL = "https://i.pinimg.com/originals/e5/d7/ff/e5d7ff58b1161a050f406249d5b1fad8.jpg";
 const PANEL_1_URL = "https://i.pinimg.com/originals/0d/15/eb/0d15ebece691ca06a43463b4626e2f2c.jpg";
@@ -218,9 +218,10 @@ const Hero = () => {
           {/* Row 3: Decorative Zine Rectangle */}
           <div className="flex gap-4 items-stretch h-[160px] sm:h-[180px] lg:h-[38%] min-h-0 p-0 overflow-hidden shrink-0 lg:shrink">
             <div className="w-full border-2 border-black relative rounded-sm h-full glow bg-neutral-800/5 backdrop-blur-sm overflow-hidden flex items-center justify-center p-0 box-border">
-              <HeroMarquee 
-                texts={["CREATING", "SCALABLE", "FUTURES"]}
-                marqueeTextClassName="text-neutral-800 dark:text-neutral-200 font-black tracking-tighter opacity-80"
+              <ScrollMarquee 
+                numRows={1}
+                rowTexts={[["CREATING", "SCALABLE", "FUTURES"]]}
+                className="text-neutral-800 dark:text-neutral-200 font-black tracking-tighter opacity-80 text-4xl sm:text-5xl"
                 speedMultiplier={0.3}
               />
             </div>
