@@ -216,13 +216,13 @@ const Hero = () => {
 
           {/* Row 3: ME + Description + Buttons (Fitted to 38% height, borderless, transparent parent) */}
           {/* Row 3: Decorative Zine Rectangle */}
-          <div className="flex gap-4 items-stretch min-h-0 p-0 overflow-hidden shrink-0 lg:shrink">
+          <div className="flex gap-4 items-stretch min-h-0 p-0 overflow-hidden shrink-0">
             <div className="w-full border-2 border-black relative rounded-sm glow bg-neutral-800/5 backdrop-blur-sm overflow-hidden flex items-center justify-center p-0 box-border">
               <ScrollMarquee 
                 numRows={1}
                 rowTexts={[["CREATING", "SCALABLE", "FUTURES"]]}
                 className="text-neutral-800 dark:text-neutral-200 font-black tracking-tighter opacity-80 text-4xl sm:text-5xl"
-                scrollerClassName="py-0 leading-none"
+                scrollerClassName="py-1"
                 speedMultiplier={0.3}
               />
             </div>
