@@ -77,12 +77,12 @@ const NavbarMenu = forwardRef(({ isOpen }, ref) => {
 
       {/* Bottom section: Footer Branding */}
       <div className="flex flex-col gap-1.5 border-t border-black/10 pt-4">
-        <span className="text-[9px] text-neutral-500 uppercase tracking-widest font-bold">
+        {/* <span className="text-[9px] text-neutral-500 uppercase tracking-widest font-bold">
           DWAIPAYAN DUTTA.
         </span>
         <span className="text-[9px] text-neutral-400 uppercase tracking-wider">
           © {new Date().getFullYear()} ALL RIGHTS RESERVED
-        </span>
+        </span> */}
 
         {/* Social Icons under the divider */}
         <div className="flex gap-4 items-center mt-3 text-base text-neutral-600">
