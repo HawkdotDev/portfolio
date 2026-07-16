@@ -80,15 +80,11 @@ body.nav-menu-open .App {
 /* Navbar push-drawer: shift center and clamp width (!important overrides GSAP inline styles) */
 .navbar-main {
   transition: left 0.45s cubic-bezier(0.77, 0, 0.175, 1), max-width 0.45s cubic-bezier(0.77, 0, 0.175, 1);
-}
-
-/* Targeted mix-blend-mode difference elements (brand text, buttons) */
-.navbar-blend-element {
   mix-blend-mode: difference;
-  color: #ffffff !important;
 }
 
-.navbar-blend-element * {
+.navbar-main,
+.navbar-main * {
   color: #ffffff !important;
 }
 
