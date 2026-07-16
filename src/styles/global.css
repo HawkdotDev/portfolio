@@ -16,7 +16,7 @@
 }
 
 :root {
-  --nav-menu-width: min(15vw, 288px);
+  --nav-menu-width: 240px;
   --color-canvas: #f5deb2;
   --color-accent-brand: #ff365e;
   --color-accent-loader: #ff6b8b;

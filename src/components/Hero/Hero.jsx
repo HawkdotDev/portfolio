@@ -217,29 +217,12 @@ const Hero = () => {
           {/* Row 3: ME + Description + Buttons (Fitted to 38% height, borderless, transparent parent) */}
           {/* Row 3: Decorative Zine Rectangle */}
           <div className="flex gap-4 items-stretch h-[160px] sm:h-[180px] lg:h-[38%] min-h-0 p-0 overflow-hidden shrink-0 lg:shrink">
-            <div className="w-full border-2 border-black relative rounded-sm h-full glow bg-neutral-800/5 backdrop-blur-sm overflow-hidden flex flex-col justify-between p-4 box-border">
-              {/* Graphic halftone accent line */}
-              <div 
-                className="absolute inset-y-0 right-0 w-1/3 opacity-15 pointer-events-none z-0"
-                style={{
-                  backgroundImage: "radial-gradient(var(--color-accent-brand) 1.5px, transparent 1.5px)",
-                  backgroundSize: "8px 8px"
-                }}
+            <div className="w-full border-2 border-black relative rounded-sm h-full glow bg-neutral-800/5 backdrop-blur-sm overflow-hidden flex items-center justify-center p-0 box-border">
+              <HeroMarquee 
+                texts={["CREATING", "SCALABLE", "FUTURES"]}
+                marqueeTextClassName="text-neutral-800 dark:text-neutral-200 font-black tracking-tighter opacity-80"
+                speedMultiplier={0.3}
               />
-              <div className="flex flex-col gap-1 relative z-10">
-                <span className="text-[10px] text-red-600 font-bold tracking-widest uppercase">[ COMPILER & FULLSTACK ]</span>
-                <h4 className="font-anton text-2.5xl sm:text-3.5xl text-neutral-800 leading-none tracking-tight uppercase">
-                  Dwaipayan Dutta<span className="text-red-600">.</span>
-                </h4>
-              </div>
-              <div className="flex justify-between items-end relative z-10">
-                <span className="font-grotesk text-[10px] text-neutral-600 tracking-wider uppercase font-bold">
-                  CREATING SCALABLE FUTURES
-                </span>
-                <span className="font-grotesk text-[10px] text-red-600 font-bold animate-pulse">
-                  [ RUNNING DEV ]
-                </span>
-              </div>
             </div>
           </div>
 
