@@ -35,7 +35,7 @@ const NavbarMenu = forwardRef(({ isOpen }, ref) => {
         padding: "24px",
         boxSizing: "border-box",
         userSelect: "none",
-        boxShadow: isOpen ? "-4px 0px 0px 0px rgba(0,0,0,1)" : "none",
+        boxShadow: isOpen ? "-4px 0px 0px 0px var(--color-accent-glow)" : "none",
         borderLeft: "2px solid black",
         transform: isOpen ? "translateX(0%)" : "translateX(105%)",
         transition: "transform 0.45s cubic-bezier(0.77, 0, 0.175, 1), opacity 0.45s ease, visibility 0.45s ease",
@@ -49,7 +49,7 @@ const NavbarMenu = forwardRef(({ isOpen }, ref) => {
     >
       {/* Top section: Copy of ME Red Square and Image */}
       <div className="mt-10 mb-6 flex justify-center">
-        <div className="w-full aspect-square bg-red-600 border-2 border-black relative rounded-sm shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] night-lights overflow-visible shrink-0">
+        <div className="w-full aspect-square bg-red-600 border-2 border-black relative rounded-sm shadow-[6px_6px_0px_0px_var(--color-accent-glow)] night-lights overflow-visible shrink-0">
           <img
             src="/avatar.png"
             alt="My Avatar"
