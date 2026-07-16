@@ -9,7 +9,7 @@ const NavbarHamburger = React.forwardRef(({ onClick, onMouseEnter, onMouseLeave,
     >
       <button
         ref={buttonRef}
-        className="z-100 text-neutral-800 pl-1 pr-0 py-1 rounded-full transition-colors relative cursor-pointer"
+        className="hamburger-toggle-btn z-100 text-neutral-800 pl-1 pr-0 py-1 rounded-full transition-colors relative cursor-pointer"
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
       >

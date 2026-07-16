@@ -212,11 +212,11 @@ const Hero = () => {
           </div>
 
           {/* Black Divider before ME section */}
-          <div className="h-[1.35px] bg-black w-full flex-shrink-0" />
+          <div className="h-[1.35px] bg-black w-full shrink-0" />
 
           {/* Row 3: ME + Description + Buttons (Fitted to 38% height, borderless, transparent parent) */}
           {/* Row 3: Decorative Zine Rectangle */}
-          <div className="flex gap-4 items-stretch h-[160px] sm:h-[180px] lg:h-[38%] min-h-0 p-0 overflow-hidden flex-shrink-0 lg:flex-shrink">
+          <div className="flex gap-4 items-stretch h-[160px] sm:h-[180px] lg:h-[38%] min-h-0 p-0 overflow-hidden shrink-0 lg:shrink">
             <div className="w-full border-2 border-black relative rounded-sm h-full shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] bg-neutral-800/5 backdrop-blur-sm overflow-hidden flex flex-col justify-between p-4 box-border">
               {/* Graphic halftone accent line */}
               <div 
