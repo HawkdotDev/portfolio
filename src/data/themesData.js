@@ -17,9 +17,9 @@ export const THEMES = [
       loader: "#ff8da1",
       videoBg: "#4a1220",
       text: "#EBEBEB",
-      border: "#61542f",
+      border: "#403b2d",
       blend: "screen",
-      glow: "#ff5c8a"
+      glow: "#f0bd32"
     }
   },
   {
