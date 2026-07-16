@@ -17,7 +17,7 @@ export const THEMES = [
       loader: "#ff8da1",
       videoBg: "#4a1220",
       text: "#EBEBEB",
-      border: "#403b2d",
+      border: "#57544b",
       blend: "screen",
       glow: "#f0bd32"
     }

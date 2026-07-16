@@ -75,22 +75,6 @@ const NavbarMenu = forwardRef(({ isOpen }, ref) => {
         ))}
       </nav>
 
-      {/* Social Icons just before the divider */}
-      <div className="flex gap-4 items-center mb-2 mt-4 text-base text-neutral-600">
-        <a href="https://github.com/" target="_blank" rel="noopener noreferrer" className="hover:text-red-600 transition-colors" aria-label="GitHub">
-          <FaGithub />
-        </a>
-        <a href="https://linkedin.com/" target="_blank" rel="noopener noreferrer" className="hover:text-red-600 transition-colors" aria-label="LinkedIn">
-          <FaLinkedin />
-        </a>
-        <a href="https://twitter.com/" target="_blank" rel="noopener noreferrer" className="hover:text-red-600 transition-colors" aria-label="Twitter">
-          <FaTwitter />
-        </a>
-        <a href="https://instagram.com/" target="_blank" rel="noopener noreferrer" className="hover:text-red-600 transition-colors" aria-label="Instagram">
-          <FaInstagram />
-        </a>
-      </div>
-
       {/* Bottom section: Footer Branding */}
       <div className="flex flex-col gap-1.5 border-t border-black/10 pt-4">
         <span className="text-[9px] text-neutral-500 uppercase tracking-widest font-bold">
@@ -99,6 +83,22 @@ const NavbarMenu = forwardRef(({ isOpen }, ref) => {
         <span className="text-[9px] text-neutral-400 uppercase tracking-wider">
           © {new Date().getFullYear()} ALL RIGHTS RESERVED
         </span>
+
+        {/* Social Icons under the divider */}
+        <div className="flex gap-4 items-center mt-3 text-base text-neutral-600">
+          <a href="https://github.com/" target="_blank" rel="noopener noreferrer" className="hover:text-red-600 transition-colors" aria-label="GitHub">
+            <FaGithub />
+          </a>
+          <a href="https://linkedin.com/" target="_blank" rel="noopener noreferrer" className="hover:text-red-600 transition-colors" aria-label="LinkedIn">
+            <FaLinkedin />
+          </a>
+          <a href="https://twitter.com/" target="_blank" rel="noopener noreferrer" className="hover:text-red-600 transition-colors" aria-label="Twitter">
+            <FaTwitter />
+          </a>
+          <a href="https://instagram.com/" target="_blank" rel="noopener noreferrer" className="hover:text-red-600 transition-colors" aria-label="Instagram">
+            <FaInstagram />
+          </a>
+        </div>
       </div>
     </div>
   );
