@@ -1,8 +1,14 @@
 import React from 'react';
+import SketchyBorder from './SketchyBorder';
 
 const MeSection = () => {
   return (
-    <section id="about" className="w-full bg-canvas text-black border-t-2 border-black py-16 px-4 md:px-6 relative box-border overflow-hidden select-none">
+    <section id="about" className="w-full bg-canvas text-black py-16 px-4 md:px-6 relative box-border overflow-hidden select-none">
+      {/* Horizontal wobbly sketch border at the top */}
+      <svg className="absolute top-0 left-0 w-full h-[10px] pointer-events-none text-[var(--color-border-main)]" preserveAspectRatio="none" viewBox="0 0 100 10">
+        <path d="M -1,5 C 30,3 70,7 101,5" stroke="currentColor" strokeWidth="2" fill="none" vectorEffect="non-scaling-stroke" />
+        <path d="M -1,7 C 25,8 75,5 101,9" stroke="currentColor" strokeWidth="1" opacity="0.6" fill="none" vectorEffect="non-scaling-stroke" />
+      </svg>
       {/* Decorative dot-grid texture on the side */}
       <div 
         className="absolute right-0 top-0 bottom-0 w-32 opacity-15 pointer-events-none z-0"
@@ -14,7 +20,8 @@ const MeSection = () => {
       <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-8 items-stretch relative z-10">
         {/* Left Side: Dynamic Avatar Card (Col span 4) */}
         <div className="md:col-span-4 flex justify-center md:justify-start">
-          <div className="w-[240px] xs:w-[280px] md:w-full aspect-4/5 bg-red-600 border-2 border-black relative rounded-sm glow overflow-visible shrink-0">
+          <div className="w-[240px] xs:w-[280px] md:w-full aspect-4/5 bg-red-600 relative rounded-sm glow overflow-visible shrink-0">
+            <SketchyBorder isImage={true} />
             <img
               src="/avatar.png"
               alt="My Avatar"
@@ -41,19 +48,23 @@ const MeSection = () => {
 
           {/* Quick Tech Badges Grid */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-2">
-            <div className="border border-black p-3 bg-neutral-50/50 backdrop-blur-sm rounded-sm">
+            <div className="relative p-3 bg-neutral-50/50 backdrop-blur-sm rounded-sm">
+              <SketchyBorder />
               <span className="block text-[10px] text-red-600 font-bold tracking-wider uppercase mb-1">01 / ENG</span>
               <span className="font-bold text-xs sm:text-sm text-black">Robust Logic</span>
             </div>
-            <div className="border border-black p-3 bg-neutral-50/50 backdrop-blur-sm rounded-sm">
+            <div className="relative p-3 bg-neutral-50/50 backdrop-blur-sm rounded-sm">
+              <SketchyBorder />
               <span className="block text-[10px] text-red-600 font-bold tracking-wider uppercase mb-1">02 / OPS</span>
               <span className="font-bold text-xs sm:text-sm text-black">Scalable Systems</span>
             </div>
-            <div className="border border-black p-3 bg-neutral-50/50 backdrop-blur-sm rounded-sm">
+            <div className="relative p-3 bg-neutral-50/50 backdrop-blur-sm rounded-sm">
+              <SketchyBorder />
               <span className="block text-[10px] text-red-600 font-bold tracking-wider uppercase mb-1">03 / DEV</span>
               <span className="font-bold text-xs sm:text-sm text-black">Modern Stack</span>
             </div>
-            <div className="border border-black p-3 bg-neutral-50/50 backdrop-blur-sm rounded-sm">
+            <div className="relative p-3 bg-neutral-50/50 backdrop-blur-sm rounded-sm">
+              <SketchyBorder />
               <span className="block text-[10px] text-red-600 font-bold tracking-wider uppercase mb-1">04 / DES</span>
               <span className="font-bold text-xs sm:text-sm text-black">Clean Visuals</span>
             </div>

@@ -13,7 +13,7 @@ import '../styles/global.css';
     <Navbar client:load />
 
     {/* Hero section */}
-    <div class="min-h-screen w-full relative">
+    <div id="home" class="min-h-screen w-full relative">
       <Hero client:load />
     </div>
 
@@ -21,7 +21,7 @@ import '../styles/global.css';
     <MeSection client:load />
 
     {/* Scroll Marquee section */}
-    <div class="py-16 md:py-32 w-full bg-black overflow-hidden">
+    <div id="work" class="py-16 md:py-32 w-full bg-black overflow-hidden">
       <ScrollMarquee
         client:load
         numRows={2}
@@ -33,7 +33,9 @@ import '../styles/global.css';
       />
     </div>
 
-    <Footer client:load />
+    <div id="contact">
+      <Footer client:load />
+    </div>
   </div>
 </Layout>
 

@@ -1,41 +1,14 @@
-import { useEffect, useRef, useState, Fragment, useCallback } from "react";
+import { useEffect, useRef, useState, Fragment } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import NavbarHamburger from "./NavbarHamburger";
 import NavbarMenu from "./NavbarMenu";
 import { THEMES } from "../../data/themesData";
+import { useThemeStore } from "../../store/useThemeStore";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const applyThemeColors = (theme, isDark) => {
-  const root = document.documentElement;
-  if (isDark && theme.dark) {
-    const d = theme.dark;
-    root.style.setProperty("--color-canvas", d.canvas);
-    root.style.setProperty("--color-accent-brand", d.brand);
-    root.style.setProperty("--color-accent-loader", d.loader);
-    root.style.setProperty("--color-accent-video-bg", d.videoBg);
-    root.style.setProperty("--color-accent-glow", d.glow || d.brand);
-    root.style.setProperty("--glow-shadow", `6px 6px 16px 0px ${d.glow || d.brand}`);
-    root.style.setProperty("--color-text-main", d.text);
-    root.style.setProperty("--color-border-main", d.border);
-    root.style.setProperty("--image-blend-mode", d.blend || "screen");
-    root.style.setProperty("--dot-color", "rgba(255, 255, 255, 0.03)");
-    root.style.setProperty("--texture-color", "rgba(0, 0, 0, 0.25)");
-  } else {
-    root.style.setProperty("--color-canvas", theme.canvas);
-    root.style.setProperty("--color-accent-brand", theme.brand);
-    root.style.setProperty("--color-accent-loader", theme.loader);
-    root.style.setProperty("--color-accent-video-bg", theme.videoBg);
-    root.style.setProperty("--color-accent-glow", theme.glow || theme.brand);
-    root.style.setProperty("--glow-shadow", "6px 6px 0px 0px rgba(0, 0, 0, 1)");
-    root.style.setProperty("--color-text-main", theme.text);
-    root.style.setProperty("--color-border-main", theme.border);
-    root.style.setProperty("--image-blend-mode", theme.blend || "multiply");
-    root.style.setProperty("--dot-color", "rgba(0, 0, 0, 0.03)");
-    root.style.setProperty("--texture-color", "rgba(255, 255, 255, 0.15)");
-  }
-};
+
 
 const Navbar = () => {
   const navbarContainerRef = useRef(null);
@@ -69,34 +42,7 @@ const Navbar = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const [isDarkMode, setIsDarkMode] = useState(() => {
-    if (typeof window === "undefined") return false;
-    const saved = localStorage.getItem("portfolio-dark-mode");
-    return saved === "true";
-  });
-
-  const [currentTheme, setCurrentTheme] = useState(() => {
-    if (typeof window === "undefined") return THEMES[0];
-    const saved = localStorage.getItem("selected-portfolio-theme");
-    const found = THEMES.find((t) => t.id === saved);
-    const initial = found || THEMES[0];
-    const isDark = localStorage.getItem("portfolio-dark-mode") === "true";
-    applyThemeColors(initial, isDark);
-    return initial;
-  });
-
-  const selectTheme = useCallback((theme) => {
-    setCurrentTheme(theme);
-    localStorage.setItem("selected-portfolio-theme", theme.id);
-    applyThemeColors(theme, isDarkMode);
-  }, [isDarkMode]);
-
-  const toggleDarkMode = () => {
-    const newDark = !isDarkMode;
-    setIsDarkMode(newDark);
-    localStorage.setItem("portfolio-dark-mode", String(newDark));
-    applyThemeColors(currentTheme, newDark);
-  };
+  const { isDarkMode, currentTheme, selectTheme, toggleDarkMode } = useThemeStore();
 
   useEffect(() => {
     const navbarContainer = navbarContainerRef.current;

@@ -1,36 +1,18 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, lazy, Suspense } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import HeroMarquee from "./HeroMarquee";
 import { ScrollMarquee } from "../ScrollMarquee";
-// Stable black-and-white sketch URLs from the original portfolio configuration
-const MAIN_SKETCH_URL = "https://i.pinimg.com/originals/e5/d7/ff/e5d7ff58b1161a050f406249d5b1fad8.jpg";
-const PANEL_1_URL = "https://i.pinimg.com/originals/0d/15/eb/0d15ebece691ca06a43463b4626e2f2c.jpg";
-const PANEL_2_URL = "https://i.pinimg.com/originals/e5/e9/26/e5e9265d77d948624ad357ea8d9d2f94.jpg";
-const PANEL_3_URL = "https://i.pinimg.com/originals/69/61/76/696176e85452d3d216f95fe8d912b01d.jpg";
 
-// Configurable slideshow loading duration in seconds
-const LOADING_DURATION = 4;
-
-const HERO_DATA = [
-  {
-    heading: "CONCEPT / PHILOSOPHY",
-    description: "A CAPTIVATING FUSION OF LOGIC AND CREATIVITY. SHAPING MODERN WEB ECOSYSTEMS THROUGH HIGH-PERFORMANCE CODE AND SOPHISTICATED SYSTEM ARCHITECTURE. SCALABLE APPLICATIONS BUILT WITH AN OBSESSION FOR SPEED AND DESIGN AESTHETICS. TURNING ABSTRACT PROBLEMS INTO ELEGANT DIGITAL SOLUTIONS.",
-    quote: '"A sequence of logic. A space of clean code. Building the future."',
-    video: "https://assets.mixkit.co/videos/preview/mixkit-tech-animation-with-digital-code-background-48562-large.mp4"
-  },
-  {
-    heading: "SYSTEM / ARCHITECTURE",
-    description: "ENGINEERING DISTRIBUTED SYSTEMS AND HIGH-THROUGHPUT COMPILER INFRASTRUCTURE. MAXIMIZING ENGINE EFFICIENCY AND SCALING DATA FLOW PIPELINES. OBSESSIVE BENCHMARKING AND MICRO-OPTIMIZATIONS FOR REAL-TIME OPERATIONS. REDUCING COMPUTATIONAL OVERHEAD TO ZERO FOR UNSURPASSED SPEED.",
-    quote: '"Striving for pixel perfection. Blending aesthetics with performance."',
-    video: "https://assets.mixkit.co/videos/preview/mixkit-futuristic-technology-digital-grid-background-48563-large.mp4"
-  },
-  {
-    heading: "DESIGN / EXPERIENCES",
-    description: "CRAFTING IMMERSIVE AND RESPONSIVE INTERFACES THAT ENGAGE SENSES. SUBTLE MICRO-INTERACTIONS AND SOPHISTICATED ENHANCED LAYOUTS. WHERE CREATIVE VISION MEETS ROBUST WEB IMPLEMENTATION STANDARDS. CREATING MEMORABLE DIGITAL PRODUCT JOURNEYS FOR THE NEXT GENERATION.",
-    quote: '"Crafting robust backend systems. Architecting secure scalable databases."',
-    video: "https://assets.mixkit.co/videos/preview/mixkit-hand-typing-on-a-computer-keyboard-40456-large.mp4"
-  }
-];
+const HeroInteractiveSection = lazy(() => import("./HeroInteractiveSection"));
+import EyeFollowRobot from "./EyeFollowRobot";
+import SketchyBorder from "../SketchyBorder";
+import { 
+  PANEL_1_URL, 
+  PANEL_2_URL, 
+  PANEL_3_URL, 
+  LOADING_DURATION, 
+  HERO_DATA 
+} from "../../data/heroData";
 
 const Hero = () => {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -75,8 +57,7 @@ const Hero = () => {
       {/* Split layout below the header (strictly fitted to the remaining flex height) */}
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 lg:flex-1 lg:min-h-0 items-stretch overflow-visible lg:overflow-hidden">
         
-        {/* Left Column (3/5 width): Red solid background with multiply-blended band sketch */}
-        <div className="lg:col-span-3 bg-red-300 border-2 border-black relative overflow-hidden flex flex-col justify-end h-[35vh] sm:h-[45vh] lg:h-full min-h-[250px] lg:min-h-0">
+        <div className="lg:col-span-3 lg:order-2 relative overflow-visible flex flex-col justify-end h-[35vh] sm:h-[45vh] min-h-[250px] lg:min-h-0">
           <AnimatePresence mode="wait">
             <motion.video
               key={activeIndex}
@@ -93,10 +74,33 @@ const Hero = () => {
               style={{ mixBlendMode: "var(--image-blend-mode, multiply)" }}
             />
           </AnimatePresence>
+
+          {/* Interactive 3D Tech Constellation Overlay */}
+          <Suspense fallback={null}>
+            <HeroInteractiveSection />
+          </Suspense>
+
         </div>
 
-        {/* Right Column (2/5 width): Detailed info grids fitted to 100% of height */}
-        <div className="lg:col-span-2 flex flex-col gap-6 lg:gap-4 lg:h-full lg:min-h-0 overflow-visible lg:overflow-hidden">
+        {/* Left Column (2/5 width visually): Detailed info grids fitted to 100% of height */}
+        <div className="lg:col-span-2 lg:order-1 flex flex-col gap-6 lg:gap-4 lg:min-h-0 overflow-visible lg:overflow-hidden">
+
+          {/* Black Divider before ME section */}
+          {/* <div className="h-[1.35px] bg-black w-full shrink-0" /> */}
+
+          {/* Row 3: ME + Description + Buttons (Fitted to 38% height, borderless, transparent parent) */}
+          {/* Row 3: Decorative Zine Rectangle */}
+          <div className="flex gap-4 items-stretch min-h-0 p-0 overflow-hidden shrink-0">
+            <div className="w-full relative rounded-sm glow backdrop-blur-sm overflow-hidden flex items-center justify-center box-border">
+              <ScrollMarquee 
+                numRows={1}
+                rowTexts={[["CREATING", "SCALABLE", "FUTURES"]]}
+                className="text-neutral-800 dark:text-neutral-200 font-black tracking-tighter opacity-80 text-4xl sm:text-5xl"
+                scrollerClassName=""
+                speedMultiplier={0.3}
+              />
+            </div>
+          </div>
           
           {/* Row 1: Exactly 3 panels (Flex-fills remaining height) */}
           <div className="w-full h-[120px] sm:h-[150px] lg:flex-1 lg:min-h-0 p-0 overflow-hidden shrink-0 lg:shrink">
@@ -104,66 +108,75 @@ const Hero = () => {
             <div className="grid grid-cols-3 gap-3 w-full h-full">
               {/* Panel 1 */}
               <div 
-                className="border border-black overflow-hidden relative h-full bg-neutral-100 cursor-pointer hover:border-red-400 transition-colors duration-300 select-none"
+                className="group relative h-full cursor-pointer select-none"
                 onClick={() => handleCardClick(0)}
               >
-                {/* Red Loading Progress Bar Background (Horizontal) - Lighter Red */}
-                {activeIndex === 0 && (
-                  <div 
-                    key={triggerCount}
-                    className="absolute left-0 top-0 bottom-0 bg-red-400 animate-progress-fill"
-                    style={{ animationDuration: `${LOADING_DURATION}s` }}
+                <div className="w-full h-full overflow-hidden relative bg-neutral-100">
+                  {/* Red Loading Progress Bar Background (Horizontal) - Lighter Red */}
+                  {activeIndex === 0 && (
+                    <div 
+                      key={triggerCount}
+                      className="absolute left-0 top-0 bottom-0 bg-red-400 animate-progress-fill"
+                      style={{ animationDuration: `${LOADING_DURATION}s` }}
+                    />
+                  )}
+                  <img
+                    src={PANEL_1_URL}
+                    alt="Manga Panel 1"
+                    className={`w-full h-full object-cover relative z-10 transition-all duration-300 pointer-events-none ${
+                      activeIndex === 0 ? "mix-blend-multiply filter grayscale contrast-125 brightness-110" : "filter grayscale contrast-125 brightness-105"
+                    }`}
                   />
-                )}
-                <img
-                  src={PANEL_1_URL}
-                  alt="Manga Panel 1"
-                  className={`w-full h-full object-cover relative z-10 transition-all duration-300 pointer-events-none ${
-                    activeIndex === 0 ? "mix-blend-multiply filter grayscale contrast-125 brightness-110" : "filter grayscale contrast-125 brightness-105"
-                  }`}
-                />
+                </div>
+                <SketchyBorder isImage={true} className="group-hover:text-[var(--color-accent-brand)] transition-colors duration-300" />
               </div>
               {/* Panel 2 */}
               <div 
-                className="border border-black overflow-hidden relative h-full bg-neutral-100 cursor-pointer hover:border-red-400 transition-colors duration-300 select-none"
+                className="group relative h-full cursor-pointer select-none"
                 onClick={() => handleCardClick(1)}
               >
-                {/* Red Loading Progress Bar Background (Horizontal) - Lighter Red */}
-                {activeIndex === 1 && (
-                  <div 
-                    key={triggerCount}
-                    className="absolute left-0 top-0 bottom-0 bg-red-400 animate-progress-fill"
-                    style={{ animationDuration: `${LOADING_DURATION}s` }}
+                <div className="w-full h-full overflow-hidden relative bg-neutral-100">
+                  {/* Red Loading Progress Bar Background (Horizontal) - Lighter Red */}
+                  {activeIndex === 1 && (
+                    <div 
+                      key={triggerCount}
+                      className="absolute left-0 top-0 bottom-0 bg-red-400 animate-progress-fill"
+                      style={{ animationDuration: `${LOADING_DURATION}s` }}
+                    />
+                  )}
+                  <img
+                    src={PANEL_2_URL}
+                    alt="Manga Panel 2"
+                    className={`w-full h-full object-cover relative z-10 transition-all duration-300 pointer-events-none ${
+                      activeIndex === 1 ? "mix-blend-multiply filter grayscale contrast-125 brightness-110" : "filter grayscale contrast-125 brightness-105"
+                    }`}
                   />
-                )}
-                <img
-                  src={PANEL_2_URL}
-                  alt="Manga Panel 2"
-                  className={`w-full h-full object-cover relative z-10 transition-all duration-300 pointer-events-none ${
-                    activeIndex === 1 ? "mix-blend-multiply filter grayscale contrast-125 brightness-110" : "filter grayscale contrast-125 brightness-105"
-                  }`}
-                />
+                </div>
+                <SketchyBorder isImage={true} className="group-hover:text-[var(--color-accent-brand)] transition-colors duration-300" />
               </div>
               {/* Panel 3 */}
               <div 
-                className="border border-black overflow-hidden relative h-full bg-neutral-100 cursor-pointer hover:border-red-400 transition-colors duration-300 select-none"
+                className="group relative h-full cursor-pointer select-none"
                 onClick={() => handleCardClick(2)}
               >
-                {/* Red Loading Progress Bar Background (Horizontal) - Lighter Red */}
-                {activeIndex === 2 && (
-                  <div 
-                    key={triggerCount}
-                    className="absolute left-0 top-0 bottom-0 bg-red-400 animate-progress-fill"
-                    style={{ animationDuration: `${LOADING_DURATION}s` }}
+                <div className="w-full h-full overflow-hidden relative bg-neutral-100">
+                  {/* Red Loading Progress Bar Background (Horizontal) - Lighter Red */}
+                  {activeIndex === 2 && (
+                    <div 
+                      key={triggerCount}
+                      className="absolute left-0 top-0 bottom-0 bg-red-400 animate-progress-fill"
+                      style={{ animationDuration: `${LOADING_DURATION}s` }}
+                    />
+                  )}
+                  <img
+                    src={PANEL_3_URL}
+                    alt="Manga Panel 3"
+                    className={`w-full h-full object-cover relative z-10 transition-all duration-300 pointer-events-none ${
+                      activeIndex === 2 ? "mix-blend-multiply filter grayscale contrast-125 brightness-110" : "filter grayscale contrast-125 brightness-105"
+                    }`}
                   />
-                )}
-                <img
-                  src={PANEL_3_URL}
-                  alt="Manga Panel 3"
-                  className={`w-full h-full object-cover relative z-10 transition-all duration-300 pointer-events-none ${
-                    activeIndex === 2 ? "mix-blend-multiply filter grayscale contrast-125 brightness-110" : "filter grayscale contrast-125 brightness-105"
-                  }`}
-                />
+                </div>
+                <SketchyBorder isImage={true} className="group-hover:text-[var(--color-accent-brand)] transition-colors duration-300" />
               </div>
             </div>
           </div>
@@ -194,7 +207,8 @@ const Hero = () => {
             </div>
 
             {/* Serif Tagline Quote - styled with black texture, border, and white text */}
-            <div className="w-full bg-black-textured text-white p-2 border-2 border-black shrink-0 min-h-[46px] flex items-center">
+            <div className="w-full bg-black-textured text-white p-2 shrink-0 min-h-[46px] flex items-center relative">
+              <SketchyBorder isImage={true} className="text-red-600/90" />
               <AnimatePresence mode="wait">
                 <motion.p 
                   key={activeIndex}
@@ -210,25 +224,10 @@ const Hero = () => {
               </AnimatePresence>
             </div>
           </div>
-
-          {/* Black Divider before ME section */}
-          <div className="h-[1.35px] bg-black w-full shrink-0" />
-
-          {/* Row 3: ME + Description + Buttons (Fitted to 38% height, borderless, transparent parent) */}
-          {/* Row 3: Decorative Zine Rectangle */}
-          <div className="flex gap-4 items-stretch min-h-0 p-0 overflow-hidden shrink-0">
-            <div className="w-full border-2 border-black relative rounded-sm glow bg-neutral-800/5 backdrop-blur-sm overflow-hidden flex items-center justify-center p-0 box-border">
-              <ScrollMarquee 
-                numRows={1}
-                rowTexts={[["CREATING", "SCALABLE", "FUTURES"]]}
-                className="text-neutral-800 dark:text-neutral-200 font-black tracking-tighter opacity-80 text-4xl sm:text-5xl"
-                scrollerClassName="py-1"
-                speedMultiplier={0.3}
-              />
-            </div>
-          </div>
-
         </div>
+      {/* Interactive Eye Tracking Robot - positioned relative to full hero section */}
+      <EyeFollowRobot />
+
       {/* Hidden preloader for videos to prevent transition flash */}
       <div className="hidden" aria-hidden="true">
         {HERO_DATA.map((item, idx) => (

@@ -196,3 +196,4 @@ body.nav-menu-open .navbar-main {
   box-shadow: var(--glow-shadow, 6px 6px 0px 0px rgba(0, 0, 0, 1));
   transition: box-shadow 0.4s ease;
 }
+

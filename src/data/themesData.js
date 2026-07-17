@@ -4,7 +4,7 @@ export const THEMES = [
     id: "cherry-blossom",
     name: "Cherry Blossom",
     canvas: "#F6E2BB",
-    brand: "#ff5c8a",
+    brand: "#F01450",
     loader: "#ff8da1",
     videoBg: "#ffd3de",
     text: "#141414",
@@ -13,7 +13,7 @@ export const THEMES = [
     glow: "#ffb3c1",
     dark: {
       canvas: "#0b1321",
-      brand: "#ff5c8a",
+      brand: "#F01450",
       loader: "#ff8da1",
       videoBg: "#4a1220",
       text: "#EBEBEB",

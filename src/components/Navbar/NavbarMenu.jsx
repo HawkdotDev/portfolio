@@ -1,13 +1,38 @@
-import { forwardRef, useEffect } from "react";
+import { forwardRef, useEffect, useState } from "react";
 import { FaTwitter, FaInstagram, FaGithub, FaLinkedin } from "react-icons/fa";
 
 const NavbarMenu = forwardRef(({ isOpen }, ref) => {
+  const [activeSection, setActiveSection] = useState("");
+
   const links = [
     { label: "HOME", href: "#home" },
     { label: "ABOUT", href: "#about" },
     { label: "WORK", href: "#work" },
     { label: "CONTACT", href: "#contact" }
   ];
+
+  // Track active section via IntersectionObserver
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveSection(`#${entry.target.id}`);
+          }
+        });
+      },
+      {
+        rootMargin: "-40% 0px -40% 0px", // Trigger when section is around the center of the screen
+      }
+    );
+
+    const sections = links.map(link => document.querySelector(link.href)).filter(Boolean);
+    sections.forEach(sec => observer.observe(sec));
+
+    return () => {
+      sections.forEach(sec => observer.unobserve(sec));
+    };
+  }, []);
 
   // Toggle body class to trigger .App push margin via CSS
   useEffect(() => {
@@ -64,15 +89,20 @@ const NavbarMenu = forwardRef(({ isOpen }, ref) => {
 
       {/* Center: Vertical Navigation Links (links do not close menu) */}
       <nav className="flex flex-col gap-6 my-auto">
-        {links.map((link) => (
-          <a
-            key={link.label}
-            href={link.href}
-            className="font-anton text-4xl sm:text-5xl text-neutral-800 tracking-tight hover:text-red-600 hover:skew-x-6 transition-all duration-300 uppercase leading-none block w-fit"
-          >
-            {link.label}
-          </a>
-        ))}
+        {links.map((link) => {
+          const isActive = activeSection === link.href;
+          return (
+            <a
+              key={link.label}
+              href={link.href}
+              className={`font-anton text-4xl sm:text-5xl tracking-tight transition-all duration-300 uppercase leading-none block w-fit ${
+                isActive ? "text-red-600 skew-x-6" : "text-neutral-800 hover:text-red-600 hover:skew-x-6"
+              }`}
+            >
+              {link.label}
+            </a>
+          );
+        })}
       </nav>
 
       {/* Bottom section: Footer Branding */}
