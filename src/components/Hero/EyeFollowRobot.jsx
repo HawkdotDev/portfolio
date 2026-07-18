@@ -124,11 +124,10 @@ export default function EyeFollowRobot() {
     >
       {/* ── Monkey-Style Zine Background Poster Card (Full Height) ── */}
       <div
-        className="absolute flex flex-col items-center justify-start z-10"
+        className="absolute flex flex-col items-center justify-start z-10 top-[calc(15vh+4rem)] lg:top-[calc(15vh+3rem)]"
         style={{
           left: "9%",
           width: "calc(88% - 12px)",
-          top: "calc(15vh + 4rem)",
           bottom: "2.5px",
           backgroundColor: "#f01450",
         }}

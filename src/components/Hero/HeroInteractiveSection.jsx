@@ -1,506 +1,338 @@
-import { useRef, useMemo, useState, useCallback, useEffect } from "react";
-import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { Billboard } from "@react-three/drei";
+import { useRef, useMemo, useEffect } from "react";
+import { Canvas, useFrame } from "@react-three/fiber";
 import * as THREE from "three";
+import { useThemeStore } from "../../store/useThemeStore";
 
-// ─── Technology Network Data ───────────────────────────────────────
-const NODES = [
-  { label: "React",      color: "#61dafb" },
-  { label: "TypeScript",  color: "#3178c6" },
-  { label: "Next.js",     color: "#cccccc" },
-  { label: "Tailwind",    color: "#38bdf8" },
-  { label: "Node.js",     color: "#68a063" },
-  { label: "Python",      color: "#ffd43b" },
-  { label: "GraphQL",     color: "#e535ab" },
-  { label: "Postgres",    color: "#4169e1" },
-  { label: "MongoDB",     color: "#47a248" },
-  { label: "Docker",      color: "#2496ed" },
-  { label: "AWS",         color: "#ff9900" },
-  { label: "Git",         color: "#f05032" },
-  { label: "GSAP",        color: "#88ce02" },
-  { label: "Redis",       color: "#dc382d" },
-  { label: "Rust",        color: "#dea584" },
-];
+// ─── GLSL Simplex Noise Shader Implementation ───────────────────────
+const simplexNoiseGLSL = `
+vec4 permute(vec4 x){return mod(((x*34.0)+1.0)*x, 289.0);}
+vec4 taylorInvSqrt(vec4 r){return 1.79284291400159 - 0.85373472095314 * r;}
 
-// Meaningful connections between technologies
-const EDGES = [
-  [0, 1], [0, 2], [0, 3], [0, 12],
-  [2, 4], [4, 1], [4, 6], [4, 7], [4, 8],
-  [7, 6], [8, 13],
-  [9, 10], [9, 4],
-  [5, 7], [5, 13],
-  [14, 4],
-  [11, 9], [10, 7], [1, 6],
-];
+float snoise(vec3 v){
+  const vec2  C = vec2(1.0/6.0, 1.0/3.0) ;
+  const vec4  D = vec4(0.0, 0.5, 1.0, 2.0);
 
-// Code snippets per technology (scrolling background texture)
-const SNIPPETS = {
-  React:      ["import React", "const App = () => {", "  const [s, set]", "  = useState(0)", "  useEffect(() => {", "    fetch(url)", "  }, [])", "  return (", "    <div>", "      <Button />", "    </div>", "  )", "}"],
-  TypeScript: ["interface User {", "  name: string", "  age: number", "}", "type Result<T> = {", "  data: T", "  error?: string", "}", "const fn = <T,>", "  (x: T): T => x", "keyof typeof obj"],
-  "Next.js":  ["export default Page", "getServerSideProps", "const router =", "  useRouter()", "app/layout.tsx", "export async", "  function gen() {", "  return { props }", "}", "middleware.ts"],
-  Tailwind:   ["className='flex", "  items-center'", "text-red-600", "bg-gradient-to-r", "hover:scale-105", "dark:bg-slate-900", "md:grid-cols-3", "backdrop-blur-md", "transition-all", "duration-300"],
-  "Node.js":  ["const express =", "  require('express')", "app.get('/', fn)", "app.listen(3000)", "module.exports = {", "  handler", "}", "process.env.PORT", "const fs = require", "  ('fs')"],
-  Python:     ["def main():", "  print('hello')", "import numpy as np", "class Model:", "  def __init__(s):", "    self.data = []", "  def train(self):", "    return loss", "if __name__ ==", "  '__main__':"],
-  GraphQL:    ["type Query {", "  user(id: ID!)", "    : User", "  posts: [Post]", "}", "mutation {", "  createUser(", "    name: String", "  ): User", "}", "subscription"],
-  Postgres:   ["SELECT * FROM", "  users WHERE", "  age > 18", "JOIN orders ON", "  u.id = o.uid", "CREATE INDEX", "  ON users(name)", "INSERT INTO", "  logs VALUES", "  (now(), $1)"],
-  MongoDB:    ["db.collection", "  .find({", "    age: {$gt: 18}", "  })", "  .sort({name:1})", "aggregate([", "  {$match: {}},", "  {$group: {", "    _id: '$type'", "  }}", "])"],
-  Docker:     ["FROM node:20", "WORKDIR /app", "COPY . .", "RUN npm ci", "EXPOSE 3000", "CMD ['node',", "  'server.js']", "ENV NODE_ENV=", "  production", "HEALTHCHECK"],
-  AWS:        ["aws s3 cp . s3://", "lambda.invoke({", "  FunctionName:", "  Payload: data", "})", "ec2.describe()", "cloudfront.create", "dynamodb.put({", "  TableName:", "  Item: {}  })"],
-  Git:        ["git commit -m ''", "git push origin", "git merge develop", "git rebase -i", "  HEAD~3", "git stash pop", "git log --oneline", "git diff --staged", "git cherry-pick", "  abc1234"],
-  GSAP:       ["gsap.to('.el', {", "  x: 100,", "  duration: 1,", "  ease: 'power2'", "})", "ScrollTrigger({", "  trigger: el,", "  start: 'top'", "})", "gsap.timeline()"],
-  Redis:      ["SET key value", "GET key", "HSET user name", "  'john'", "LPUSH queue msg", "SUBSCRIBE chan", "EXPIRE key 3600", "MULTI", "  INCR counter", "EXEC"],
-  Rust:       ["fn main() {", "  let x = 42;", "  println!(\"{}\",", "    x);", "}", "impl Trait for T", "  {", "  fn method(", "    &self) -> i32", "  { self.val }"],
-};
+  vec3 i  = floor(v + dot(v, C.yyy) );
+  vec3 x0 =   v - i + dot(i, C.xxx) ;
 
-// ─── Fibonacci sphere distribution ─────────────────────────────────
-function spherePosition(index, total, radius) {
-  const golden = (1 + Math.sqrt(5)) / 2;
-  const theta = (2 * Math.PI * index) / golden;
-  const phi = Math.acos(1 - (2 * (index + 0.5)) / total);
-  return [
-    radius * Math.sin(phi) * Math.cos(theta),
-    radius * Math.cos(phi),
-    radius * Math.sin(phi) * Math.sin(theta),
-  ];
+  vec3 g = step(x0.yzx, x0.xyz);
+  vec3 l = 1.0 - g;
+  vec3 i1 = min( g.xyz, l.zxy );
+  vec3 i2 = max( g.xyz, l.zxy );
+
+  vec3 x1 = x0 - i1 + 1.0 * C.xxx;
+  vec3 x2 = x0 - i2 + 2.0 * C.xxx;
+  vec3 x3 = x0 - D.yyy;
+
+  i = mod(i, 289.0 );
+  vec4 p = permute( permute( permute(
+             i.z + vec4(0.0, i1.z, i2.z, 1.0 ))
+           + i.y + vec4(0.0, i1.y, i2.y, 1.0 ))
+           + i.x + vec4(0.0, i1.x, i2.x, 1.0 ));
+
+  float n_ = 1.0/7.0;
+  vec3  ns = n_ * D.wyz - D.xzx;
+
+  vec4 j = p - 49.0 * floor(p * ns.z *ns.z);
+
+  vec4 x_ = floor(j * ns.z);
+  vec4 y_ = floor(j - 7.0 * x_ );
+
+  vec4 x = x_ *ns.x + ns.yyyy;
+  vec4 y = y_ *ns.x + ns.yyyy;
+  vec4 h = 1.0 - abs(x) - abs(y);
+
+  vec4 b0 = vec4( x.xy, y.xy );
+  vec4 b1 = vec4( x.zw, y.zw );
+
+  vec4 s0 = floor(b0)*2.0 + 1.0;
+  vec4 s1 = floor(b1)*2.0 + 1.0;
+  vec4 sh = -step(h, vec4(0.0));
+
+  vec4 a0 = b0.xzyw + s0.xzyw*sh.xxyy ;
+  vec4 a1 = b1.xzyw + s1.xzyw*sh.zzww ;
+
+  vec3 p0 = vec3(a0.xy,h.x);
+  vec3 p1 = vec3(a0.zw,h.y);
+  vec3 p2 = vec3(a1.xy,h.z);
+  vec3 p3 = vec3(a1.zw,h.w);
+
+  vec4 norm = taylorInvSqrt(vec4(dot(p0,p0), dot(p1,p1), dot(p2, p2), dot(p3,p3)));
+  p0 *= norm.x;
+  p1 *= norm.y;
+  p2 *= norm.z;
+  p3 *= norm.w;
+
+  vec4 m = max(0.6 - vec4(dot(x0,x0), dot(x1,x1), dot(x2,x2), dot(x3,x3)), 0.0);
+  m = m * m;
+  return 42.0 * dot( m*m, vec4( dot(p0,x0), dot(p1,x1),
+                                dot(p2,x2), dot(p3,x3) ) );
 }
+`;
 
-// ─── Utility helpers ───────────────────────────────────────────────
-function rrect(ctx, x, y, w, h, r) {
-  ctx.beginPath();
-  ctx.moveTo(x + r, y);
-  ctx.arcTo(x + w, y, x + w, y + h, r);
-  ctx.arcTo(x + w, y + h, x, y + h, r);
-  ctx.arcTo(x, y + h, x, y, r);
-  ctx.arcTo(x, y, x + w, y, r);
-  ctx.closePath();
-}
+// ─── Vertex Shader ──────────────────────────────────────────────────
+// Morphs between Sphere, Monitor, and Phone base shapes, then adds organic wobbly noise
+const vertexShader = `
+uniform float uTime;
+uniform float uPrevSeed;
+uniform float uSeed;
+uniform float uPrevTarget;
+uniform float uTarget;
+uniform float uTransition;
+uniform float uNoiseFreq;
+uniform float uNoiseAmp;
+uniform float uSpeed;
 
-function hexRgb(hex) {
-  return `${parseInt(hex.slice(1, 3), 16)},${parseInt(hex.slice(3, 5), 16)},${parseInt(hex.slice(5, 7), 16)}`;
-}
+varying vec3 vNormal;
+varying vec3 vPosition;
+varying float vNoise;
 
-function codeLineColor(text, brandColor) {
-  const t = text.trimStart();
-  if (/^(import|from|const|let|var|function|return|export|class|def|type|interface|enum|SELECT|FROM|WHERE|JOIN|CREATE|SET|GET|RUN|CMD|COPY|EXPOSE|WORKDIR|fn |impl |pub |use |git |aws |gsap|app\.|db\.)/.test(t))
-    return brandColor;
-  if (/['"`]/.test(t)) return "#98c379";
-  if (/^[{}()<>[\]]/.test(t)) return "#61afef";
-  if (/^(\/\/|#|--)/.test(t)) return "#555555";
-  return "#7a7a90";
-}
+${simplexNoiseGLSL}
 
-// ─── Glow sprite texture ───────────────────────────────────────────
-let _glowTex = null;
-function getGlowTexture() {
-  if (_glowTex) return _glowTex;
-  const c = document.createElement("canvas");
-  c.width = c.height = 64;
-  const ctx = c.getContext("2d");
-  const g = ctx.createRadialGradient(32, 32, 0, 32, 32, 32);
-  g.addColorStop(0, "rgba(255,255,255,0.9)");
-  g.addColorStop(0.2, "rgba(255,255,255,0.4)");
-  g.addColorStop(0.5, "rgba(255,200,200,0.12)");
-  g.addColorStop(1, "rgba(255,50,50,0)");
-  ctx.fillStyle = g;
-  ctx.fillRect(0, 0, 64, 64);
-  _glowTex = new THREE.CanvasTexture(c);
-  return _glowTex;
-}
-
-// ─── Draw one frame of a holographic code card ─────────────────────
-const CW = 256, CH = 160; // canvas dimensions
-
-function drawCard(ctx, node, time, isHovered, pulseTime) {
-  const w = CW, h = CH;
-  const snippets = SNIPPETS[node.label] || SNIPPETS.React;
-  const totalLines = snippets.length;
-  const scrollSpeed = isHovered ? 22 : 10;
-  const scrollY = (time * scrollSpeed) % (totalLines * 12);
-
-  ctx.clearRect(0, 0, w, h);
-
-  // ── 1. Dark background ──
-  rrect(ctx, 0, 0, w, h, 8);
-  ctx.fillStyle = "#0d0d1a";
-  ctx.fill();
-
-  // ── 2. Scrolling code lines (background texture) ──
-  ctx.save();
-  rrect(ctx, 0, 0, w, h, 8);
-  ctx.clip();
-  ctx.font = "9px Consolas, 'Courier New', monospace";
-  ctx.textAlign = "left";
-  const lineH = 12;
-  const visibleCount = Math.ceil(h / lineH) + 2;
-  const startIdx = Math.floor(scrollY / lineH);
-  const offsetY = -(scrollY % lineH);
-
-  for (let i = 0; i < visibleCount; i++) {
-    const li = (startIdx + i) % totalLines;
-    const y = 10 + i * lineH + offsetY;
-    if (y < -lineH || y > h + lineH) continue;
-    ctx.globalAlpha = 0.12;
-    ctx.fillStyle = codeLineColor(snippets[li], node.color);
-    ctx.fillText(snippets[li], 8, y);
+// Mathematical mapping to generate Sphere, Monitor, or Phone shapes proceduraly
+vec3 getShapePosition(float shapeIndex, vec3 pos) {
+  // Shape 0: Sphere
+  if (shapeIndex < 0.5) {
+    return pos * 1.5;
   }
-  ctx.globalAlpha = 1;
-  ctx.restore();
-
-  // ── 3. Center vignette (readability overlay) ──
-  const vg = ctx.createRadialGradient(w / 2, h / 2, 0, w / 2, h / 2, w * 0.55);
-  vg.addColorStop(0, "rgba(13,13,26,0.95)");
-  vg.addColorStop(0.45, "rgba(13,13,26,0.7)");
-  vg.addColorStop(1, "rgba(13,13,26,0)");
-  ctx.save();
-  rrect(ctx, 0, 0, w, h, 8);
-  ctx.clip();
-  ctx.fillStyle = vg;
-  ctx.fillRect(0, 0, w, h);
-  ctx.restore();
-
-  // ── 4. Tech name (prominent center) ──
-  ctx.font = "bold 26px Consolas, 'Courier New', monospace";
-  ctx.textAlign = "center";
-  ctx.textBaseline = "middle";
-  // Text shadow / glow
-  ctx.shadowColor = node.color;
-  ctx.shadowBlur = isHovered ? 18 : 8;
-  ctx.fillStyle = node.color;
-  ctx.fillText(node.label, w / 2, h / 2 + 2);
-  ctx.shadowBlur = 0;
-
-  // ── 5. Window dots (top-left) ──
-  const dotColors = ["#ff5f57", "#ffbd2e", "#28ca41"];
-  dotColors.forEach((c, i) => {
-    ctx.beginPath();
-    ctx.arc(12 + i * 12, 12, 3, 0, Math.PI * 2);
-    ctx.fillStyle = c;
-    ctx.fill();
-  });
-
-  // ── 6. Top bar separator line ──
-  ctx.strokeStyle = `rgba(${hexRgb(node.color)}, 0.15)`;
-  ctx.lineWidth = 1;
-  ctx.beginPath();
-  ctx.moveTo(6, 22);
-  ctx.lineTo(w - 6, 22);
-  ctx.stroke();
-
-  // ── 7. Border glow ──
-  rrect(ctx, 0.5, 0.5, w - 1, h - 1, 8);
-  ctx.strokeStyle = node.color;
-  ctx.lineWidth = isHovered ? 2.5 : 1.2;
-  ctx.globalAlpha = isHovered ? 0.95 : 0.35;
-  ctx.stroke();
-  ctx.globalAlpha = 1;
-
-  // ── 8. Scan line on hover ──
-  if (isHovered) {
-    ctx.save();
-    rrect(ctx, 0, 0, w, h, 8);
-    ctx.clip();
-    const scanY = (time * 60) % h;
-    const sg = ctx.createLinearGradient(0, scanY - 8, 0, scanY + 8);
-    sg.addColorStop(0, "transparent");
-    sg.addColorStop(0.5, `rgba(${hexRgb(node.color)}, 0.12)`);
-    sg.addColorStop(1, "transparent");
-    ctx.fillStyle = sg;
-    ctx.fillRect(0, scanY - 8, w, 16);
-    ctx.restore();
-  }
-
-  // ── 9. Pulse flash overlay ──
-  if (pulseTime) {
-    const elapsed = performance.now() - pulseTime;
-    if (elapsed < 700) {
-      const alpha = 0.25 * Math.sin((elapsed / 700) * Math.PI);
-      ctx.save();
-      rrect(ctx, 0, 0, w, h, 8);
-      ctx.clip();
-      ctx.fillStyle = `rgba(255, 255, 255, ${alpha})`;
-      ctx.fillRect(0, 0, w, h);
-      ctx.restore();
+  
+  // Spherical-to-box projection
+  float maxCoord = max(max(abs(pos.x), abs(pos.y)), abs(pos.z));
+  vec3 boxProj = pos / max(maxCoord, 0.001);
+  
+  // Shape 1: Computer Monitor
+  if (shapeIndex < 1.5) {
+    vec3 monitorPos = boxProj * vec3(1.7, 1.15, 0.25);
+    
+    // Procedural neck stand
+    if (pos.y < -0.45 && abs(pos.x) < 0.2) {
+      monitorPos.y -= 0.6;
     }
-  }
-
-  // ── 10. Blinking cursor ──
-  if (Math.sin(time * 4) > 0) {
-    const cursorLine = snippets[(Math.floor(scrollY / lineH) + 4) % totalLines];
-    ctx.font = "9px Consolas, 'Courier New', monospace";
-    const cursorX = 8 + ctx.measureText(cursorLine).width + 2;
-    const cursorY = h / 2 + 24;
-    ctx.fillStyle = node.color;
-    ctx.globalAlpha = 0.6;
-    ctx.fillRect(Math.min(cursorX, w - 14), cursorY, 6, 10);
-    ctx.globalAlpha = 1;
+    // Procedural base stand
+    if (pos.y < -0.8 && abs(pos.x) < 0.65) {
+      monitorPos.y = -1.15;
+      monitorPos.x *= 1.35;
+    }
+    return monitorPos;
+  } 
+  // Shape 2: Smartphone
+  else {
+    return boxProj * vec3(0.9, 1.6, 0.18);
   }
 }
 
-// ─── Data-flow particles along edges ───────────────────────────────
-function FlowParticles({ positions }) {
-  const ref = useRef();
-  const dummy = useMemo(() => new THREE.Object3D(), []);
-  const count = EDGES.length * 2;
-
-  const particles = useMemo(
-    () =>
-      EDGES.flatMap((_, ei) =>
-        [0, 1].map(() => ({
-          edge: ei,
-          t: Math.random(),
-          speed: 0.05 + Math.random() * 0.12,
-          dir: Math.random() > 0.5 ? 1 : -1,
-        }))
-      ),
-    []
-  );
-
-  useFrame((_, delta) => {
-    if (!ref.current) return;
-    const d = Math.min(delta, 0.05);
-    particles.forEach((p, i) => {
-      p.t = ((p.t + d * p.speed * p.dir) % 1 + 1) % 1;
-      const [ai, bi] = EDGES[p.edge];
-      const a = positions[ai], b = positions[bi];
-      dummy.position.set(
-        a[0] + (b[0] - a[0]) * p.t,
-        a[1] + (b[1] - a[1]) * p.t,
-        a[2] + (b[2] - a[2]) * p.t
-      );
-      dummy.scale.setScalar(0.015);
-      dummy.updateMatrix();
-      ref.current.setMatrixAt(i, dummy.matrix);
-    });
-    ref.current.instanceMatrix.needsUpdate = true;
-  });
-
-  return (
-    <instancedMesh ref={ref} args={[null, null, count]}>
-      <sphereGeometry args={[1, 4, 4]} />
-      <meshBasicMaterial color="#ffffff" transparent opacity={0.55} />
-    </instancedMesh>
-  );
+void main() {
+  vNormal = normal;
+  
+  // Interpolate the base shape coordinates smoothly
+  vec3 posPrev = getShapePosition(uPrevTarget, position);
+  vec3 posCurr = getShapePosition(uTarget, position);
+  vec3 basePos = mix(posPrev, posCurr, uTransition);
+  
+  // Calculate noise displacement on top of the base shape
+  vec3 noisePosPrev = basePos * uNoiseFreq + vec3(0.0, 0.0, uTime * uSpeed + uPrevSeed * 12.5);
+  vec3 noisePosCurr = basePos * uNoiseFreq + vec3(0.0, 0.0, uTime * uSpeed + uSeed * 12.5);
+  
+  float nPrev = snoise(noisePosPrev);
+  float nCurr = snoise(noisePosCurr);
+  float n = mix(nPrev, nCurr, uTransition);
+  vNoise = n;
+  
+  // Displace vertex along normal
+  vec3 displacedPosition = basePos + normal * n * uNoiseAmp;
+  vPosition = displacedPosition;
+  
+  gl_Position = projectionMatrix * modelViewMatrix * vec4(displacedPosition, 1.0);
 }
+`;
 
-// ─── Main interactive network ──────────────────────────────────────
-function TechNetwork() {
+// ─── Fragment Shader (Solid / Glass Base with Rim Glow) ─────────────
+const fragmentShaderSolid = `
+uniform vec3 uColor;
+uniform float uOpacity;
+varying vec3 vNormal;
+varying vec3 vPosition;
+varying float vNoise;
+
+void main() {
+  vec3 normal = normalize(vNormal);
+  vec3 viewDir = vec3(0.0, 0.0, 1.0);
+  
+  float fresnel = 1.0 - max(dot(normal, viewDir), 0.0);
+  fresnel = pow(fresnel, 3.0);
+  
+  vec3 baseColor = vec3(0.05, 0.05, 0.08);
+  vec3 finalColor = mix(baseColor, uColor, fresnel * 0.95);
+  
+  float alpha = mix(uOpacity, 0.85, fresnel);
+  
+  gl_FragColor = vec4(finalColor, alpha);
+}
+`;
+
+// ─── Fragment Shader (Sketchy Wireframe) ───────────────────────────
+const fragmentShaderWire = `
+uniform vec3 uWireColor;
+varying vec3 vNormal;
+varying vec3 vPosition;
+varying float vNoise;
+
+void main() {
+  vec3 normal = normalize(vNormal);
+  vec3 viewDir = vec3(0.0, 0.0, 1.0);
+  float fresnel = 1.0 - max(dot(normal, viewDir), 0.0);
+  
+  float alpha = mix(0.55, 0.25, fresnel);
+  
+  gl_FragColor = vec4(uWireColor, alpha);
+}
+`;
+
+// ─── Organic Morphing Blob Component ───────────────────────────────
+function OrganicBlob({ activeIndex }) {
   const groupRef = useRef();
-  const cardGroupRefs = useRef([]);
-  const [hovered, setHovered] = useState(-1);
-  const pulseRef = useRef({});
-  const frameCount = useRef(0);
+  const meshRef = useRef();
+  const wireframeRef = useRef();
 
-  const positions = useMemo(
-    () => NODES.map((_, i) => spherePosition(i, NODES.length, 2.8)),
-    []
-  );
+  const transitionRef = useRef(1.0);
+  const stateRef = useRef({ prevSeed: 0, currentSeed: 0, prevTarget: 0, currentTarget: 0 });
 
-  const glowTex = useMemo(() => getGlowTexture(), []);
-
-  // Create canvases + textures once
-  const canvasData = useMemo(() =>
-    NODES.map(() => {
-      const canvas = document.createElement("canvas");
-      canvas.width = CW;
-      canvas.height = CH;
-      const texture = new THREE.CanvasTexture(canvas);
-      texture.minFilter = THREE.LinearFilter;
-      texture.magFilter = THREE.LinearFilter;
-      return { canvas, ctx: canvas.getContext("2d"), texture };
-    }),
-    []
-  );
-
-  // Pre-compute edge geometry buffers
-  const edgeArrays = useMemo(
-    () => EDGES.map(([a, b]) => new Float32Array([...positions[a], ...positions[b]])),
-    [positions]
-  );
-
-  // Neighbors of hovered node
-  const neighborSet = useMemo(() => {
-    if (hovered < 0) return new Set();
-    const s = new Set();
-    EDGES.forEach(([a, b]) => {
-      if (a === hovered) s.add(b);
-      if (b === hovered) s.add(a);
-    });
-    return s;
-  }, [hovered]);
-
-  // Click → pulse + propagate to neighbors
-  const handleClick = useCallback((idx) => {
-    const now = performance.now();
-    pulseRef.current[idx] = now;
-    EDGES.forEach(([a, b]) => {
-      const neighbor = a === idx ? b : b === idx ? a : null;
-      if (neighbor !== null) {
-        setTimeout(() => { pulseRef.current[neighbor] = performance.now(); }, 100 + Math.random() * 250);
-      }
-    });
-  }, []);
-
-  // Keyboard: random node pulse
+  // Trigger smooth transition/morph state when loading panel changes
   useEffect(() => {
-    const handler = (e) => {
-      if (e.repeat) return;
-      const idx = Math.floor(Math.random() * NODES.length);
-      pulseRef.current[idx] = performance.now();
+    const newSeed = Math.random() * 100;
+    stateRef.current = {
+      prevSeed: stateRef.current.currentSeed,
+      currentSeed: newSeed,
+      prevTarget: stateRef.current.currentTarget,
+      currentTarget: activeIndex
     };
-    window.addEventListener("keydown", handler);
-    return () => window.removeEventListener("keydown", handler);
-  }, []);
+    transitionRef.current = 0.0;
+  }, [activeIndex]);
 
-  useFrame(({ clock }) => {
-    // Slow auto-rotation
+  // Distinct noise characteristics based on active loading page panel
+  const targetParams = useMemo(() => {
+    if (activeIndex === 0) {
+      // Sphere: Gentle, calm wobble
+      return { freq: 1.1, amp: 0.24, speed: 0.5 };
+    } else if (activeIndex === 1) {
+      // Monitor: Spiky, tighter noise frequency
+      return { freq: 2.3, amp: 0.14, speed: 1.2 };
+    } else {
+      // Phone: Fluid, wave-like organic motion
+      return { freq: 1.5, amp: 0.28, speed: 0.8 };
+    }
+  }, [activeIndex]);
+
+  const currentParams = useRef({ freq: 1.1, amp: 0.24, speed: 0.5 });
+
+  const uniforms = useMemo(() => ({
+    uTime: { value: 0 },
+    uPrevSeed: { value: 0 },
+    uSeed: { value: 0 },
+    uPrevTarget: { value: 0.0 },
+    uTarget: { value: 0.0 },
+    uTransition: { value: 1.0 },
+    uNoiseFreq: { value: 1.1 },
+    uNoiseAmp: { value: 0.24 },
+    uSpeed: { value: 0.5 },
+    uColor: { value: new THREE.Color("#ff4444") },
+    uWireColor: { value: new THREE.Color("#000000") },
+    uOpacity: { value: 0.15 },
+  }), []);
+
+  useFrame(({ clock }, delta) => {
+    const elapsed = clock.getElapsedTime();
+    const d = Math.min(delta, 0.05);
+
+    if (transitionRef.current < 1.0) {
+      transitionRef.current = Math.min(1.0, transitionRef.current + d * 0.95);
+    }
+
+    const c = currentParams.current;
+    const t = targetParams;
+    const lerpSpeed = 3.5 * d;
+    c.freq += (t.freq - c.freq) * lerpSpeed;
+    c.amp += (t.amp - c.amp) * lerpSpeed;
+    c.speed += (t.speed - c.speed) * lerpSpeed;
+
+    // Query theme colors directly from Zustand store state on each frame
+    // to bypass React re-render closure locks inside Three.js thread
+    const theme = useThemeStore.getState().currentTheme;
+    const isDark = useThemeStore.getState().isDarkMode;
+    const brandColorStr = isDark && theme.dark ? theme.dark.brand : theme.brand;
+    const textColorStr = isDark && theme.dark ? theme.dark.text : theme.text;
+
+    // Update active uniforms directly on the meshes' materials to bypass Three.js uniform cloning
+    const updateMaterialUniforms = (mat) => {
+      if (!mat || !mat.uniforms) return;
+      const u = mat.uniforms;
+      u.uTime.value = elapsed;
+      u.uPrevSeed.value = stateRef.current.prevSeed;
+      u.uSeed.value = stateRef.current.currentSeed;
+      u.uPrevTarget.value = stateRef.current.prevTarget;
+      u.uTarget.value = stateRef.current.currentTarget;
+      u.uTransition.value = transitionRef.current;
+      u.uNoiseFreq.value = c.freq;
+      u.uNoiseAmp.value = c.amp;
+      u.uSpeed.value = c.speed;
+      u.uColor.value.setStyle(brandColorStr);
+      u.uWireColor.value.setStyle(textColorStr);
+    };
+
+    updateMaterialUniforms(meshRef.current?.material);
+    updateMaterialUniforms(wireframeRef.current?.material);
+
+
     if (groupRef.current) {
-      groupRef.current.rotation.y = clock.getElapsedTime() * 0.05;
+      // Rotation: slower in index 0, faster in index 1 and 2 to showcase 3D depth of monitor/phone
+      const rotSpeed = activeIndex === 0 ? 0.08 : 0.22;
+      groupRef.current.rotation.y = elapsed * rotSpeed;
+      groupRef.current.rotation.x = elapsed * (rotSpeed * 0.5);
     }
-
-    frameCount.current++;
-
-    // Update canvas textures every 2 frames (30fps for sprite animations)
-    if (frameCount.current % 2 === 0) {
-      const time = clock.getElapsedTime();
-      canvasData.forEach((cd, i) => {
-        drawCard(cd.ctx, NODES[i], time, hovered === i, pulseRef.current[i]);
-        cd.texture.needsUpdate = true;
-      });
-    }
-
-    // Smooth scale animation for card groups (every frame for smoothness)
-    cardGroupRefs.current.forEach((g, i) => {
-      if (!g) return;
-      const isHov = hovered === i;
-      const isNeighbor = neighborSet.has(i);
-      const target = isHov ? 1.5 : isNeighbor ? 1.15 : 1.0;
-      const cs = g.scale.x;
-      g.scale.setScalar(cs + (target - cs) * 0.1);
-    });
   });
 
   return (
     <group ref={groupRef}>
-      {/* ── Connection lines ──────────────────────────────────── */}
-      {EDGES.map(([a, b], i) => {
-        const lit = hovered === a || hovered === b;
-        return (
-          <line key={`e${i}`}>
-            <bufferGeometry>
-              <bufferAttribute
-                attach="attributes-position"
-                count={2}
-                array={edgeArrays[i]}
-                itemSize={3}
-              />
-            </bufferGeometry>
-            <lineBasicMaterial
-              color={lit ? "#ff4444" : "#888888"}
-              transparent
-              opacity={lit ? 0.5 : 0.06}
-            />
-          </line>
-        );
-      })}
+      {/* 1. Translucent Base Globe with glowing Fresnel edges */}
+      <mesh ref={meshRef}>
+        <sphereGeometry args={[1.8, 64, 64]} />
+        <shaderMaterial
+          vertexShader={vertexShader}
+          fragmentShader={fragmentShaderSolid}
+          uniforms={uniforms}
+          transparent
+          depthWrite={false}
+        />
+      </mesh>
 
-      {/* ── Flow particles ────────────────────────────────────── */}
-      <FlowParticles positions={positions} />
-
-      {/* ── Animated sprite cards ─────────────────────────────── */}
-      {NODES.map((node, i) => {
-        const pos = positions[i];
-        return (
-          <Billboard key={node.label} position={pos}>
-            <group ref={(el) => { cardGroupRefs.current[i] = el; }}>
-              {/* Holographic code card */}
-              <mesh>
-                <planeGeometry args={[0.85, 0.53]} />
-                <meshBasicMaterial
-                  map={canvasData[i].texture}
-                  transparent
-                  side={THREE.DoubleSide}
-                />
-              </mesh>
-
-              {/* Glow sprite behind card */}
-              <sprite position={[0, 0, -0.02]} scale={[1.1, 0.7, 1]}>
-                <spriteMaterial
-                  map={glowTex}
-                  color={node.color}
-                  transparent
-                  opacity={hovered === i ? 0.7 : 0.25}
-                  blending={THREE.AdditiveBlending}
-                  depthWrite={false}
-                />
-              </sprite>
-
-              {/* Invisible hitbox */}
-              <mesh
-                onPointerOver={(e) => {
-                  e.stopPropagation();
-                  setHovered(i);
-                  document.body.style.cursor = "pointer";
-                }}
-                onPointerOut={() => {
-                  setHovered(-1);
-                  document.body.style.cursor = "";
-                }}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleClick(i);
-                }}
-              >
-                <planeGeometry args={[0.95, 0.63]} />
-                <meshBasicMaterial transparent opacity={0} depthWrite={false} />
-              </mesh>
-            </group>
-          </Billboard>
-        );
-      })}
+      {/* 2. Synced sketchy wireframe mesh overlay */}
+      <mesh ref={wireframeRef}>
+        <sphereGeometry args={[1.805, 32, 32]} />
+        <shaderMaterial
+          vertexShader={vertexShader}
+          fragmentShader={fragmentShaderWire}
+          uniforms={uniforms}
+          wireframe
+          transparent
+          depthWrite={true}
+        />
+      </mesh>
     </group>
   );
 }
 
-// ─── Mouse-reactive camera parallax ────────────────────────────────
-function CameraRig() {
-  const { camera, gl } = useThree();
-  const mouse = useRef({ x: 0, y: 0 });
-
-  useEffect(() => {
-    const handler = (e) => {
-      const rect = gl.domElement.getBoundingClientRect();
-      mouse.current.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
-      mouse.current.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
-    };
-    gl.domElement.addEventListener("pointermove", handler);
-    return () => gl.domElement.removeEventListener("pointermove", handler);
-  }, [gl]);
-
-  useFrame(() => {
-    camera.position.x += (mouse.current.x * 1.5 - camera.position.x) * 0.03;
-    camera.position.y += (mouse.current.y * 1.0 - camera.position.y) * 0.03;
-    camera.lookAt(0, 0, 0);
-  });
-
-  return null;
-}
-
-// ─── Main export ───────────────────────────────────────────────────
-export default function HeroInteractiveSection() {
+// ─── Main Export Component ─────────────────────────────────────────
+export default function HeroInteractiveSection({ activeIndex = 0 }) {
   return (
-    <div className="absolute inset-0 z-20">
+    <div className="absolute inset-0 z-0 transform translate-y-[25px]">
       <Canvas
-        camera={{ position: [0, 0, 6.5], fov: 50 }}
+        camera={{ position: [0, 0, 8.0], fov: 50 }}
         gl={{ alpha: true, antialias: true, powerPreference: "high-performance" }}
         style={{ background: "transparent" }}
         dpr={[1, 1.5]}
       >
         <ambientLight intensity={0.5} />
-        <pointLight position={[5, 5, 5]} intensity={0.5} color="#ffffff" />
-        <pointLight position={[-4, -2, 3]} intensity={0.25} color="#ff4444" />
-
-        <TechNetwork />
-        <CameraRig />
+        <OrganicBlob activeIndex={activeIndex} />
       </Canvas>
     </div>
   );

@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Navbar from '../components/Navbar/Navbar.jsx';
+import CatToasts from '../components/CatToasts.jsx';
 import Hero from '../components/Hero/Hero.jsx';
 import ScrollMarquee from '../components/ScrollMarquee.jsx';
 import MeSection from '../components/MeSection.jsx';
@@ -11,6 +12,7 @@ import '../styles/global.css';
 <Layout title="Dwaipayan Dutta | Software Engineer & Creative Developer">
   <div class="App">
     <Navbar client:load />
+    <CatToasts client:load />
 
     {/* Hero section */}
     <div id="home" class="min-h-screen w-full relative">

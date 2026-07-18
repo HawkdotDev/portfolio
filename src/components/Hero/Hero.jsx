@@ -33,7 +33,7 @@ const Hero = () => {
   };
 
   return (
-    <div className="w-full lg:h-screen bg-canvas text-black flex flex-col pt-16 lg:pt-12 px-4 pb-4 md:px-6 overflow-y-auto lg:overflow-hidden relative select-none box-border">
+    <div className="w-full lg:h-screen bg-canvas text-black flex flex-col pt-16 lg:pt-12 px-4 pb-[5px] md:px-6 overflow-y-auto lg:overflow-hidden relative select-none box-border">
       <style>{`
         @keyframes progress-fill {
           from { width: 0%; }
@@ -45,6 +45,10 @@ const Hero = () => {
           animation-fill-mode: forwards;
         }
       `}</style>
+      {/* Interactive 3D Tech Constellation Overlay (Centered in full background) */}
+      <Suspense fallback={null}>
+        <HeroInteractiveSection activeIndex={activeIndex} />
+      </Suspense>
       {/* Top Banner: Reusing the existing HeroMarquee but with red text styling */}
       <div className="w-full h-[15vh] overflow-hidden flex items-center justify-center shrink-0">
         <HeroMarquee 
@@ -75,11 +79,6 @@ const Hero = () => {
             />
           </AnimatePresence>
 
-          {/* Interactive 3D Tech Constellation Overlay */}
-          <Suspense fallback={null}>
-            <HeroInteractiveSection />
-          </Suspense>
-
         </div>
 
         {/* Left Column (2/5 width visually): Detailed info grids fitted to 100% of height */}
@@ -102,8 +101,8 @@ const Hero = () => {
             </div>
           </div>
           
-          {/* Row 1: Exactly 3 panels (Flex-fills remaining height) */}
-          <div className="w-full h-[120px] sm:h-[150px] lg:flex-1 lg:min-h-0 p-0 overflow-hidden shrink-0 lg:shrink">
+          {/* Row 1: Exactly 3 panels (Horizontally rectangular aspect ratio) */}
+          <div className="w-full aspect-[4.5] p-0 overflow-hidden shrink-0">
             {/* 3 Comic Panels side-by-side display cards */}
             <div className="grid grid-cols-3 gap-3 w-full h-full">
               {/* Panel 1 */}
@@ -128,7 +127,7 @@ const Hero = () => {
                     }`}
                   />
                 </div>
-                <SketchyBorder isImage={true} className="group-hover:text-[var(--color-accent-brand)] transition-colors duration-300" />
+                <SketchyBorder isImage={true} className="group-hover:text-(--color-accent-brand) transition-colors duration-300" />
               </div>
               {/* Panel 2 */}
               <div 
@@ -152,7 +151,7 @@ const Hero = () => {
                     }`}
                   />
                 </div>
-                <SketchyBorder isImage={true} className="group-hover:text-[var(--color-accent-brand)] transition-colors duration-300" />
+                <SketchyBorder isImage={true} className="group-hover:text-(--color-accent-brand) transition-colors duration-300" />
               </div>
               {/* Panel 3 */}
               <div 
@@ -176,13 +175,13 @@ const Hero = () => {
                     }`}
                   />
                 </div>
-                <SketchyBorder isImage={true} className="group-hover:text-[var(--color-accent-brand)] transition-colors duration-300" />
+                <SketchyBorder isImage={true} className="group-hover:text-(--color-accent-brand) transition-colors duration-300" />
               </div>
             </div>
           </div>
 
           {/* Grouped Block: Row 2 and Quote to remove the space between them */}
-          <div className="flex flex-col gap-2 lg:gap-1.5 shrink-0">
+          <div className="flex flex-col gap-2 lg:gap-1.5 shrink-0 lg:mt-auto">
             {/* Row 2: Concept description block without black background/texture */}
             <div className="flex flex-col gap-1.5 shrink-0 h-auto lg:min-h-[94px] justify-center">
               <AnimatePresence mode="wait">

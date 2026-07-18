@@ -5,7 +5,7 @@ const MeSection = () => {
   return (
     <section id="about" className="w-full bg-canvas text-black py-16 px-4 md:px-6 relative box-border overflow-hidden select-none">
       {/* Horizontal wobbly sketch border at the top */}
-      <svg className="absolute top-0 left-0 w-full h-[10px] pointer-events-none text-[var(--color-border-main)]" preserveAspectRatio="none" viewBox="0 0 100 10">
+      <svg className="absolute top-0 left-0 w-full h-[10px] pointer-events-none text-(--color-border-main)" preserveAspectRatio="none" viewBox="0 0 100 10">
         <path d="M -1,5 C 30,3 70,7 101,5" stroke="currentColor" strokeWidth="2" fill="none" vectorEffect="non-scaling-stroke" />
         <path d="M -1,7 C 25,8 75,5 101,9" stroke="currentColor" strokeWidth="1" opacity="0.6" fill="none" vectorEffect="non-scaling-stroke" />
       </svg>

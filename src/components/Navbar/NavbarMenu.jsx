@@ -1,5 +1,6 @@
 import { forwardRef, useEffect, useState } from "react";
 import { FaTwitter, FaInstagram, FaGithub, FaLinkedin } from "react-icons/fa";
+import SketchyLine from "../SketchyLine";
 
 const NavbarMenu = forwardRef(({ isOpen }, ref) => {
   const [activeSection, setActiveSection] = useState("");
@@ -61,7 +62,6 @@ const NavbarMenu = forwardRef(({ isOpen }, ref) => {
         boxSizing: "border-box",
         userSelect: "none",
         boxShadow: isOpen ? "-4px 0px 0px 0px rgba(0,0,0,1)" : "none",
-        borderLeft: "2px solid black",
         transform: isOpen ? "translateX(0%)" : "translateX(105%)",
         transition: "transform 0.45s cubic-bezier(0.77, 0, 0.175, 1), opacity 0.45s ease, visibility 0.45s ease",
         opacity: isOpen ? 1 : 0,
@@ -72,6 +72,9 @@ const NavbarMenu = forwardRef(({ isOpen }, ref) => {
       }}
       className="bg-canvas"
     >
+      {/* Wobbly vertical border dividing the menu from the page */}
+      <SketchyLine direction="vertical" className="text-black" />
+
       {/* Top section: Copy of ME Red Square and Image */}
       <div className="mt-10 mb-6 flex justify-center">
         <div className="w-full aspect-square bg-red-600 border-2 border-black relative rounded-sm glow overflow-visible shrink-0">
@@ -106,7 +109,8 @@ const NavbarMenu = forwardRef(({ isOpen }, ref) => {
       </nav>
 
       {/* Bottom section: Footer Branding */}
-      <div className="flex flex-col gap-1.5 border-t border-black/10 pt-4">
+      <div className="flex flex-col gap-1.5 pt-4 relative">
+        <SketchyLine direction="horizontal" className="text-black/15" double={false} />
         {/* <span className="text-[9px] text-neutral-500 uppercase tracking-widest font-bold">
           DWAIPAYAN DUTTA.
         </span>

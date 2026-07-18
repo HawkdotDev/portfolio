@@ -1,6 +1,13 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 
-export default function SketchyBorder({ className = "", double = true, isImage = false }) {
+export default function SketchyBorder({ 
+  className = "", 
+  double = true, 
+  isImage = false,
+  fillColor = "none",
+  shadowColor = "none",
+  shadowOffset = 4
+}) {
   const svgRef = useRef(null);
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
 
@@ -12,15 +19,17 @@ export default function SketchyBorder({ className = "", double = true, isImage =
     // Initial measurement of the parent container size
     const parent = svgElement.parentElement;
     if (parent) {
-      const rect = parent.getBoundingClientRect();
-      setDimensions({ width: rect.width, height: rect.height });
+      const width = parent.offsetWidth || parent.getBoundingClientRect().width;
+      const height = parent.offsetHeight || parent.getBoundingClientRect().height;
+      setDimensions({ width, height });
     }
 
     // Monitor resize events to adjust sketchy path dynamically
     const observer = new ResizeObserver(() => {
       if (parent) {
-        const rect = parent.getBoundingClientRect();
-        setDimensions({ width: rect.width, height: rect.height });
+        const width = parent.offsetWidth || parent.getBoundingClientRect().width;
+        const height = parent.offsetHeight || parent.getBoundingClientRect().height;
+        setDimensions({ width, height });
       }
     });
 
@@ -74,6 +83,35 @@ export default function SketchyBorder({ className = "", double = true, isImage =
       return `M ${x1.toFixed(1)},${y1.toFixed(1)} C ${cp1x.toFixed(1)},${cp1y.toFixed(1)} ${cp2x.toFixed(1)},${cp2y.toFixed(1)} ${x2.toFixed(1)},${y2.toFixed(1)}`;
     };
 
+    // Generates a Bezier curve segment without the initial "M" command
+    const createLinePathSegment = (x1, y1, x2, y2, wobbleScale) => {
+      const dx = x2 - x1;
+      const dy = y2 - y1;
+      const len = Math.sqrt(dx * dx + dy * dy) || 1;
+      
+      const nx = -dy / len;
+      const ny = dx / len;
+      const tx = dx / len;
+      const ty = dy / len;
+
+      const xA = x1 + dx * 0.33;
+      const yA = y1 + dy * 0.33;
+      const xB = x1 + dx * 0.67;
+      const yB = y1 + dy * 0.67;
+
+      const wA_perp = rnd(-wobbleScale, wobbleScale);
+      const wA_para = rnd(-wobbleScale * 0.25, wobbleScale * 0.25);
+      const wB_perp = rnd(-wobbleScale, wobbleScale);
+      const wB_para = rnd(-wobbleScale * 0.25, wobbleScale * 0.25);
+
+      const cp1x = xA + nx * wA_perp + tx * wA_para;
+      const cp1y = yA + ny * wA_perp + ty * wA_para;
+      const cp2x = xB + nx * wB_perp + tx * wB_para;
+      const cp2y = yB + ny * wB_perp + ty * wB_para;
+
+      return `C ${cp1x.toFixed(1)},${cp1y.toFixed(1)} ${cp2x.toFixed(1)},${cp2y.toFixed(1)} ${x2.toFixed(1)},${y2.toFixed(1)}`;
+    };
+
     // Generates a complete set of wobbly paths for all 4 edges
     const createEdgePaths = (wobble, overlap) => {
       if (isImage) {
@@ -114,23 +152,57 @@ export default function SketchyBorder({ className = "", double = true, isImage =
       }
     };
 
-    // Calculate three passes with different characteristics to mimic actual sketching
+    // Generates a closed wobbly path for background fill and shadow
+    const createClosedPath = (wobble) => {
+      const o = isImage ? 1.3 : 3.0; // Use 3.0px offset for non-image borders to match average offset of outlines
+      const w = isImage ? wobble * 0.45 : wobble;
+      
+      const x1 = o, y1 = o;
+      const x2 = W - o, y2 = o;
+      const x3 = W - o, y3 = H - o;
+      const x4 = o, y4 = H - o;
+
+      const topEdge = createLinePathSegment(x1, y1, x2, y2, w);
+      const rightEdge = createLinePathSegment(x2, y2, x3, y3, w);
+      const bottomEdge = createLinePathSegment(x3, y3, x4, y4, w);
+      const leftEdge = createLinePathSegment(x4, y4, x1, y1, w);
+
+      return `M ${x1.toFixed(1)},${y1.toFixed(1)} ${topEdge} ${rightEdge} ${bottomEdge} ${leftEdge} Z`;
+    };
+
     return {
-      // Main thick ink outline (drawn with a steady but organic hand)
       inkThick: createEdgePaths(1.1, 4),
-      // Medium ink pass (drawn with a bit more jitter and slightly wider offsets)
       inkMedium: createEdgePaths(1.8, 6),
-      // Fine loose pencil guidelines (overshoots corners and has loose wiggles)
-      pencil: createEdgePaths(3.2, 9)
+      pencil: createEdgePaths(3.2, 9),
+      closedPath: createClosedPath(1.1)
     };
   }, [dimensions, isImage]);
 
   return (
     <svg
       ref={svgRef}
-      className={`absolute w-full h-full inset-0 pointer-events-none z-30 text-[var(--color-border-main)] ${className}`}
+      className={`absolute w-full h-full inset-0 pointer-events-none z-30 text-(--color-border-main) ${className}`}
       style={{ overflow: 'visible' }}
     >
+      {/* 0. Shadow underlay */}
+      {shadowColor !== "none" && (
+        <path
+          d={paths.closedPath}
+          fill={shadowColor}
+          stroke="none"
+          transform={`translate(${shadowOffset}, ${shadowOffset})`}
+        />
+      )}
+
+      {/* 0. Background fill */}
+      {fillColor !== "none" && (
+        <path
+          d={paths.closedPath}
+          fill={fillColor}
+          stroke="none"
+        />
+      )}
+
       {/* 1. Fine loose pencil guidelines (underlay) */}
       {double && (
         <path
