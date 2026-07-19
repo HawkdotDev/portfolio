@@ -1,12 +1,12 @@
 import { forwardRef, useEffect, useState } from "react";
-import { FaTwitter, FaInstagram, FaGithub, FaLinkedin } from "react-icons/fa";
+import { FaTwitter, FaInstagram, FaGithub, FaLinkedin, FaDownload } from "react-icons/fa";
 import SketchyLine from "../SketchyLine";
 
 const NavbarMenu = forwardRef(({ isOpen }, ref) => {
   const [activeSection, setActiveSection] = useState("");
 
   const links = [
-    { label: "HOME", href: "#home" },
+    { label: "INTRO", href: "#intro" },
     { label: "ABOUT", href: "#about" },
     { label: "WORK", href: "#work" },
     { label: "CONTACT", href: "#contact" }
@@ -76,8 +76,8 @@ const NavbarMenu = forwardRef(({ isOpen }, ref) => {
       <SketchyLine direction="vertical" className="text-black" />
 
       {/* Top section: Copy of ME Red Square and Image */}
-      <div className="mt-10 mb-6 flex justify-center">
-        <div className="w-full aspect-square bg-red-600 border-2 border-black relative rounded-sm glow overflow-visible shrink-0">
+      <div className="mt-10 mb-6 flex flex-col gap-4 items-center shrink-0 w-full">
+        <div className="w-full aspect-square bg-red-600 border-2 border-black relative rounded-sm glow overflow-visible">
           <img
             src="/avatar.png"
             alt="My Avatar"
@@ -88,6 +88,16 @@ const NavbarMenu = forwardRef(({ isOpen }, ref) => {
             ME
           </h2>
         </div>
+
+        {/* Download Resume Button */}
+        <a
+          href="/resume.pdf"
+          download
+          className="w-full relative py-2.5 px-4 bg-red-600 border-2 border-black rounded-sm glow text-center font-grotesk font-black text-xs tracking-wider text-white uppercase hover:bg-neutral-800 hover:-translate-y-0.5 transition-all duration-300 pointer-events-auto flex items-center justify-center gap-2"
+        >
+          <FaDownload className="text-xs" />
+          DOWNLOAD RESUME
+        </a>
       </div>
 
       {/* Center: Vertical Navigation Links (links do not close menu) */}

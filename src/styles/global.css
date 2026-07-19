@@ -7,6 +7,7 @@
   --font-playfair: "Playfair Display", serif;
   --font-grotesk: "Space Grotesk", sans-serif;
   --color-red-600: var(--color-accent-brand);
+  --color-red-500: var(--color-accent-brand);
   --color-red-400: var(--color-accent-loader);
   --color-red-300: var(--color-accent-video-bg);
   --color-canvas: var(--color-canvas);

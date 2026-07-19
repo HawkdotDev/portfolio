@@ -5,6 +5,7 @@ export default function EyeFollowRobot() {
   const catRef = useRef(null);
   const [pupilOffset, setPupilOffset] = useState({ x: 0, y: 0 });
   const [transparentSrc, setTransparentSrc] = useState("");
+  // eslint-disable-next-line no-unused-vars
   const [eyeColor, setEyeColor] = useState("#52b788"); // Fallback green
 
   useEffect(() => {
@@ -21,14 +22,6 @@ export default function EyeFollowRobot() {
       const data = imgData.data;
       const width = canvas.width;
       const height = canvas.height;
-
-      // 1. Sample the green color from the left eye center
-      const sampleX = Math.round(width * 0.3762);
-      const sampleY = Math.round(height * 0.3154);
-      const sampleIdx = (sampleY * width + sampleX) * 4;
-      if (sampleIdx < data.length) {
-        setEyeColor(`rgb(${data[sampleIdx]}, ${data[sampleIdx + 1]}, ${data[sampleIdx + 2]})`);
-      }
 
       // 2. Flood-fill BFS to key out white background only
       const visited = new Uint8Array(width * height);
@@ -124,26 +117,44 @@ export default function EyeFollowRobot() {
     >
       {/* ── Monkey-Style Zine Background Poster Card (Full Height) ── */}
       <div
-        className="absolute flex flex-col items-center justify-start z-10 top-[calc(15vh+4rem)] lg:top-[calc(15vh+3rem)]"
+        className="absolute z-10 top-[calc(15vh+4rem)] lg:top-[calc(15vh+3rem)] overflow-hidden"
         style={{
           left: "9%",
           width: "calc(88% - 12px)",
           bottom: "2.5px",
-          backgroundColor: "#f01450",
         }}
       >
         <SketchyBorder />
-        {/* White bold text: "OUT OF THE BOX" */}
-        <div
-          className="flex flex-col items-center justify-center leading-[0.78] w-full h-full text-white font-black"
-          style={{
-            fontFamily: "Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif",
-            letterSpacing: "-0.04em",
-          }}
+        <svg 
+          width="100%" 
+          height="100%" 
+          viewBox="0 0 100 200" 
+          preserveAspectRatio="xMinYMin slice" 
+          className="absolute inset-0 w-full h-full"
         >
-          <span style={{ fontSize: "21cqw" }}>OUT OF</span>
-          <span style={{ fontSize: "37cqw" }}>THE BOX</span>
-        </div>
+          <defs>
+            <mask id="portfolio-mask" x="0" y="0" width="100" height="200">
+              <rect x="0" y="0" width="100" height="200" fill="white" />
+              <text 
+                x="0" 
+                y="36" 
+                fill="black" 
+                fontSize="34" 
+                fontFamily="Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif" 
+                letterSpacing="-0.05em"
+              >PORT</text>
+              <text 
+                x="0" 
+                y="63" 
+                fill="black" 
+                fontSize="34" 
+                fontFamily="Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif" 
+                letterSpacing="-0.05em"
+              >FOLIO</text>
+            </mask>
+          </defs>
+          <rect x="0" y="0" width="100" height="200" fill="var(--color-accent-brand)" mask="url(#portfolio-mask)" />
+        </svg>
       </div>
 
       {/* ── Bottom-aligned Cat Container ── */}
@@ -157,6 +168,7 @@ export default function EyeFollowRobot() {
         {/* Base Cat Character Image (Transparent PNG generated on the fly) */}
         {transparentSrc && (
           <img
+            id="hero-cat-image"
             src={transparentSrc}
             alt="Cat in Box"
             className="w-full h-full object-contain relative z-20"

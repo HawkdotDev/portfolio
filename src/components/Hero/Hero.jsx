@@ -14,6 +14,56 @@ import {
   HERO_DATA 
 } from "../../data/heroData";
 
+const TypingText = ({ activeIndex }) => {
+  const roles = ["Web Developer", "Software Engineer", "Game Developer"];
+  const targetText = roles[activeIndex] || "";
+  const [displayedText, setDisplayedText] = useState(roles[0]);
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  // Trigger deletion exactly 1.2 seconds before the image transition
+  useEffect(() => {
+    setIsDeleting(false);
+    const deleteDelay = (LOADING_DURATION - 1.2) * 1000;
+    const deleteTimer = setTimeout(() => {
+      setIsDeleting(true);
+    }, deleteDelay);
+
+    return () => clearTimeout(deleteTimer);
+  }, [activeIndex]);
+
+  // Handle individual character additions and deletions
+  useEffect(() => {
+    let charTimer;
+
+    if (isDeleting) {
+      if (displayedText.length > 0) {
+        charTimer = setTimeout(() => {
+          setDisplayedText(prev => prev.slice(0, -1));
+        }, 25); // fast backspacing speed
+      }
+    } else {
+      if (displayedText !== targetText) {
+        if (targetText.indexOf(displayedText) !== 0) {
+          setDisplayedText("");
+        } else {
+          charTimer = setTimeout(() => {
+            setDisplayedText(targetText.slice(0, displayedText.length + 1));
+          }, 60); // typing speed
+        }
+      }
+    }
+
+    return () => clearTimeout(charTimer);
+  }, [targetText, displayedText, isDeleting]);
+
+  return (
+    <span className="font-grotesk font-black tracking-tighter text-4xl sm:text-5xl text-neutral-800 uppercase flex items-center justify-start gap-1.5 h-[50px] pl-0 w-full">
+      {displayedText}
+      <span className="w-[4px] h-[32px] sm:h-[40px] bg-red-600 animate-blink shrink-0" />
+    </span>
+  );
+};
+
 const Hero = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [triggerCount, setTriggerCount] = useState(0);
@@ -43,6 +93,12 @@ const Hero = () => {
           animation-name: progress-fill;
           animation-timing-function: linear;
           animation-fill-mode: forwards;
+        }
+        @keyframes blink {
+          50% { opacity: 0; }
+        }
+        .animate-blink {
+          animation: blink 0.75s step-end infinite;
         }
       `}</style>
       {/* Interactive 3D Tech Constellation Overlay (Centered in full background) */}
@@ -87,17 +143,9 @@ const Hero = () => {
           {/* Black Divider before ME section */}
           {/* <div className="h-[1.35px] bg-black w-full shrink-0" /> */}
 
-          {/* Row 3: ME + Description + Buttons (Fitted to 38% height, borderless, transparent parent) */}
-          {/* Row 3: Decorative Zine Rectangle */}
           <div className="flex gap-4 items-stretch min-h-0 p-0 overflow-hidden shrink-0">
-            <div className="w-full relative rounded-sm glow backdrop-blur-sm overflow-hidden flex items-center justify-center box-border">
-              <ScrollMarquee 
-                numRows={1}
-                rowTexts={[["CREATING", "SCALABLE", "FUTURES"]]}
-                className="text-neutral-800 dark:text-neutral-200 font-black tracking-tighter opacity-80 text-4xl sm:text-5xl"
-                scrollerClassName=""
-                speedMultiplier={0.3}
-              />
+            <div className="w-full relative rounded-sm glow backdrop-blur-sm overflow-hidden flex items-center justify-start box-border py-2 pr-2 pl-0 min-h-[66px]">
+              <TypingText activeIndex={activeIndex} />
             </div>
           </div>
           

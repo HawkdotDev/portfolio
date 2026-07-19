@@ -1,4 +1,16 @@
 // src/data/themesData.js
+
+const UNIFIED_DARK_THEME = {
+  canvas: "#141414",           // Charcoal dark canvas
+  brand: "#501296",            // Plum purple brand accent
+  loader: "#7b2cbf",           // Bright violet purple
+  videoBg: "#b57eed",          // Muted lavender purple
+  text: "#ffffff",             // Pure white text
+  border: "#ffffff",           // White borders
+  blend: "screen",
+  glow: "#501296"              // Purple glow
+};
+
 export const THEMES = [
   {
     id: "cherry-blossom",
@@ -11,16 +23,7 @@ export const THEMES = [
     border: "#000000",
     blend: "multiply",
     glow: "#ffb3c1",
-    dark: {
-      canvas: "#0b1321",
-      brand: "#F01450",
-      loader: "#ff8da1",
-      videoBg: "#4a1220",
-      text: "#EBEBEB",
-      border: "#57544b",
-      blend: "screen",
-      glow: "#f0bd32"
-    }
+    dark: UNIFIED_DARK_THEME
   },
   {
     id: "sage-red",
@@ -33,16 +36,7 @@ export const THEMES = [
     border: "#000000",
     blend: "multiply",
     glow: "#f87171",
-    dark: {
-      canvas: "#0f1a14",
-      brand: "#ff4d4d",
-      loader: "#ff8080",
-      videoBg: "#1b2e23",
-      text: "#d1e7dd",
-      border: "#2a4836",
-      blend: "screen",
-      glow: "#ff4d4d"
-    }
+    dark: UNIFIED_DARK_THEME
   },
   {
     id: "matcha",
@@ -55,16 +49,7 @@ export const THEMES = [
     border: "#000000",
     blend: "multiply",
     glow: "#93c468",
-    dark: {
-      canvas: "#0a0d08",
-      brand: "#7da852",
-      loader: "#9ad46a",
-      videoBg: "#182412",
-      text: "#dcedc8",
-      border: "#334d20",
-      blend: "screen",
-      glow: "#7da852"
-    }
+    dark: UNIFIED_DARK_THEME
   },
   {
     id: "Bold Red",
@@ -77,16 +62,7 @@ export const THEMES = [
     border: "#000000",
     blend: "multiply",
     glow: "#ef233c",
-    dark: {
-      canvas: "#0f0f10",
-      brand: "#ff3b30",
-      loader: "#ff7d75",
-      videoBg: "#1e1e21",
-      text: "#f4f4f5",
-      border: "#3f3f46",
-      blend: "screen",
-      glow: "#ff3b30"
-    }
+    dark: UNIFIED_DARK_THEME
   },
   {
     id: "kraft-orange",
@@ -99,16 +75,7 @@ export const THEMES = [
     border: "#1c120c",
     blend: "multiply",
     glow: "#f28546",
-    dark: {
-      canvas: "#1a120b",
-      brand: "#f97316",
-      loader: "#fb923c",
-      videoBg: "#2d1e12",
-      text: "#ffedd5",
-      border: "#543b23",
-      blend: "screen",
-      glow: "#f97316"
-    }
+    dark: UNIFIED_DARK_THEME
   },
   {
     id: "mono-chrome",
@@ -121,15 +88,6 @@ export const THEMES = [
     border: "#111827",
     blend: "multiply",
     glow: "#9ca3af",
-    dark: {
-      canvas: "#111111",
-      brand: "#ffffff",
-      loader: "#a3a3a3",
-      videoBg: "#262626",
-      text: "#e5e5e5",
-      border: "#404040",
-      blend: "screen",
-      glow: "#ffffff"
-    }
+    dark: UNIFIED_DARK_THEME
   }
 ];

@@ -263,7 +263,7 @@ const Navbar = () => {
         {/* Brand Name on the Left */}
         <div
           className="text-neutral-800 font-anton uppercase tracking-normal select-none cursor-pointer text-sm sm:text-base md:text-lg transition-opacity hover:opacity-75 z-100"
-          onClick={() => (window.location.href = "#home")}
+          onClick={() => (window.location.href = "#intro")}
         >
           Dwaipayan Dutta<span className="text-red-600">.</span>
         </div>

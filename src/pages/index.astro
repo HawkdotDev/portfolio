@@ -3,8 +3,13 @@ import Layout from '../layouts/Layout.astro';
 import Navbar from '../components/Navbar/Navbar.jsx';
 import CatToasts from '../components/CatToasts.jsx';
 import Hero from '../components/Hero/Hero.jsx';
+import DesignIdeaSection from '../components/DesignIdeaSection.jsx';
+import HowIThinkSection from '../components/HowIThinkSection.jsx';
 import ScrollMarquee from '../components/ScrollMarquee.jsx';
 import MeSection from '../components/MeSection.jsx';
+import WorkSection from '../components/WorkSection.jsx';
+import BlogSection from '../components/BlogSection.jsx';
+import ContactSection from '../components/ContactSection.jsx';
 import Footer from '../components/Footer.jsx';
 import '../styles/global.css';
 ---
@@ -14,28 +19,40 @@ import '../styles/global.css';
     <Navbar client:load />
     <CatToasts client:load />
 
-    {/* Hero section */}
-    <div id="home" class="min-h-screen w-full relative">
+    {/* Intro / Hero section */}
+    <div id="intro" class="min-h-screen w-full relative">
       <Hero client:load />
     </div>
+    <DesignIdeaSection client:load />
+    <HowIThinkSection client:load />
 
     {/* Dedicated ME Section */}
     <MeSection client:load />
 
-    {/* Scroll Marquee section */}
-    <div id="work" class="py-16 md:py-32 w-full bg-black overflow-hidden">
-      <ScrollMarquee
-        client:load
-        numRows={2}
-        rowTexts={[
-          ["Design", "Code", "Storytelling", "Dwaipayan Dutta"],
-          ["React", "GSAP", "Tailwind", "Framer Motion"],
-        ]}
-        speedMultiplier={0.25}
-      />
+    {/* Work Section (Marquee header + detailed cards grid) */}
+    <div id="work" class="w-full bg-black overflow-hidden">
+      <div class="py-16 md:py-32">
+        <ScrollMarquee
+          client:load
+          numRows={2}
+          rowTexts={[
+            ["Design", "Code", "Storytelling", "Dwaipayan Dutta"],
+            ["React", "GSAP", "Tailwind", "Framer Motion"],
+          ]}
+          speedMultiplier={0.25}
+        />
+      </div>
+      <WorkSection client:load />
     </div>
 
-    <div id="contact">
+    {/* Blog Section */}
+    <div id="blog" class="w-full relative">
+      <BlogSection client:load />
+    </div>
+
+    {/* Contact Section */}
+    <div id="contact" class="w-full relative">
+      <ContactSection client:load />
       <Footer client:load />
     </div>
   </div>
@@ -43,5 +60,5 @@ import '../styles/global.css';
 
 <script>
   import LocomotiveScroll from 'locomotive-scroll';
-  new LocomotiveScroll();
+  window.locomotiveScroll = new LocomotiveScroll();
 </script>

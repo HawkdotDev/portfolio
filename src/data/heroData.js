@@ -7,7 +7,7 @@ export const PANEL_2_URL = "https://i.pinimg.com/originals/e5/e9/26/e5e9265d77d9
 export const PANEL_3_URL = "https://i.pinimg.com/originals/69/61/76/696176e85452d3d216f95fe8d912b01d.jpg";
 
 // Configurable slideshow loading duration in seconds
-export const LOADING_DURATION = 4;
+export const LOADING_DURATION = 8;
 
 export const HERO_DATA = [
   {
